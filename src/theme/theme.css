@@ -1,0 +1,351 @@
+/* Site-wide light tokens (all pages) */
+:root {
+  color-scheme: light;
+  --son-bg: #ffffff;
+  --son-bg-elevated: #ffffff;
+  --son-bg-muted: #f8f8f8;
+  --son-bg-subtle: #fafafa;
+  --son-bg-inverse: #000000;
+  --son-bg-dark: #050505;
+  --son-text: #000000;
+  --son-text-soft: #111111;
+  --son-text-body: #333333;
+  --son-text-secondary: #444444;
+  --son-text-muted: #6b7280;
+  --son-text-faint: #9ca3af;
+  --son-text-inverse: #ffffff;
+  --son-border: #000000;
+  --son-border-soft: #d1d5db;
+  --son-border-faint: #e8e8e8;
+  --son-shadow: #000000;
+  --son-accent: #fef08a;
+  --son-accent-soft: #fef9c3;
+  --son-accent-green: #4ade80;
+  --son-nav-bg: #ffffff;
+  --son-card-bg: #ffffff;
+  --son-input-bg: #ffffff;
+  --son-toggle-bg: #000000;
+  --son-toggle-fg: #ffffff;
+  --son-toggle-ring: #fef08a;
+  --son-link-hover: #1a56db;
+}
+
+html,
+body {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* Dark mode — homepage only */
+.main-home[data-theme="dark"] {
+  color-scheme: dark;
+  --son-bg: #0a0a0c;
+  --son-bg-elevated: #141418;
+  --son-bg-muted: #1a1a1f;
+  --son-bg-subtle: #1f1f24;
+  --son-bg-inverse: #f4f4f5;
+  --son-text: #f4f4f5;
+  --son-text-soft: #e4e4e7;
+  --son-text-body: #d4d4d8;
+  --son-text-secondary: #a1a1aa;
+  --son-text-muted: #71717a;
+  --son-text-faint: #52525b;
+  --son-text-inverse: #0a0a0c;
+  --son-border: #3f3f46;
+  --son-border-soft: #52525b;
+  --son-border-faint: #27272a;
+  --son-shadow: rgba(0, 0, 0, 0.6);
+  --son-accent-soft: #422006;
+  --son-nav-bg: #0f0f12;
+  --son-card-bg: #141418;
+  --son-toggle-bg: #fef08a;
+  --son-toggle-fg: #0a0a0c;
+  --son-toggle-ring: #52525b;
+  --son-link-hover: #fde047;
+
+  background: var(--son-bg);
+  color: var(--son-text);
+}
+
+.main-home {
+  background: var(--son-bg);
+  color: var(--son-text);
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease;
+}
+
+/* ——— Home sections ——— */
+.main-home .main-nav {
+  background: var(--son-nav-bg);
+  border-bottom-color: var(--son-border);
+}
+
+.main-home .main-nav--open {
+  box-shadow: 0 4px 0 var(--son-border);
+}
+
+.main-home .main-nav__brand,
+.main-home .main-nav__link,
+.main-home .main-nav__mobile-card,
+.main-home .main-nav__menu-btn-label,
+.main-home .main-nav__close-btn-label {
+  color: var(--son-text);
+}
+
+.main-home .main-nav__link:hover,
+.main-home .main-nav__mobile-card:hover {
+  color: var(--son-text-muted);
+}
+
+.main-home .main-nav__buy {
+  background: var(--son-bg-inverse);
+  color: var(--son-text-inverse);
+  border-color: var(--son-border);
+}
+
+.main-home .main-nav__drawer,
+.main-home .main-nav__mobile-panel {
+  background: var(--son-nav-bg);
+  border-color: var(--son-border);
+}
+
+.main-home .main-nav__mobile-card:hover {
+  background: var(--son-bg-subtle);
+}
+
+.main-home .hero {
+  background: var(--son-bg);
+  border-bottom-color: var(--son-border-faint);
+}
+
+.main-home .hero__title,
+.main-home .hero__copy p {
+  color: var(--son-text);
+}
+
+.main-home .hero__eyebrow {
+  color: var(--son-text-faint);
+}
+
+.main-home .hero__ca {
+  background: var(--son-card-bg);
+  border-color: var(--son-border-soft);
+}
+
+.main-home .hero__ca-label {
+  color: var(--son-text-faint);
+}
+
+.main-home .hero__ca-value {
+  color: var(--son-text-soft);
+}
+
+.main-home .hero__ca-copy {
+  background: var(--son-bg-muted);
+  border-color: var(--son-border);
+  color: var(--son-text);
+}
+
+.main-home .hero__ca:focus-within {
+  border-color: var(--son-text);
+  box-shadow: 0 0 0 1px var(--son-text);
+}
+
+.main-home .hero__ca-copy--done {
+  background: var(--son-bg-inverse);
+  color: var(--son-text-inverse);
+}
+
+.main-home .tokenomics,
+.main-home .meme-community,
+.main-home .how-to-buy,
+.main-home .home-footer {
+  background: var(--son-bg);
+  border-color: var(--son-border);
+}
+
+.main-home .how-to-buy__step-num {
+  color: var(--son-text-muted);
+}
+
+.main-home .tokenomics__title,
+.main-home .tokenomics__value,
+.main-home .meme-community__title,
+.main-home .meme-community__step-title,
+.main-home .how-to-buy__title,
+.main-home .how-to-buy__step-title,
+.main-home .home-footer__title {
+  color: var(--son-text);
+}
+
+.main-home .tokenomics__eyebrow,
+.main-home .tokenomics__label,
+.main-home .meme-community__eyebrow,
+.main-home .meme-community__step-num,
+.main-home .how-to-buy__eyebrow,
+.main-home .home-footer__eyebrow {
+  color: var(--son-text-faint);
+}
+
+.main-home .meme-community__intro,
+.main-home .meme-community__step-desc,
+.main-home .how-to-buy__desc,
+.main-home .home-footer__tagline {
+  color: var(--son-text-body);
+}
+
+.main-home .tokenomics__card-body,
+.main-home .tokenomics__card-link,
+.main-home .meme-community__step,
+.main-home .how-to-buy__card-inner,
+.main-home .how-to-buy__copy,
+.main-home .home-footer__ca {
+  background: var(--son-card-bg);
+  border-color: var(--son-border);
+  color: var(--son-text);
+  box-shadow: 5px 5px 0 var(--son-shadow);
+}
+
+.main-home .meme-community__highlight {
+  background: linear-gradient(
+    135deg,
+    var(--son-accent-soft) 0%,
+    var(--son-bg-muted) 100%
+  );
+  border-color: var(--son-border);
+}
+
+.main-home .meme-community__highlight-text {
+  color: var(--son-text-body);
+}
+
+.main-home .meme-community__step-link,
+.main-home .meme-community__intro-link {
+  color: var(--son-text);
+}
+
+.main-home[data-theme="dark"] .meme-community__step-icon,
+.main-home[data-theme="dark"] .meme-community__highlight-icon {
+  color: #000000;
+}
+
+.main-home .meme-community__action {
+  background: var(--son-bg-inverse);
+  color: var(--son-text-inverse);
+}
+
+.main-home .meme-community__action:hover {
+  background: var(--son-card-bg);
+  color: var(--son-text);
+}
+
+.main-home .meme-community__cta,
+.main-home .how-to-buy__dex-btn,
+.main-home .home-footer__buy {
+  background: var(--son-bg-inverse);
+  color: var(--son-text-inverse);
+  border-color: var(--son-border);
+}
+
+.main-home .how-to-buy__copy-value,
+.main-home .home-footer__ca-label,
+.main-home .home-footer__ca-value,
+.main-home .home-footer__nav-link {
+  color: var(--son-text);
+}
+
+.main-home .how-to-buy__copy-label {
+  color: var(--son-text-faint);
+}
+
+.main-home .home-footer__legal,
+.main-home .home-footer__copy {
+  color: var(--son-text-muted);
+}
+
+.main-home .how-to-buy__step-num,
+.main-home .how-to-buy__scroll-hint {
+  color: var(--son-text-muted);
+}
+
+.main-home .how-to-buy__dot {
+  background: var(--son-border-soft);
+}
+
+.main-home .how-to-buy__dot--active {
+  background: var(--son-text);
+}
+
+.main-home .how-to-buy__toast {
+  background: var(--son-card-bg);
+  color: var(--son-text);
+  border-color: var(--son-border);
+}
+
+.main-home .banner-section,
+.main-home .before-footer {
+  border-color: var(--son-border);
+}
+
+/* Price ticker — always black bar, white text (both themes) */
+.main-home .price-ticker,
+.main-home[data-theme="dark"] .price-ticker {
+  background: #000;
+  border-top-color: var(--son-border);
+  border-bottom-color: var(--son-border);
+  color: #fff;
+}
+
+.main-home .price-ticker::before,
+.main-home[data-theme="dark"] .price-ticker::before {
+  background: linear-gradient(
+    90deg,
+    #000 0%,
+    transparent 8%,
+    transparent 92%,
+    #000 100%
+  );
+}
+
+.main-home .price-ticker__link,
+.main-home[data-theme="dark"] .price-ticker__link {
+  color: #fff;
+}
+
+.main-home .price-ticker__label,
+.main-home[data-theme="dark"] .price-ticker__label {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.main-home .price-ticker__value,
+.main-home[data-theme="dark"] .price-ticker__value,
+.main-home .price-ticker__value--flash,
+.main-home[data-theme="dark"] .price-ticker__value--flash {
+  color: #fff;
+}
+
+.main-home .price-ticker__dot,
+.main-home[data-theme="dark"] .price-ticker__dot {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.main-home .price-ticker__item--up .price-ticker__change,
+.main-home[data-theme="dark"] .price-ticker__item--up .price-ticker__change {
+  color: #4ade80;
+}
+
+.main-home .price-ticker__item--down .price-ticker__change,
+.main-home[data-theme="dark"] .price-ticker__item--down .price-ticker__change {
+  color: #f87171;
+}
+
+.main-home .live-buys {
+  background: var(--son-bg-dark);
+  color: var(--son-text-inverse);
+  border-color: var(--son-border);
+}
+
+.main-home[data-theme="dark"] .live-buys__dex-link:hover {
+  color: var(--son-bg-dark);
+}

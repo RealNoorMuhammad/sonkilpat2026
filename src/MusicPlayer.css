@@ -1,0 +1,291 @@
+.music-player {
+  position: fixed;
+  bottom: 80px !important;
+  left: 20px;
+  width: 196px;
+  height: 336px;
+  background: linear-gradient(145deg, #e6e6e6, #ffffff);
+  border-radius: 25px;
+  padding: 14px;
+
+  border: 2px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Screen */
+.screen {
+  width: 100%;
+  height: 140px;
+  background-color: #1a1a1a;
+  border-radius: 15px;
+  border: 3px solid #333;
+  overflow: hidden;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 15px;
+  color: #fff;
+  font-size: 12px;
+  border-bottom: 1px solid #333;
+}
+
+.battery {
+  width: 20px;
+  height: 10px;
+  border: 1px solid #fff;
+  border-radius: 2px;
+  position: relative;
+}
+
+.battery-level {
+  width: 70%;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 1px;
+}
+
+.screen-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100% - 40px);
+  color: #fff;
+}
+
+.note-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #4a4a4a, #2a2a2a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  box-shadow: #1a1a1a 5px 5px 10px inset, #3a3a3a -5px -5px 10px inset;
+  font-size: 22px;
+}
+
+.title {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+/* Controls */
+.controls {
+  margin-top: 21px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.circle {
+  width: 98px;
+  height: 98px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #f0f0f0, #d0d0d0);
+  box-shadow: #c0c0c0 8px 8px 16px inset, #ffffff -8px -8px 16px inset;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-btn {
+  position: relative;
+  z-index: 2;
+  color: #000;
+}
+
+.vol-label {
+  font-size: 12px;
+  color: #666;
+  margin-top: 15px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+/* Mobile: only button */
+@media (max-width: 768px) {
+  .music-player {
+    width: auto;
+    height: auto;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .screen,
+  .controls .vol-label {
+    display: none;
+  }
+
+  .circle {
+    width: 68px;
+    height: 68px;
+    background: linear-gradient(145deg, #f0f0f0, #d0d0d0);
+    box-shadow: #c0c0c0 6px 6px 12px inset, #ffffff -6px -6px 12px inset;
+  }
+
+  .center-btn.comic-btn--play {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    min-height: 52px;
+    font-size: 20px;
+    color: #000;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+.music-player {
+  position: fixed;
+
+  left: 20px;
+  width: 196px;
+  height: 336px;
+  background: linear-gradient(145deg, #e6e6e6, #ffffff);
+  border-radius: 25px;
+  padding: 14px;
+  font-family: Arial, sans-serif;
+  border: 2px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000; /* ✅ ensure it's always clickable */
+}
+
+/* --- mobile view --- */
+@media (max-width: 768px) {
+  .music-player {
+    top: 20px;      /* ✅ move to top */
+    left: 20px;
+    bottom: auto;   /* remove bottom positioning */
+    width: auto;
+    height: auto;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .screen,
+  .controls .vol-label {
+    display: none; /* hide full screen on mobile */
+  }
+
+  .circle {
+    width: 68px;
+    height: 68px;
+    background: linear-gradient(145deg, #f0f0f0, #d0d0d0);
+    box-shadow: #c0c0c0 6px 6px 12px inset, #ffffff -6px -6px 12px inset;
+  }
+
+  .center-btn.comic-btn--play {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    min-height: 52px;
+    font-size: 20px;
+    color: #000;
+    z-index: 2000;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Minimized style */
+.minimized {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Fallback when footer slot is not mounted yet */
+.mobile-music-btn:not(.footer-music-btn) {
+  position: fixed;
+  top: 14px;
+  left: 150px;
+  z-index: 2000;
+}
+
+.footer-music-btn.comic-btn--pill {
+  position: static;
+  top: auto;
+  left: auto;
+  z-index: 1;
+  white-space: nowrap;
+  font-size: clamp(0.85rem, 3.2vw, 1rem);
+  padding: 12px 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+

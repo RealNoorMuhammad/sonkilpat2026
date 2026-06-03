@@ -1,0 +1,261 @@
+/* Footer styling */
+.footer {
+
+
+
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.footer-content {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; /* makes it responsive */
+  gap: 12px;
+}
+
+.footer-content .social-icons {
+  flex-shrink: 0;
+}
+
+/* Footer text (wallet address) */
+.footer-text {
+  font-family: "Comic Sans MS", cursive, sans-serif !important;
+  font-size: 14px;
+  word-break: break-all;
+  flex: 1;
+  text-align: center;
+}
+
+/* Copy success message */
+.copy-msg {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--son-border);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  animation: fadeInOut 1.5s ease forwards;
+}
+
+/* Animation for "Copied!" */
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, 10px); }
+  20% { opacity: 1; transform: translate(-50%, 0); }
+  80% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -10px); }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Footer wrapper */
+:root {
+  --footer-clearance: calc(180px + env(safe-area-inset-bottom, 0px));
+}
+
+.footer {
+  width: 100%;
+  background: #fff;
+  border-top: 1px solid #e5e7eb;
+  padding: 10px 16px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+}
+
+/* Content container */
+.footer-content {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Address + Copy button container */
+.address-copy {
+  display: flex;
+  align-items: center;   /* vertically center */
+  justify-content: flex-end;  /* push to the right */
+  gap: 8px;  /* space between CA and button */
+  flex: 1;
+}
+
+/* Wallet text */
+.footer-text {
+  font-family: "Comic Sans MS", cursive, sans-serif !important;
+  font-size: 12px;
+  word-break: break-all;
+  color: #111;
+  text-align: right; /* align text to the right */
+}
+
+
+.copy-btn {
+  flex-shrink: 0;
+}
+
+.contract-copy-btn {
+  display: none;
+  padding: 10px 18px;
+  font-size: 13px;
+  min-height: 40px;
+}
+
+.contract-copy-btn--inline {
+  width: auto;
+  margin-top: 0;
+}
+
+/* Default: Desktop / Tablet */
+.footer-content {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Address + Copy button container */
+.address-copy {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: 1;
+}
+
+.footer-top-row {
+  display: contents;
+}
+
+.footer-music-slot {
+  display: none;
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+  :root {
+    --footer-clearance: calc(260px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .footer {
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .footer-top-row {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    order: 1;
+  }
+
+  .footer-music-slot {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .footer-top-row .social-icons {
+    flex: 0 0 auto;
+    margin-left: auto;
+    margin-bottom: 0;
+    justify-content: flex-end;
+  }
+
+  .address-copy {
+    order: 2;
+    width: 100%;
+    justify-content: space-between;
+    flex: unset;
+    margin-top: 10px;
+  }
+
+  .footer-text {
+    font-size: 12px;
+    line-height: 1.2;
+    text-align: left;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    word-break: normal;
+    overflow: hidden;
+    letter-spacing: -0.03em;
+    font-family: ui-monospace, "SF Mono", Consolas, monospace !important;
+  }
+
+  .address-copy {
+    gap: 6px;
+  }
+
+  .copy-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    font-size: 14px;
+  }
+
+  .address-copy {
+    display: none;
+  }
+
+  .contract-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    margin-top: 0;
+    order: unset;
+    padding: 8px 14px;
+    font-size: 11px;
+    min-height: 36px;
+    box-shadow: 3px 3px 0 var(--son-shadow);
+  }
+}

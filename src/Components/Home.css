@@ -1,0 +1,160 @@
+@font-face {
+  font-family: "Alte Haas Grotesk";
+  src: url("../../public/AlteHaasGroteskRegular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pix32";
+  src: url("../../public/Pix32.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.main-home,
+.main-home * {
+  font-family: "Alte Haas Grotesk", sans-serif !important;
+  font-synthesis: none;
+}
+
+.main-home .main-nav__brand {
+  font-weight: 700 !important;
+  -webkit-text-stroke: 0;
+  paint-order: initial;
+}
+
+/* Nav links + buy button — Pix32 */
+.main-home .main-nav__link,
+.main-home .main-nav__mobile-card,
+.main-home .main-nav__mobile-card-text,
+.main-home .main-nav__buy,
+.main-home .main-nav__menu-btn-label,
+.main-home .main-nav__close-btn-label {
+  font-family: "Pix32", sans-serif !important;
+  font-synthesis: none;
+}
+
+.main-home .hero__title {
+  font-family: "Alte Haas Grotesk", sans-serif !important;
+  font-weight: 800 !important;
+}
+
+.main-home .hero__copy,
+.main-home .hero__copy p,
+.main-home .hero__eyebrow,
+.main-home .hero__ca-label,
+.main-home .hero__ca-value {
+  font-family: "Pix32", sans-serif !important;
+  font-synthesis: none;
+}
+
+.main-home .price-ticker__label,
+.main-home .price-ticker__value,
+.main-home .price-ticker__change {
+  font-family: "Pix32", sans-serif !important;
+  font-synthesis: none;
+}
+
+.main-home .live-buys__eyebrow,
+.main-home .live-buys__dex-link,
+.main-home .live-buys__stat-label,
+.main-home .live-buys__stat-value,
+.main-home .live-buys__panel-head,
+.main-home .live-buys__amount,
+.main-home .live-buys__tokens,
+.main-home .live-buys__badge,
+.main-home .live-buys__refresh,
+.main-home .live-buys__foot {
+  font-family: "Pix32", sans-serif !important;
+  font-synthesis: none;
+}
+
+.main-home .live-buys__title {
+  font-family: "Alte Haas Grotesk", sans-serif !important;
+  font-weight: 800 !important;
+}
+
+.main-home .tokenomics__title {
+  font-family: "Alte Haas Grotesk", sans-serif !important;
+  font-weight: 800 !important;
+}
+
+.main-home .tokenomics__eyebrow,
+.main-home .tokenomics__label,
+.main-home .tokenomics__value {
+  font-family: "Pix32", sans-serif !important;
+  font-synthesis: none;
+}
+
+.main-home .meme-community__title {
+  font-family: "Alte Haas Grotesk", sans-serif !important;
+  font-weight: 800 !important;
+}
+
+.main-home .meme-community__eyebrow,
+.main-home .meme-community__intro,
+.main-home .meme-community__step-num,
+.main-home .meme-community__step-desc,
+.main-home .meme-community__step-link,
+.main-home .meme-community__highlight-text,
+.main-home .meme-community__action-label,
+.main-home .meme-community__action-hint,
+.main-home .meme-community__cta {
+  font-family: "Pix32", sans-serif !important;
+  font-synthesis: none;
+}
+
+.main-home .meme-community__step-title {
+  font-family: "Alte Haas Grotesk", sans-serif !important;
+  font-weight: 800 !important;
+}
+
+.main-home .how-to-buy__title {
+  font-family: "Alte Haas Grotesk", sans-serif !important;
+  font-weight: 800 !important;
+}
+
+.main-home .how-to-buy__step-title {
+  font-family: "Alte Haas Grotesk", sans-serif !important;
+  font-weight: 800 !important;
+}
+
+.main-home .how-to-buy__eyebrow,
+.main-home .how-to-buy__desc,
+.main-home .how-to-buy__copy-label,
+.main-home .how-to-buy__copy-value,
+.main-home .how-to-buy__dex-btn,
+.main-home .how-to-buy__scroll-hint,
+.main-home .how-to-buy__toast {
+  font-family: "Pix32", sans-serif !important;
+  font-synthesis: none;
+}
+
+.main-home .home-footer__title {
+  font-family: "Alte Haas Grotesk", sans-serif !important;
+  font-weight: 800 !important;
+}
+
+.main-home .home-footer__eyebrow,
+.main-home .home-footer__tagline,
+.main-home .home-footer__ca-label,
+.main-home .home-footer__ca-value,
+.main-home .home-footer__nav-link,
+.main-home .home-footer__buy,
+.main-home .home-footer__legal,
+.main-home .home-footer__copy {
+  font-family: "Pix32", sans-serif !important;
+  font-synthesis: none;
+}
+
+.main-home {
+  min-height: 100vh;
+  background: var(--son-bg);
+  color: var(--son-text);
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease;
+}

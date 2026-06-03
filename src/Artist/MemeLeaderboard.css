@@ -1,0 +1,262 @@
+/* Leaderboard — white comic theme (matches Upload Meme) */
+
+.leaderboard-page {
+  min-height: 100vh;
+  padding: 100px 20px 160px;
+  background: var(--son-bg);
+  color: var(--son-text);
+  text-align: center;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.leaderboard-content {
+  max-width: 980px;
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+
+.leaderboard-header h1 {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.leaderboard-header p {
+  font-size: 1.1rem;
+  color: var(--son-text-body);
+  margin-bottom: 24px;
+}
+
+.leaderboard-header .comic-btn {
+  text-decoration: none;
+}
+
+.leaderboard-header {
+  max-width: 900px;
+  margin: 0 auto 40px;
+}
+
+.rank-list {
+  display: grid;
+  gap: 16px;
+}
+
+.rank-card {
+  display: grid;
+  grid-template-columns: 56px 120px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  background: var(--son-bg);
+  border: 2px solid var(--son-border-soft);
+  border-radius: 20px;
+  padding: 14px 16px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rank-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+}
+
+.rank-card--top {
+  border-color: var(--son-border);
+  box-shadow: 6px 6px 0 var(--son-shadow);
+}
+
+.rank-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 900;
+  background: var(--son-bg);
+  border: 3px solid var(--son-border);
+  box-shadow: 3px 3px 0 var(--son-shadow);
+  color: var(--son-text);
+  justify-self: center;
+}
+
+.rank-badge--gold {
+  background: #ffd54f;
+}
+
+.rank-badge--silver {
+  background: #e0e0e0;
+}
+
+.rank-badge--bronze {
+  background: #ffab91;
+}
+
+.rank-card-media {
+  width: 120px;
+  height: 120px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid var(--son-border-soft);
+  flex-shrink: 0;
+}
+
+.rank-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.rank-card-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 0 8px;
+}
+
+.rank-card-center h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 900;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.rank-card-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.rank-wallet {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 14px;
+  border: 2px solid var(--son-border);
+  border-radius: 999px;
+  background: var(--son-bg);
+  box-shadow: 2px 2px 0 var(--son-shadow);
+  color: var(--son-text);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.rank-card-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 108px;
+}
+
+.rank-likes {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border: 2px solid var(--son-border);
+  border-radius: 999px;
+  background: var(--son-bg);
+  box-shadow: 3px 3px 0 var(--son-shadow);
+  color: var(--son-text);
+  font-size: 0.92rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.rank-share-btn {
+  font-size: 13px;
+  padding: 9px 16px;
+  white-space: nowrap;
+}
+
+.hint {
+  color: var(--son-text-secondary);
+  text-align: center;
+}
+
+.hint.error {
+  color: var(--son-error-text);
+}
+
+@media (max-width: 760px) {
+  .leaderboard-page {
+    padding: 90px 10px calc(260px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .leaderboard-content {
+    padding-bottom: 24px;
+  }
+
+  .rank-list {
+    padding-bottom: 16px;
+  }
+
+  .rank-card {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+
+  .rank-badge {
+    justify-self: center;
+    margin-bottom: 2px;
+  }
+
+  .rank-card-media {
+    width: 100%;
+    height: 200px;
+    max-width: none;
+    justify-self: center;
+  }
+
+  .rank-card-center {
+    padding: 4px 0;
+  }
+
+  .rank-card-center h3 {
+    font-size: 1rem;
+  }
+
+  .rank-wallet {
+    font-size: 0.75rem;
+    padding: 4px 12px;
+  }
+
+  .rank-card-side {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    gap: 8px;
+    padding-top: 4px;
+    border-top: 2px dashed #ddd;
+  }
+
+  .rank-likes {
+    font-size: 0.85rem;
+    padding: 7px 12px;
+  }
+
+  .rank-share-btn {
+    font-size: 12px;
+    padding: 8px 14px;
+  }
+}

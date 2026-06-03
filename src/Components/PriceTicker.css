@@ -1,0 +1,196 @@
+.price-ticker {
+  width: 100%;
+  background: #000;
+  border-top: 3px solid #000;
+  border-bottom: 3px solid #000;
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+}
+
+.price-ticker::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #000 0%,
+    transparent 8%,
+    transparent 92%,
+    #000 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.price-ticker__link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.price-ticker__link:hover .price-ticker__track {
+  animation-play-state: paused;
+}
+
+.price-ticker__viewport {
+  overflow: hidden;
+  width: 100%;
+  padding: 14px 0;
+}
+
+.price-ticker__track {
+  display: flex;
+  width: max-content;
+  animation: price-ticker-scroll 28s linear infinite;
+  will-change: transform;
+}
+
+.price-ticker__row {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding-right: 48px;
+}
+
+.price-ticker__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  padding: 0 28px;
+  white-space: nowrap;
+}
+
+.price-ticker__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.price-ticker__value {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-shadow: 0 0 24px rgba(255, 255, 255, 0.15);
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.price-ticker__value--flash {
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+}
+
+.price-ticker__change {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9em;
+  font-weight: 800;
+}
+
+.price-ticker__arrow {
+  font-size: 0.85em;
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.price-ticker__item--up .price-ticker__change {
+  color: #4ade80;
+}
+
+.price-ticker__item--down .price-ticker__change {
+  color: #f87171;
+}
+
+.price-ticker__item--up .price-ticker__arrow {
+  animation: price-ticker-bounce-up 1.2s ease-in-out infinite;
+}
+
+.price-ticker__item--down .price-ticker__arrow {
+  animation: price-ticker-bounce-down 1.2s ease-in-out infinite;
+}
+
+.price-ticker__dot {
+  margin-left: 12px;
+  font-size: 0.45rem;
+  color: rgba(255, 255, 255, 0.35);
+  vertical-align: middle;
+}
+
+@keyframes price-ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes price-ticker-bounce-up {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes price-ticker-bounce-down {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+@media (max-width: 600px) {
+  .price-ticker__viewport {
+    padding: 12px 0;
+  }
+
+  .price-ticker__item {
+    gap: 8px;
+    padding: 0 20px;
+  }
+
+  .price-ticker__label {
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+  }
+
+  .price-ticker__value {
+    font-size: 0.88rem;
+  }
+
+  .price-ticker__track {
+    animation-duration: 22s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .price-ticker__track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .price-ticker__row:last-child {
+    display: none;
+  }
+
+  .price-ticker__arrow {
+    animation: none;
+  }
+}

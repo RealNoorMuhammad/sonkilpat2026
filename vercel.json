@@ -1,0 +1,22 @@
+{
+  "build": {
+    "env": {
+      "CI": "false"
+    }
+  },
+  "functions": {
+    "api/gecko.js": {
+      "maxDuration": 15
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/gecko/(.*)",
+      "destination": "/api/gecko?path=$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
