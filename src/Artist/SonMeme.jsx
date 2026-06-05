@@ -5,6 +5,10 @@ import Footer from "./Footer";
 import SiteLogo from "../buttons/SiteLogo";
 
 const mediaItems = [
+  { type: "image", src: "https://res.cloudinary.com/dobgedyua/image/upload/v1780646485/IMG_20260605_125952_456_qe8lux.jpg" },
+  { type: "image", src: "https://res.cloudinary.com/dobgedyua/image/upload/v1780646485/IMG_20260605_130004_872_ytuthb.jpg" },
+  { type: "image", src: "https://res.cloudinary.com/dobgedyua/image/upload/v1780645797/IMG_20260605_114621_551_1_ojhdiy.jpg" },
+  { type: "image", src: "https://res.cloudinary.com/dobgedyua/image/upload/v1780645797/IMG_20260605_114623_280_1_b32qne.jpg" },
   { type: "image", src: "https://res.cloudinary.com/dobgedyua/image/upload/v1780406069/Untitled_Artwork_11_wbia7p.jpg" },
   { type: "image", src: "https://res.cloudinary.com/dobgedyua/image/upload/v1780406069/Untitled_Artwork_9_vhehbo.jpg" },
   { type: "image", src: "https://res.cloudinary.com/dobgedyua/image/upload/v1780406069/IMG_5864_yqefza.jpg" },
