@@ -5,13 +5,11 @@ import "./comic-buttons.css";
 import "./SocialIcons.css";
 
 import twitterLogo from "../buttons/twitter.PNG";
-
+import telegramLogo from "../buttons/telegram.PNG";
 import dexscreenerLogo from "../buttons/dexscreener.PNG";
 
-
-
+const TELEGRAM_URL = "https://t.me/WinningSonOnSol";
 const DEXSCREENER_URL =
-
   "https://dexscreener.com/solana/ACpzkGJV3DDU8HXy8yjab7RL9qNmDGym2GwLkzNppump";
 
 
@@ -23,6 +21,14 @@ function SocialIcons({ plain = false, showDex = true }) {
 
   return (
     <div className={`social-icons${plain ? " social-icons--plain" : ""}`}>
+      <a
+        href={TELEGRAM_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${linkClass} social-icon-btn--telegram`}
+      >
+        <img src={telegramLogo} alt="Telegram" />
+      </a>
       <a
         href="https://x.com/WinningSon_"
         target="_blank"

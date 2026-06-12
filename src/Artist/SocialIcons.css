@@ -53,6 +53,11 @@
   height: 38px;
 }
 
+.social-icon-btn--plain.social-icon-btn--telegram img {
+  width: 36px;
+  height: 36px;
+}
+
 .social-icon-btn--plain.social-icon-btn--dex img {
   width: 36px;
   height: 36px;

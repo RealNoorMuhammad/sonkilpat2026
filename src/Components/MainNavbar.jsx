@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { text: "PFP Generator", to: "/sonpfpmaker" },
   { text: "Upload Meme", to: "/upload-meme" },
   { text: "MEME Generator", to: "/meme-generator" },
+  { text: "SON Games", to: "/son-games" },
 ];
 
 const BUY_URL =

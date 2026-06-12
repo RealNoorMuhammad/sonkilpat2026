@@ -5,6 +5,7 @@ import dextoolLogo from "../buttons/dextool.png";
 import dexscreenerLogo from "../buttons/dexscreener.PNG";
 import solscanLogo from "../buttons/solscan.png";
 import twitterLogo from "../buttons/twitter.PNG";
+import telegramLogo from "../buttons/telegram.PNG";
 import "./HeroSection.css";
 
 const CONTRACT =
@@ -34,6 +35,12 @@ const SOCIAL_LINKS = [
     href: "https://x.com/WinningSon_",
     src: twitterLogo,
     alt: "X (Twitter)",
+  },
+  {
+    id: "telegram",
+    href: "https://t.me/WinningSonOnSol",
+    src: telegramLogo,
+    alt: "Telegram",
   },
 ];
 

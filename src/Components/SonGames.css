@@ -1,0 +1,94 @@
+.son-games-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.son-games__home-btn {
+  position: absolute;
+  top: clamp(16px, 3vw, 28px);
+  left: clamp(16px, 3vw, 28px);
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  background: var(--son-bg);
+  color: var(--son-text) !important;
+  font-family: "Pix32", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  border: 3px solid var(--son-border);
+  border-radius: 999px;
+  box-shadow: 4px 4px 0 var(--son-shadow);
+  white-space: nowrap;
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease;
+}
+
+.son-games__home-btn:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 7px 7px 0 var(--son-shadow);
+}
+
+.son-games__home-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--son-shadow);
+}
+
+.son-games {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(48px, 10vw, 120px) clamp(20px, 4vw, 48px);
+  box-sizing: border-box;
+}
+
+.son-games__eyebrow {
+  margin: 0 0 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--son-text-faint);
+}
+
+.son-games__title {
+  margin: 0 0 28px;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--son-text);
+}
+
+.son-games__status {
+  margin: 0 0 16px;
+  padding: 14px 28px;
+  font-family: "Pix32", sans-serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--son-text);
+  border: 3px solid var(--son-border);
+  border-radius: 999px;
+  box-shadow: 4px 4px 0 var(--son-shadow);
+}
+
+.son-games__tagline {
+  margin: 24px 0 0;
+  max-width: 420px;
+  font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+  line-height: 1.55;
+  color: var(--son-text-soft);
+}

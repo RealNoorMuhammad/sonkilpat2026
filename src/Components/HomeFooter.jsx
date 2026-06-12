@@ -4,6 +4,7 @@ import dextoolLogo from "../buttons/dextool.png";
 import dexscreenerLogo from "../buttons/dexscreener.PNG";
 import solscanLogo from "../buttons/solscan.png";
 import twitterLogo from "../buttons/twitter.PNG";
+import telegramLogo from "../buttons/telegram.PNG";
 import "./HomeFooter.css";
 
 const CONTRACT = "ACpzkGJV3DDU8HXy8yjab7RL9qNmDGym2GwLkzNppump";
@@ -34,12 +35,19 @@ const SOCIAL_LINKS = [
     src: twitterLogo,
     alt: "X (Twitter)",
   },
+  {
+    id: "telegram",
+    href: "https://t.me/WinningSonOnSol",
+    src: telegramLogo,
+    alt: "Telegram",
+  },
 ];
 
 const NAV_LINKS = [
   { text: "PFP Generator", to: "/sonpfpmaker" },
   { text: "Upload Meme", to: "/upload-meme" },
   { text: "MEME Generator", to: "/meme-generator" },
+  { text: "SON Games", to: "/son-games" },
 ];
 
 function HomeFooter() {
