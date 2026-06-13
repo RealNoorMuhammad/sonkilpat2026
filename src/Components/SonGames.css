@@ -116,8 +116,243 @@
   list-style: none;
 }
 
-.son-games__grid--soon {
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+.son-games__grid--play {
+  grid-template-columns: 1fr;
+}
+
+.son-games__loading {
+  position: relative;
+  width: 100%;
+  padding: 36px 28px 32px;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 16px;
+  box-shadow: 6px 6px 0 #000000;
+  overflow: hidden;
+}
+
+.son-games__loading::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 0%,
+    rgba(254, 240, 138, 0.08) 45%,
+    rgba(254, 240, 138, 0.18) 50%,
+    rgba(254, 240, 138, 0.08) 55%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: sonGamesShimmer 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.son-games__loading-orbit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 5vw, 40px);
+  margin-bottom: 28px;
+}
+
+.son-games__loading-orbit-item {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  animation: sonGamesFloat 2.4s ease-in-out infinite;
+}
+
+.son-games__loading-ring {
+  position: absolute;
+  inset: 0;
+  border: 3px solid #e5e7eb;
+  border-top-color: #000000;
+  border-right-color: #fef08a;
+  border-radius: 50%;
+  animation: sonGamesSpin 1.1s linear infinite;
+}
+
+.son-games__loading-core {
+  position: relative;
+  z-index: 1;
+  font-family: "Pix32", sans-serif;
+  font-size: 1.1rem;
+  color: #000000;
+  animation: sonGamesPulse 1.4s ease-in-out infinite;
+}
+
+.son-games__loading-eq {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 5px;
+  height: 36px;
+  margin-bottom: 24px;
+}
+
+.son-games__loading-bar {
+  width: 6px;
+  height: 12px;
+  background: #000000;
+  border-radius: 3px;
+  transform-origin: bottom center;
+  animation: sonGamesEq 1.2s ease-in-out infinite;
+}
+
+.son-games__loading-text {
+  margin: 0 0 18px;
+  font-family: "Pix32", sans-serif;
+  font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #000000;
+}
+
+.son-games__loading-dots span {
+  display: inline-block;
+  animation: sonGamesDot 1.4s ease-in-out infinite;
+}
+
+.son-games__loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.son-games__loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.son-games__loading-track {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  height: 10px;
+  margin: 0 auto 14px;
+  background: #f3f4f6;
+  border: 2px solid #000000;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.son-games__loading-fill {
+  position: absolute;
+  inset: 1px auto 1px 1px;
+  width: 35%;
+  background: linear-gradient(90deg, #fef08a, #fde047);
+  border-radius: 999px;
+  animation: sonGamesSlide 2.2s ease-in-out infinite;
+}
+
+.son-games__loading-glow {
+  position: absolute;
+  top: 0;
+  left: -30%;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+  animation: sonGamesGlow 2.2s ease-in-out infinite;
+}
+
+.son-games__loading-sub {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--son-text-faint);
+}
+
+@keyframes sonGamesSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sonGamesFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes sonGamesPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes sonGamesEq {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+    background: #d1d5db;
+  }
+
+  50% {
+    transform: scaleY(1);
+    background: #000000;
+  }
+}
+
+@keyframes sonGamesDot {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes sonGamesSlide {
+  0% {
+    left: 1px;
+    width: 28%;
+  }
+
+  50% {
+    left: 38%;
+    width: 42%;
+  }
+
+  100% {
+    left: 62%;
+    width: 28%;
+  }
+}
+
+@keyframes sonGamesGlow {
+  0% {
+    left: -30%;
+  }
+
+  100% {
+    left: 130%;
+  }
+}
+
+@keyframes sonGamesShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 .son-games__grid-item {
@@ -141,12 +376,26 @@
     box-shadow 0.2s ease;
 }
 
+.son-games__card--row {
+  padding: 20px 24px;
+  border-radius: 16px;
+}
+
 .son-games__card-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
   text-align: center;
+}
+
+.son-games__card--row .son-games__card-content {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  text-align: left;
 }
 
 .son-games__card:hover {
@@ -168,6 +417,17 @@
   text-transform: uppercase;
   text-align: center;
   color: #000000;
+}
+
+.son-games__card--row .son-games__card-name {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+}
+
+.son-games__card--row .son-games__card-cta {
+  flex-shrink: 0;
 }
 
 .son-games__card-cta {
@@ -217,68 +477,6 @@
   transform: translateX(3px);
 }
 
-.son-games__card-badge {
-  display: inline-block;
-  margin-bottom: 16px;
-  padding: 6px 14px;
-  background: #fef08a;
-  color: #000000;
-  font-family: "Pix32", sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border: 2px solid #000000;
-  border-radius: 999px;
-  box-shadow: 2px 2px 0 #000000;
-}
-
-.son-games__card-quote {
-  margin: 0;
-  font-family: "Pix32", sans-serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #6b7280;
-}
-
-.son-games__card--soon {
-  cursor: default;
-  background: #fafafa;
-  border-color: #d1d5db;
-  box-shadow: 5px 5px 0 #e5e7eb;
-  opacity: 0.92;
-}
-
-.son-games__card--soon:hover {
-  transform: none;
-  box-shadow: 5px 5px 0 #e5e7eb;
-}
-
-.son-games__card-badge--soon {
-  background: #f3f4f6;
-  color: #9ca3af;
-  border-color: #d1d5db;
-  box-shadow: 2px 2px 0 #e5e7eb;
-}
-
-.son-games__card-name--soon {
-  color: #9ca3af;
-  letter-spacing: 0.2em;
-}
-
-.son-games__card-cta--soon {
-  background: #f3f4f6;
-  color: #9ca3af !important;
-  border-color: #d1d5db;
-  box-shadow: 3px 3px 0 #e5e7eb;
-  cursor: default;
-  pointer-events: none;
-}
-
-.son-games__card--soon .son-games__card-quote {
-  color: #9ca3af;
-}
-
 .main-home[data-theme="dark"] .son-games__card {
   background: #ffffff;
   border-color: #000000;
@@ -289,6 +487,43 @@
   color: #000000;
 }
 
-.main-home[data-theme="dark"] .son-games__card-quote {
-  color: #6b7280;
+.main-home[data-theme="dark"] .son-games__loading {
+  background: #ffffff;
+  border-color: #000000;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .son-games__loading::before,
+  .son-games__loading-orbit-item,
+  .son-games__loading-ring,
+  .son-games__loading-core,
+  .son-games__loading-bar,
+  .son-games__loading-dots span,
+  .son-games__loading-fill,
+  .son-games__loading-glow {
+    animation: none;
+  }
+
+  .son-games__loading-fill {
+    width: 60%;
+    left: 20%;
+  }
+}
+
+@media (max-width: 520px) {
+  .son-games__card--row .son-games__card-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .son-games__card--row .son-games__card-name {
+    text-align: center;
+  }
+
+  .son-games__card--row .son-games__card-cta {
+    align-self: center;
+  }
 }
