@@ -1,0 +1,584 @@
+/* 
+   Are Ya Fighting Son? — SON theme stylesheet
+*/
+
+@font-face {
+    font-family: "Alte Haas Grotesk";
+    src: url("../../AlteHaasGroteskRegular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Pix32";
+    src: url("../../Pix32.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --son-bg: #0a0a0c;
+    --son-bg-elevated: #141418;
+    --son-text: #f4f4f5;
+    --son-text-soft: #e4e4e7;
+    --son-text-muted: #a1a1aa;
+    --son-border: #000000;
+    --son-shadow: #000000;
+    --son-accent: #fef08a;
+    --son-accent-soft: #fef9c3;
+}
+
+/*  Reset & base  */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100dvh;
+    overflow: hidden;
+    background: var(--son-bg);
+    color: var(--son-text);
+    font-family: "Alte Haas Grotesk", sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/*  Game container & canvas  */
+
+#gameContainer {
+    position: relative;
+    width: 100%;
+    height: 100dvh;
+    display: grid;
+    place-items: center;
+}
+
+#gameCanvas {
+    display: block;
+    background: #111114;
+    image-rendering: pixelated;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/*  Screen base (menus & overlays)  */
+
+.screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 3rem;
+    z-index: 10;
+    background-image:
+        linear-gradient(to right, rgba(10, 10, 12, 0.72) 32%, rgba(10, 10, 12, 0.1) 65%),
+        url('./assets/splashadd.png');
+    background-size: cover;
+    background-position: center;
+    animation: bgBreathe 6s ease-in-out infinite;
+}
+
+@keyframes bgBreathe {
+    0%,
+    100% {
+        background-position: center 50%;
+    }
+
+    50% {
+        background-position: center 52%;
+    }
+}
+
+.game-over-screen {
+    background-image: none;
+    background: transparent;
+    justify-content: flex-end;
+    pointer-events: none;
+}
+
+.game-over-screen .btn-group {
+    pointer-events: all;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/*  Main menu — full splash art, no title overlay  */
+
+#menuScreen.screen--splash {
+    justify-content: flex-end;
+    padding: 2rem 2.5rem;
+    background-image: url('./assets/splashadd.png');
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #0a0a0c;
+    animation: none;
+}
+
+#menuScreen.screen--splash::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(10, 10, 12, 0.82) 0%,
+        rgba(10, 10, 12, 0.25) 28%,
+        transparent 55%
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+#menuScreen.screen--splash .btn-group {
+    position: relative;
+    z-index: 1;
+}
+
+/*  Typography  */
+
+.screen h1 {
+    position: absolute;
+    top: 40px;
+    left: 60px;
+    margin: 0;
+    max-width: min(520px, 55vw);
+    font-family: "Pix32", sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--son-text);
+    text-shadow: 4px 4px 0 var(--son-shadow);
+}
+
+#pauseOverlay h2 {
+    position: absolute;
+    top: 40px;
+    left: 60px;
+    margin: 0;
+    font-family: "Pix32", sans-serif;
+    font-size: 3rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--son-accent);
+    text-shadow: 3px 3px 0 var(--son-shadow);
+}
+
+#settingsScreen h2,
+#instructionsScreen h2 {
+    font-family: "Pix32", sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 1.5rem 0;
+    color: var(--son-accent);
+    text-shadow: 3px 3px 0 var(--son-shadow);
+}
+
+/*  Buttons  */
+
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+button {
+    font-family: "Pix32", sans-serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: var(--son-bg-elevated);
+    border: 3px solid var(--son-border);
+    outline: none;
+    padding: 12px 24px;
+    color: var(--son-text);
+    cursor: pointer;
+    border-radius: 999px;
+    box-shadow: 4px 4px 0 var(--son-shadow);
+    transition:
+        transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease;
+    position: relative;
+}
+
+button:hover,
+button:focus-visible {
+    background: var(--son-accent);
+    color: #000000;
+    transform: translate(-3px, -3px);
+    box-shadow: 7px 7px 0 var(--son-shadow);
+    outline: none;
+}
+
+button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--son-shadow);
+}
+
+/*  Pause button (top-center in-game)  */
+
+.pause-button {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    font-family: "Pix32", sans-serif;
+    font-size: 14px;
+    text-align: center;
+    background: var(--son-bg-elevated);
+    border: 3px solid var(--son-border);
+    border-radius: 12px;
+    box-shadow: 3px 3px 0 var(--son-shadow);
+    color: var(--son-text);
+    z-index: 5;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.pause-button:hover {
+    background: var(--son-accent);
+    color: #000000;
+    transform: translateX(-50%) translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--son-shadow);
+    text-shadow: none;
+}
+
+.pause-button:active {
+    transform: translateX(-50%) translate(1px, 1px);
+    box-shadow: 2px 2px 0 var(--son-shadow);
+}
+
+/*  Settings screen  */
+
+#settingsScreen {
+    background-image:
+        linear-gradient(to right, rgba(10, 10, 12, 0.82) 38%, rgba(10, 10, 12, 0.2) 70%),
+        url('./assets/splashadd.png');
+    background-size: cover;
+    background-position: center;
+    justify-content: flex-start;
+    padding-top: 3rem;
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin-left: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.settings-form label {
+    margin-top: 10px;
+    font-family: "Pix32", sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--son-text-soft);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    margin-top: 12px !important;
+    font-family: "Alte Haas Grotesk", sans-serif;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--son-accent);
+    cursor: pointer;
+}
+
+.settings-form input[type="range"] {
+    width: 220px;
+    accent-color: var(--son-accent);
+    cursor: pointer;
+}
+
+.settings-form select {
+    padding: 8px 14px;
+    background: var(--son-bg-elevated);
+    color: var(--son-text);
+    border: 3px solid var(--son-border);
+    border-radius: 999px;
+    font-family: "Alte Haas Grotesk", sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.settings-form select:hover,
+.settings-form select:focus {
+    box-shadow: 3px 3px 0 var(--son-shadow);
+}
+
+#settingsBackButton {
+    margin-top: 0.5rem;
+    flex: 0;
+}
+
+/*  Instructions screen  */
+
+#instructionsScreen {
+    background-image:
+        linear-gradient(to right, rgba(10, 10, 12, 0.88) 38%, rgba(10, 10, 12, 0.2) 70%),
+        url('./assets/splashadd.png');
+    background-size: cover;
+    background-position: center;
+    justify-content: flex-start;
+    padding-top: 3rem;
+    overflow-y: auto;
+    gap: 0;
+}
+
+#instructionsScreen p {
+    font-family: "Alte Haas Grotesk", sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--son-text-soft);
+    margin: 0 0 6px 0;
+    max-width: 480px;
+}
+
+#instructionsScreen strong {
+    color: var(--son-accent);
+}
+
+.controls-table {
+    border-collapse: collapse;
+    margin: 0.5rem 0 1.2rem 0;
+    font-size: 0.9rem;
+    font-family: "Alte Haas Grotesk", sans-serif;
+}
+
+.controls-table th,
+.controls-table td {
+    padding: 4px 16px 4px 0;
+    text-align: left;
+    color: var(--son-text-soft);
+    border: none;
+}
+
+.controls-table th {
+    font-family: "Pix32", sans-serif;
+    color: var(--son-accent);
+    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    padding-bottom: 8px;
+}
+
+#instructionsBackButton {
+    margin-top: 1rem;
+    flex: 0;
+}
+
+/*  Mobile controls  */
+
+#mobileControls {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.touch-button {
+    position: absolute;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 3px solid var(--son-border);
+    background: var(--son-bg-elevated);
+    box-shadow: 3px 3px 0 var(--son-shadow);
+    color: var(--son-text);
+    font-size: 20px;
+    font-family: "Pix32", sans-serif;
+    display: grid;
+    place-items: center;
+    touch-action: none;
+    pointer-events: all;
+    cursor: pointer;
+    transition: background 0.1s, transform 0.1s, box-shadow 0.1s;
+    outline: none;
+}
+
+.touch-button:active {
+    background: var(--son-accent);
+    color: #000000;
+    transform: scale(0.94);
+    box-shadow: 2px 2px 0 var(--son-shadow);
+    text-shadow: none;
+}
+
+.touch-left {
+    left: 20px;
+    bottom: 30px;
+}
+
+.touch-right {
+    left: 110px;
+    bottom: 30px;
+}
+
+.touch-jump {
+    left: 65px;
+    bottom: 120px;
+}
+
+.touch-attack {
+    right: 30px;
+    bottom: 30px;
+}
+
+.touch-block {
+    right: 30px;
+    bottom: 120px;
+}
+
+.touch-sweep {
+    right: 120px;
+    bottom: 75px;
+}
+
+.touch-heavy {
+    right: 30px;
+    bottom: 210px;
+}
+
+/*  Rotate overlay  */
+
+#rotateOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 12, 0.96);
+    color: var(--son-text);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+    z-index: 9999;
+    font-family: "Pix32", sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 0 var(--son-shadow);
+}
+
+/*  Responsive  */
+
+@media screen and (orientation: landscape) and (max-height: 500px) {
+    .screen {
+        padding: 1.5rem 2rem;
+    }
+
+    #menuScreen.screen--splash {
+        padding: 1rem 1.5rem;
+    }
+
+    .screen h1 {
+        font-size: 1.6rem;
+        top: 16px;
+        left: 32px;
+    }
+
+    #pauseOverlay h2 {
+        font-size: 1.6rem;
+        top: 16px;
+        left: 32px;
+    }
+
+    #settingsScreen h2,
+    #instructionsScreen h2 {
+        font-size: 1.35rem;
+    }
+
+    button {
+        font-size: 1rem;
+        padding: 8px 18px;
+    }
+
+    .settings-form {
+        max-height: 65dvh;
+        overflow-y: auto;
+    }
+
+    .settings-form label {
+        font-size: 0.8rem;
+    }
+
+    .touch-button {
+        width: 56px;
+        height: 56px;
+        font-size: 15px;
+    }
+
+    .touch-left {
+        left: 12px;
+        bottom: 14px;
+    }
+
+    .touch-right {
+        left: 80px;
+        bottom: 14px;
+    }
+
+    .touch-jump {
+        left: 46px;
+        bottom: 82px;
+    }
+
+    .touch-attack {
+        right: 22px;
+        bottom: 14px;
+    }
+
+    .touch-block {
+        right: 22px;
+        bottom: 82px;
+    }
+
+    .touch-sweep {
+        right: 90px;
+        bottom: 48px;
+    }
+
+    .touch-heavy {
+        right: 22px;
+        bottom: 150px;
+    }
+}

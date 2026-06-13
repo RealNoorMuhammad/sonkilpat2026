@@ -46,7 +46,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   text-align: center;
   padding: clamp(48px, 10vw, 120px) clamp(20px, 4vw, 48px);
   box-sizing: border-box;
@@ -71,24 +71,224 @@
   color: var(--son-text);
 }
 
-.son-games__status {
-  margin: 0 0 16px;
-  padding: 14px 28px;
-  font-family: "Pix32", sans-serif;
-  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--son-text);
-  border: 3px solid var(--son-border);
-  border-radius: 999px;
-  box-shadow: 4px 4px 0 var(--son-shadow);
-}
-
 .son-games__tagline {
-  margin: 24px 0 0;
-  max-width: 420px;
+  margin: 0 0 48px;
+  max-width: 480px;
   font-size: clamp(0.95rem, 1.8vw, 1.05rem);
   line-height: 1.55;
   color: var(--son-text-soft);
+}
+
+.son-games__section {
+  width: 100%;
+  max-width: 920px;
+  margin-bottom: 40px;
+}
+
+.son-games__section-title {
+  margin: 0 0 20px;
+  font-family: "Pix32", sans-serif;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--son-text-faint);
+  text-align: center;
+}
+
+.son-games__footer-note {
+  margin: 8px 0 0;
+  max-width: 420px;
+  font-family: "Pix32", sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--son-text-faint);
+}
+
+.son-games__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.son-games__grid--soon {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.son-games__grid-item {
+  width: 100%;
+}
+
+.son-games__card {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 28px 24px 24px;
+  background: #ffffff;
+  color: var(--son-text) !important;
+  text-decoration: none !important;
+  text-align: center;
+  border: 3px solid #000000;
+  border-radius: 20px;
+  box-shadow: 6px 6px 0 #000000;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.son-games__card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.son-games__card:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 10px 10px 0 #000000;
+  background: #ffffff;
+}
+
+.son-games__card:active {
+  transform: translate(2px, 2px);
+  box-shadow: 3px 3px 0 #000000;
+}
+
+.son-games__card-name {
+  font-family: "Pix32", sans-serif;
+  font-size: clamp(1.1rem, 3vw, 1.4rem);
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #000000;
+}
+
+.son-games__card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: auto;
+  min-width: 0;
+  margin-top: 0;
+  padding: 10px 22px;
+  background: #fef08a;
+  color: #000000 !important;
+  font-family: "Alte Haas Grotesk", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 2px solid #000000;
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 #000000;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.son-games__card:hover .son-games__card-cta {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 #000000;
+  background: #fde047;
+}
+
+.son-games__card:active .son-games__card-cta {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.son-games__card-cta-arrow {
+  display: inline-block;
+  font-size: 0.95em;
+  line-height: 1;
+  transition: transform 0.15s ease;
+}
+
+.son-games__card:hover .son-games__card-cta-arrow {
+  transform: translateX(3px);
+}
+
+.son-games__card-badge {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 6px 14px;
+  background: #fef08a;
+  color: #000000;
+  font-family: "Pix32", sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 2px solid #000000;
+  border-radius: 999px;
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.son-games__card-quote {
+  margin: 0;
+  font-family: "Pix32", sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.son-games__card--soon {
+  cursor: default;
+  background: #fafafa;
+  border-color: #d1d5db;
+  box-shadow: 5px 5px 0 #e5e7eb;
+  opacity: 0.92;
+}
+
+.son-games__card--soon:hover {
+  transform: none;
+  box-shadow: 5px 5px 0 #e5e7eb;
+}
+
+.son-games__card-badge--soon {
+  background: #f3f4f6;
+  color: #9ca3af;
+  border-color: #d1d5db;
+  box-shadow: 2px 2px 0 #e5e7eb;
+}
+
+.son-games__card-name--soon {
+  color: #9ca3af;
+  letter-spacing: 0.2em;
+}
+
+.son-games__card-cta--soon {
+  background: #f3f4f6;
+  color: #9ca3af !important;
+  border-color: #d1d5db;
+  box-shadow: 3px 3px 0 #e5e7eb;
+  cursor: default;
+  pointer-events: none;
+}
+
+.son-games__card--soon .son-games__card-quote {
+  color: #9ca3af;
+}
+
+.main-home[data-theme="dark"] .son-games__card {
+  background: #ffffff;
+  border-color: #000000;
+  box-shadow: 8px 8px 0 #000000;
+}
+
+.main-home[data-theme="dark"] .son-games__card-name {
+  color: #000000;
+}
+
+.main-home[data-theme="dark"] .son-games__card-quote {
+  color: #6b7280;
 }

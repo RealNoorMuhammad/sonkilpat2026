@@ -8,6 +8,7 @@ import AiPfpMaker from "./Artist/AiPfpMaker";
 import ArtistHome from "./Artist/Home";
 import MainHome from "./Components/Home";
 import SonGames from "./Components/SonGames";
+import StickmanFighterPage from "./games/stickman-fighter/StickmanFighterPage";
 import SonUpload from './Artist/SonUpload';
 import AboutSon from './Artist/AboutSon';
 import Editor from './Artist/Editor';
@@ -52,11 +53,13 @@ function App() {
   return (
     <div className="cursor">
       <MuiThemeProvider theme={theme}>
-        {!["/", "/son-games"].includes(location.pathname) && <Navbar />}
+        {!location.pathname.startsWith("/son-games") &&
+          location.pathname !== "/" && <Navbar />}
 
         <Routes>
           <Route path="/" element={<MainHome />} />
           <Route path="/son-games" element={<SonGames />} />
+          <Route path="/son-games/stickman-fighter" element={<StickmanFighterPage />} />
           <Route path="/sonpfpmaker" element={<ArtistHome />} />
           <Route path="/pfp-maker" element={<SonUpload />} />
           <Route path="/ai-pfp-maker" element={<AiPfpMaker />} />

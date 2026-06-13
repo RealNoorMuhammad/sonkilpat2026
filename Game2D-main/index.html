@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Are Ya Fighting Son? — a fast-paced, endless 1v1 stickman brawler with smart AI. Play on desktop or mobile." />
+    <title>Are Ya Fighting Son?</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <!-- Landscape-only guard -->
+    <div id="rotateOverlay">
+        <div style="font-size: 1.5em; margin-bottom: 16px;">Rotate your device</div>
+        <div style="font-size: 0.9em; opacity: 0.7;">This game requires landscape orientation.</div>
+    </div>
+
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- In-game pause button -->
+        <button id="pauseButton" class="pause-button hidden" aria-label="Pause">❚❚</button>
+
+        <!--  Main Menu  -->
+        <div id="menuScreen" class="screen screen--splash">
+            <nav class="btn-group" aria-label="Main menu">
+                <button id="startButton">Let's Go, Son</button>
+                <button id="settingsButton">Settings</button>
+                <button id="instructionsButton">About</button>
+            </nav>
+        </div>
+
+        <!--  Settings  -->
+        <div id="settingsScreen" class="screen hidden">
+            <h2>Settings</h2>
+            <form id="settingsForm" class="settings-form" onsubmit="return false;">
+
+                <label for="masterVolumeRange">Master Volume</label>
+                <input type="range" id="masterVolumeRange" min="0" max="1" step="0.01">
+
+                <label for="musicVolumeRange">Music Volume</label>
+                <input type="range" id="musicVolumeRange" min="0" max="1" step="0.01">
+
+                <label for="sfxVolumeRange">SFX Volume</label>
+                <input type="range" id="sfxVolumeRange" min="0" max="1" step="0.01">
+
+                <label class="checkbox-label" for="muteToggle">
+                    <input type="checkbox" id="muteToggle">
+                    Mute All Audio
+                </label>
+
+                <label for="touchToggle">Mobile Controls</label>
+                <select id="touchToggle">
+                    <option value="auto">Auto-detect</option>
+                    <option value="on">Always On</option>
+                    <option value="off">Always Off</option>
+                </select>
+
+                <label for="difficultySelect">Difficulty</label>
+                <select id="difficultySelect">
+                    <option value="easy" selected>Easy</option>
+                    <option value="normal">Normal</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </form>
+            <button id="settingsBackButton">Back</button>
+        </div>
+
+        <!--  Instructions / About  -->
+        <div id="instructionsScreen" class="screen hidden">
+            <h2>About</h2>
+            <p>
+                Are ya fighting, son? This is a fast-paced 1v1 brawler. Beat your rival
+                across multiple rounds — first to <strong>2 round wins</strong> and you&apos;re
+                winning, son. The AI adapts: it defends, punishes whiffs, and combos you.
+            </p>
+
+            <h2>Controls</h2>
+            <table class="controls-table">
+                <tr>
+                    <th>Action</th>
+                    <th>Key</th>
+                </tr>
+                <tr>
+                    <td>Move Left</td>
+                    <td>← / A</td>
+                </tr>
+                <tr>
+                    <td>Move Right</td>
+                    <td>→ / D</td>
+                </tr>
+                <tr>
+                    <td>Jump</td>
+                    <td>↑ / W</td>
+                </tr>
+                <tr>
+                    <td>Light Punch</td>
+                    <td>J</td>
+                </tr>
+                <tr>
+                    <td>Heavy Punch</td>
+                    <td>U</td>
+                </tr>
+                <tr>
+                    <td>Sweep Kick</td>
+                    <td>I</td>
+                </tr>
+                <tr>
+                    <td>Block</td>
+                    <td>K (hold)</td>
+                </tr>
+                <tr>
+                    <td>Pause</td>
+                    <td>Esc</td>
+                </tr>
+            </table>
+
+            <h2>Tips</h2>
+            <p>• Win a round? <strong>Are ya winning, son?</strong> — yeah, you are.</p>
+            <p>• Lose a round? Shake it off and run it back.</p>
+            <p>• Block reduces incoming damage by 85%.</p>
+            <p>• Heavy Punch hits hardest — save it for when the rival whiffs.</p>
+            <p>• Sweep Kick hits low, good for mix-ups.</p>
+            <p>• Hard mode AI punishes your recovery frames.</p>
+
+            <button id="instructionsBackButton">Back</button>
+        </div>
+
+        <!--  Pause Overlay  -->
+        <div id="pauseOverlay" class="screen hidden">
+            <h2>Paused</h2>
+            <nav class="btn-group" aria-label="Pause menu">
+                <button id="resumeButton">Resume</button>
+                <button id="pauseSettingsButton">Settings</button>
+                <button id="quitButton">Back to Menu</button>
+            </nav>
+        </div>
+
+        <!--  Game Over Overlay  -->
+        <div id="gameOverOverlay" class="screen hidden game-over-screen">
+            <nav class="btn-group" aria-label="Game over options">
+                <button id="rematchButton">Run It Back</button>
+                <button id="quitToMenuButton">Back to Menu</button>
+            </nav>
+        </div>
+
+        <!--  Mobile Controls  -->
+        <div id="mobileControls" class="hidden" aria-label="Mobile controls">
+            <button id="btnLeft" class="touch-button touch-left" aria-label="Move left">◀</button>
+            <button id="btnRight" class="touch-button touch-right" aria-label="Move right">▶</button>
+            <button id="btnJump" class="touch-button touch-jump" aria-label="Jump">▲</button>
+            <button id="btnAttack" class="touch-button touch-attack" aria-label="Light Punch">J</button>
+            <button id="btnHeavy" class="touch-button touch-heavy" aria-label="Heavy Punch">U</button>
+            <button id="btnSweep" class="touch-button touch-sweep" aria-label="Sweep Kick">I</button>
+            <button id="btnBlock" class="touch-button touch-block" aria-label="Block">K</button>
+        </div>
+    </div>
+
+    <script type="module" src="ui.js"></script>
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>
