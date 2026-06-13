@@ -22,6 +22,7 @@ export default class UIManager {
         this._gameOverOverlay = document.getElementById('gameOverOverlay');
         this._mobileControls = document.getElementById('mobileControls');
         this._pauseButton = document.getElementById('pauseButton');
+        this._sonTag = document.getElementById('sonTag');
 
         //  Menu buttons 
         this._startButton = document.getElementById('startButton');
@@ -334,7 +335,13 @@ export default class UIManager {
 
     _updateHUDVisibility() {
         const inGame = this._game.isRunning() && !this._game.isPaused() && !this._game.isGameOver();
-        inGame ? this._show(this._pauseButton) : this._hide(this._pauseButton);
+        if (inGame) {
+            this._show(this._pauseButton);
+            this._show(this._sonTag);
+        } else {
+            this._hide(this._pauseButton);
+            this._hide(this._sonTag);
+        }
     }
 
     _updateMobileControlsVisibility() {

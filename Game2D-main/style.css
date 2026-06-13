@@ -85,7 +85,7 @@ body {
     z-index: 10;
     background-image:
         linear-gradient(to right, rgba(10, 10, 12, 0.72) 32%, rgba(10, 10, 12, 0.1) 65%),
-        url('./assets/splashadd.png');
+        url('./assets/areyasplashs.png');
     background-size: cover;
     background-position: center;
     animation: bgBreathe 6s ease-in-out infinite;
@@ -122,8 +122,8 @@ body {
 #menuScreen.screen--splash {
     justify-content: flex-end;
     padding: 2rem 2.5rem;
-    background-image: url('./assets/splashadd.png');
-    background-size: contain;
+    background-image: url('./assets/areyasplashs.png');
+    background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
     background-color: #0a0a0c;
@@ -235,13 +235,40 @@ button:active {
     box-shadow: 2px 2px 0 var(--son-shadow);
 }
 
-/*  Pause button (top-center in-game)  */
+/*  In-game HUD chrome  */
 
-.pause-button {
+.son-tag {
     position: absolute;
     top: 14px;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 6;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 16px;
+    background: #fef08a;
+    color: #000000;
+    font-family: "Pix32", sans-serif;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: 2px solid #000000;
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 #000000;
+    pointer-events: none;
+    user-select: none;
+}
+
+/*  Pause button (top-right in-game)  */
+
+.pause-button {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    left: auto;
+    transform: none;
     width: 44px;
     height: 44px;
     padding: 0;
@@ -263,13 +290,13 @@ button:active {
 .pause-button:hover {
     background: var(--son-accent);
     color: #000000;
-    transform: translateX(-50%) translate(-2px, -2px);
+    transform: translate(-2px, -2px);
     box-shadow: 5px 5px 0 var(--son-shadow);
     text-shadow: none;
 }
 
 .pause-button:active {
-    transform: translateX(-50%) translate(1px, 1px);
+    transform: translate(1px, 1px);
     box-shadow: 2px 2px 0 var(--son-shadow);
 }
 
@@ -278,7 +305,7 @@ button:active {
 #settingsScreen {
     background-image:
         linear-gradient(to right, rgba(10, 10, 12, 0.82) 38%, rgba(10, 10, 12, 0.2) 70%),
-        url('./assets/splashadd.png');
+        url('./assets/areyasplashs.png');
     background-size: cover;
     background-position: center;
     justify-content: flex-start;
@@ -355,7 +382,7 @@ button:active {
 #instructionsScreen {
     background-image:
         linear-gradient(to right, rgba(10, 10, 12, 0.88) 38%, rgba(10, 10, 12, 0.2) 70%),
-        url('./assets/splashadd.png');
+        url('./assets/areyasplashs.png');
     background-size: cover;
     background-position: center;
     justify-content: flex-start;
