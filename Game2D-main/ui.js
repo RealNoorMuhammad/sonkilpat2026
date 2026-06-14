@@ -1,6 +1,6 @@
 /**
  * UIManager — manages all HTML overlay screens, settings persistence,
- * mobile controls, and button sound effects.
+ * mobile controls, wallet gating, and button sound effects.
  *
  * Works in concert with Game (passed as a reference) but does NOT
  * reach into game internals beyond the documented public API:
@@ -10,6 +10,9 @@
  *   game.setDifficulty()
  *   game.onVirtualButtonDown() / onVirtualButtonUp()
  */
+import WalletManager from './utils/walletManager.js';
+import { SON_TOKEN } from './configs/config.js';
+
 export default class UIManager {
     constructor(game) {
         this._game = game;
@@ -28,6 +31,15 @@ export default class UIManager {
         this._startButton = document.getElementById('startButton');
         this._settingsButton = document.getElementById('settingsButton');
         this._instructionsButton = document.getElementById('instructionsButton');
+
+        //  Wallet 
+        this._wallet = new WalletManager();
+        this._connectWalletButton = document.getElementById('connectWalletButton');
+        this._disconnectWalletButton = document.getElementById('disconnectWalletButton');
+        this._walletConnected = document.getElementById('walletConnected');
+        this._walletAddress = document.getElementById('walletAddress');
+        this._walletHint = document.getElementById('walletHint');
+        this._walletBuyLink = document.getElementById('walletBuyLink');
 
         //  Settings 
         this._settingsBackButton = document.getElementById('settingsBackButton');
@@ -72,6 +84,7 @@ export default class UIManager {
 
         this._loadSettings();
         this._bindEvents();
+        this._initWallet();
         this._updateMobileControlsVisibility();
 
         window.addEventListener('resize', () => this._updateMobileControlsVisibility());
@@ -87,6 +100,7 @@ export default class UIManager {
     showMainMenu() {
         this._hideAllScreens();
         this._show(this._menuScreen);
+        this._refreshWalletState();
         this._updateHUDVisibility();
         this._updateMobileControlsVisibility();
         this._game.stopMusic();   // stop fight BGM when returning to menu
@@ -143,8 +157,13 @@ export default class UIManager {
             });
         });
 
+        //  Wallet 
+        this._connectWalletButton?.addEventListener('click', () => this._onConnectWallet());
+        this._disconnectWalletButton?.addEventListener('click', () => this._onDisconnectWallet());
+
         //  Main menu 
         this._startButton?.addEventListener('click', () => {
+            if (!this._wallet.canPlay) return;
             this._splashBgm.pause();
             this._splashBgm.currentTime = 0;
             this._hideAllScreens();
@@ -271,6 +290,128 @@ export default class UIManager {
         elem.addEventListener('mousedown', e => { e.preventDefault(); down(); });
         elem.addEventListener('mouseup', e => { e.preventDefault(); up(); });
         elem.addEventListener('mouseleave', e => { e.preventDefault(); up(); });
+    }
+
+    //  Wallet 
+
+    async _refreshWalletState() {
+        this._wallet.syncFromProvider();
+        if (this._wallet.isConnected) {
+            await this._wallet.checkBalance();
+        }
+        this._updateWalletUI();
+    }
+
+    async _initWallet() {
+        this._wallet.onChange(() => this._updateWalletUI());
+
+        window.addEventListener('focus', () => {
+            this._refreshWalletState();
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState !== 'visible') return;
+            this._refreshWalletState();
+        });
+
+        await this._wallet.tryAutoConnect();
+        await this._refreshWalletState();
+    }
+
+    async _onConnectWallet() {
+        if (this._wallet.isConnected || this._wallet.isConnecting) return;
+
+        const btn = this._connectWalletButton;
+        const prevLabel = btn?.textContent ?? 'Connect Phantom';
+        if (btn) {
+            btn.disabled = true;
+            btn.textContent = 'Connecting…';
+        }
+
+        try {
+            await this._wallet.connect();
+        } catch (err) {
+            if (err?.message && !err.message.includes('Opening Phantom')) {
+                console.warn('[Wallet]', err.message);
+            }
+        } finally {
+            this._wallet.syncFromProvider();
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = prevLabel;
+            }
+            this._updateWalletUI();
+        }
+    }
+
+    async _onDisconnectWallet() {
+        await this._wallet.disconnect();
+        this._updateWalletUI();
+    }
+
+    _updateWalletUI() {
+        if (!this._wallet.isConnected) {
+            this._wallet.syncFromProvider();
+        }
+
+        const connected = this._wallet.isConnected;
+        const checking = this._wallet.isCheckingBalance;
+        const canPlay = this._wallet.canPlay;
+
+        if (connected) {
+            this._hide(this._connectWalletButton);
+            this._show(this._walletConnected);
+            if (this._walletAddress) {
+                this._walletAddress.textContent = this._wallet.displayAddress;
+                this._walletAddress.title = this._wallet.address ?? '';
+            }
+
+            if (this._walletHint) {
+                this._walletHint.classList.remove('hidden');
+
+                if (checking) {
+                    this._walletHint.textContent = 'Checking $SON balance…';
+                    this._walletHint.classList.remove('wallet-hint--error');
+                } else if (canPlay) {
+                    this._walletHint.classList.add('hidden');
+                } else if (this._wallet.lastError) {
+                    this._walletHint.textContent = this._wallet.lastError;
+                    this._walletHint.classList.add('wallet-hint--error');
+                } else {
+                    this._walletHint.textContent = `You need at least ${SON_TOKEN.minBalance} $SON to play. Balance: ${this._wallet.sonBalance.toLocaleString()}.`;
+                    this._walletHint.classList.add('wallet-hint--error');
+                }
+            }
+
+            if (this._walletBuyLink) {
+                const showBuy = connected && !checking && !canPlay && !this._wallet.lastError;
+                showBuy ? this._show(this._walletBuyLink) : this._hide(this._walletBuyLink);
+            }
+        } else {
+            this._show(this._connectWalletButton);
+            this._hide(this._walletConnected);
+            this._hide(this._walletBuyLink);
+
+            if (this._walletHint) {
+                this._walletHint.classList.remove('hidden');
+                const err = this._wallet.lastError;
+                this._walletHint.textContent = err
+                    ? err
+                    : 'Connect your Phantom wallet to play.';
+                this._walletHint.classList.toggle('wallet-hint--error', !!err);
+            }
+        }
+
+        if (this._startButton) {
+            this._startButton.disabled = !canPlay;
+            if (canPlay) {
+                this._startButton.title = '';
+            } else if (connected && !checking) {
+                this._startButton.title = `Hold at least ${SON_TOKEN.minBalance} $SON to play`;
+            } else {
+                this._startButton.title = 'Connect your Phantom wallet first';
+            }
+        }
     }
 
     //  Settings persistence 

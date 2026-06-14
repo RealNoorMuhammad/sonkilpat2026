@@ -148,14 +148,28 @@
         </div>
 
         <!--  Mobile Controls  -->
-        <div id="mobileControls" class="hidden" aria-label="Mobile controls">
-            <button id="btnLeft" class="touch-button touch-left" aria-label="Move left">◀</button>
-            <button id="btnRight" class="touch-button touch-right" aria-label="Move right">▶</button>
-            <button id="btnJump" class="touch-button touch-jump" aria-label="Jump">▲</button>
-            <button id="btnAttack" class="touch-button touch-attack" aria-label="Light Punch">J</button>
-            <button id="btnHeavy" class="touch-button touch-heavy" aria-label="Heavy Punch">U</button>
-            <button id="btnSweep" class="touch-button touch-sweep" aria-label="Sweep Kick">I</button>
-            <button id="btnBlock" class="touch-button touch-block" aria-label="Block">K</button>
+        <div id="mobileControls" class="mobile-controls hidden" aria-label="Mobile controls">
+            <div id="moveJoystick" class="joystick" aria-label="Move and jump">
+                <div class="joystick__glow" aria-hidden="true"></div>
+                <div class="joystick__base">
+                    <div class="joystick__knob"></div>
+                </div>
+            </div>
+
+            <div class="mobile-actions">
+                <button id="btnHeavy" type="button" class="touch-button touch-heavy" aria-label="Heavy Punch">
+                    <span class="touch-button__label">Heavy punch</span>
+                </button>
+                <button id="btnBlock" type="button" class="touch-button touch-block" aria-label="Block">
+                    <span class="touch-button__label">Block</span>
+                </button>
+                <button id="btnSweep" type="button" class="touch-button touch-sweep" aria-label="Sweep Kick">
+                    <span class="touch-button__label">Sweep kick</span>
+                </button>
+                <button id="btnAttack" type="button" class="touch-button touch-attack touch-button--primary" aria-label="Light Punch">
+                    <span class="touch-button__label">Light punch</span>
+                </button>
+            </div>
         </div>
     </div>
 

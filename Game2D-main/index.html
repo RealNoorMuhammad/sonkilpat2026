@@ -26,8 +26,17 @@
 
         <!--  Main Menu  -->
         <div id="menuScreen" class="screen screen--splash">
+            <div id="walletBar" class="wallet-bar">
+                <button id="connectWalletButton" type="button">Connect Phantom</button>
+                <div id="walletConnected" class="wallet-connected hidden">
+                    <span id="walletAddress" class="wallet-address" title=""></span>
+                    <button id="disconnectWalletButton" type="button" class="wallet-disconnect" aria-label="Disconnect wallet">✕</button>
+                </div>
+            </div>
+            <p id="walletHint" class="wallet-hint">Connect your Phantom wallet to play.</p>
+            <a id="walletBuyLink" class="wallet-buy-link hidden" href="https://dexscreener.com/solana/ACpzkGJV3DDU8HXy8yjab7RL9qNmDGym2GwLkzNppump" target="_blank" rel="noopener noreferrer">Buy $SON on DexScreener ↗</a>
             <nav class="btn-group" aria-label="Main menu">
-                <button id="startButton">Let's Go, Son</button>
+                <button id="startButton" disabled>Let's Go, Son</button>
                 <button id="settingsButton">Settings</button>
                 <button id="instructionsButton">About</button>
             </nav>

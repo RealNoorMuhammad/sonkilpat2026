@@ -7,6 +7,7 @@ import { CONFIG } from './configs/config.js';
 import { ATTACKS } from './configs/attack.js';
 import AIController from './controllers/ai.js';
 import UIManager from './ui.js';
+import { drawTradingCandle } from './utils/tradingCandle.js';
 
 
 // Canvas setup
@@ -31,9 +32,9 @@ window.addEventListener('orientationchange', resizeCanvas);
 resizeCanvas();
 
 // Show a loading placeholder immediately
-ctx.fillStyle = '#111';
+ctx.fillStyle = '#ffffff';
 ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.canvasHeight);
-ctx.fillStyle = '#fff';
+ctx.fillStyle = '#18181b';
 ctx.textAlign = 'center';
 ctx.font = '18px Pix32, sans-serif';
 ctx.fillText('Loading…', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2);
@@ -66,16 +67,22 @@ ctx.fillText('Loading…', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2);
 })();
 
 // 
-// FloatingText — a damage number that drifts upward and fades out
+// FloatingHitCandle — a trading candle that pops up on hit and drifts upward
 // 
 
-class FloatingText {
-    constructor(text, x, y) {
-        this.text = text;
+class FloatingHitCandle {
+    /**
+     * @param {number} x
+     * @param {number} y
+     * @param {'red'|'green'} color — red when SON is hit, green when RIVAL is hit
+     */
+    constructor(x, y, color) {
         this.x = x;
         this.y = y;
+        this.color = color;
         this.life = CONFIG.floatTextLife;
         this.maxLife = CONFIG.floatTextLife;
+        this.size = CONFIG.hitCandleSize;
     }
 
     update() {
@@ -87,15 +94,13 @@ class FloatingText {
 
     draw(ctx) {
         const alpha = this.life / this.maxLife;
+        const scale = 0.9 + (alpha * 0.2);
+        const size = this.size * scale;
         ctx.save();
         ctx.globalAlpha = alpha;
-        ctx.font = `bold 18px Pix32, sans-serif`;
-        ctx.fillStyle = '#ffdd44';
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 3;
-        ctx.textAlign = 'center';
-        ctx.strokeText(this.text, this.x, this.y);
-        ctx.fillText(this.text, this.x, this.y);
+        ctx.shadowColor = this.color === 'red' ? '#ef4444' : '#22c55e';
+        ctx.shadowBlur = 14;
+        drawTradingCandle(ctx, this.x, this.y, size, this.color, 0);
         ctx.restore();
     }
 }
@@ -425,15 +430,14 @@ class Game {
                 target.takeHit(damage, hb.knockbackX * dir, hb.knockbackY);
                 hb.markHit(target);
 
-                // Floating damage number
+                // Hit candle — red when SON is punched, green when RIVAL is punched
                 const dmg = prevHP - target.health;
                 if (dmg > 0) {
                     const hurtbox = target.getHurtboxBounds();
-                    this._floatingTexts.push(new FloatingText(
-                        `-${Math.round(dmg)}`,
-                        hurtbox.x + hurtbox.width / 2,
-                        hurtbox.y
-                    ));
+                    const hitX = hurtbox.x + hurtbox.width / 2;
+                    const hitY = hurtbox.y + hurtbox.height * 0.4;
+                    const color = target === this._player ? 'red' : 'green';
+                    this._floatingTexts.push(new FloatingHitCandle(hitX, hitY, color));
 
                     // Screen shake proportional to damage
                     const isBigHit = hb.owner.currentAttack?.name === 'heavyPunch';
@@ -575,44 +579,75 @@ class Game {
         const H = CONFIG.canvasHeight;
         const G = CONFIG.groundY;
 
-        // Sky gradient
+        // Bright arena sky
         const sky = ctx.createLinearGradient(0, 0, 0, G);
-        sky.addColorStop(0, '#0a0a0c');
-        sky.addColorStop(0.6, '#141418');
-        sky.addColorStop(1, '#1a1a1f');
+        sky.addColorStop(0, '#ffffff');
+        sky.addColorStop(0.55, '#f8fafc');
+        sky.addColorStop(1, '#eef2f7');
         ctx.fillStyle = sky;
         ctx.fillRect(0, 0, W, G);
 
-        // Ground
+        // Soft spotlight behind fighters
+        const spotlight = ctx.createRadialGradient(W * 0.5, G * 0.55, 20, W * 0.5, G * 0.55, W * 0.55);
+        spotlight.addColorStop(0, 'rgba(34, 197, 94, 0.08)');
+        spotlight.addColorStop(0.45, 'rgba(254, 240, 138, 0.05)');
+        spotlight.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = spotlight;
+        ctx.fillRect(0, 0, W, G);
+
+        // Faint chart grid lines
+        ctx.save();
+        ctx.globalAlpha = 0.35;
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
+        ctx.lineWidth = 1;
+        for (let y = 36; y < G; y += 28) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(W, y);
+            ctx.stroke();
+        }
+        for (let x = 0; x <= W; x += 56) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, G);
+            ctx.stroke();
+        }
+        ctx.restore();
+
+        // Ground plane
         const ground = ctx.createLinearGradient(0, G, 0, H);
-        ground.addColorStop(0, '#1a1a1f');
-        ground.addColorStop(1, '#0a0a0c');
+        ground.addColorStop(0, '#e8edf3');
+        ground.addColorStop(1, '#d7dee8');
         ctx.fillStyle = ground;
         ctx.fillRect(0, G, W, H - G);
 
-        // Neon floor line
+        // Trading floor line
         ctx.save();
-        ctx.shadowColor = '#fef08a';
-        ctx.shadowBlur = 12;
-        ctx.strokeStyle = '#fef08a';
-        ctx.lineWidth = 2;
+        ctx.shadowColor = 'rgba(22, 163, 74, 0.45)';
+        ctx.shadowBlur = 14;
+        ctx.strokeStyle = '#16a34a';
+        ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(0, G);
         ctx.lineTo(W, G);
         ctx.stroke();
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, G - 1);
+        ctx.lineTo(W, G - 1);
+        ctx.stroke();
         ctx.restore();
 
-        // Arena edge pillars (decorative)
         this._drawPillar(ctx, 30, G);
         this._drawPillar(ctx, W - 55, G);
-
-        // Crowd silhouette
         this._drawCrowd(ctx, W, G);
 
-        // Ground grid lines (perspective)
+        // Perspective floor grid
         ctx.save();
-        ctx.globalAlpha = 0.12;
-        ctx.strokeStyle = 'rgba(254, 240, 138, 0.25)';
+        ctx.globalAlpha = 0.22;
+        ctx.strokeStyle = 'rgba(100, 116, 139, 0.45)';
         ctx.lineWidth = 1;
         const rows = 5;
         for (let r = 0; r <= rows; r++) {
@@ -635,8 +670,8 @@ class Game {
         }
         ctx.restore();
 
-        // Black footer behind sprite overflow
-        ctx.fillStyle = '#0a0a0c';
+        // Clean edges behind sprite overflow
+        ctx.fillStyle = '#e8edf3';
         ctx.fillRect(0, G + 1, 120, H - G - 1);
         ctx.fillRect(W - 145, G + 1, 145, H - G - 1);
     }
@@ -644,26 +679,25 @@ class Game {
     _drawPillar(ctx, x, groundY) {
         const h = 160;
         ctx.save();
-        const grad = ctx.createLinearGradient(x, groundY - h, x + 25, groundY - h);
-        grad.addColorStop(0, '#27272a');
-        grad.addColorStop(1, '#0a0a0c');
+        const grad = ctx.createLinearGradient(x, groundY - h, x + 25, groundY);
+        grad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+        grad.addColorStop(1, 'rgba(226, 232, 240, 0.9)');
         ctx.fillStyle = grad;
         ctx.fillRect(x, groundY - h, 25, h);
 
-        // Neon edge
-        ctx.shadowColor = '#fef08a';
-        ctx.shadowBlur = 8;
-        ctx.strokeStyle = '#fef08a';
-        ctx.lineWidth = 1;
+        ctx.shadowColor = 'rgba(15, 23, 42, 0.12)';
+        ctx.shadowBlur = 10;
+        ctx.shadowOffsetX = 2;
+        ctx.strokeStyle = 'rgba(22, 163, 74, 0.55)';
+        ctx.lineWidth = 2;
         ctx.strokeRect(x, groundY - h, 25, h);
         ctx.restore();
     }
 
     _drawCrowd(ctx, W, G) {
         ctx.save();
-        ctx.globalAlpha = 0.18;
-        // Simple crowd of silhouette bumps
-        ctx.fillStyle = '#3f3f46';
+        ctx.globalAlpha = 0.14;
+        ctx.fillStyle = '#94a3b8';
         for (let i = 0; i < W; i += 18) {
             const h = 20 + Math.sin(i * 0.3) * 8 + Math.sin(i * 0.7 + 1) * 5;
             ctx.beginPath();
@@ -689,7 +723,7 @@ class Game {
         // Name plates
         ctx.save();
         ctx.font = `bold 13px Pix32, sans-serif`;
-        ctx.fillStyle = '#f4f4f5';
+        ctx.fillStyle = '#18181b';
         ctx.textAlign = 'left';
         ctx.fillText('SON', PAD, BAR_Y + BAR_H + 14);
         ctx.textAlign = 'right';
@@ -705,11 +739,14 @@ class Game {
         const ghostPct = Math.max(0, ghostHp) / maxHp;
 
         // Background track
-        ctx.fillStyle = 'rgba(0,0,0,0.6)';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
         ctx.fillRect(x - 2, y - 2, w + 4, h + 4);
+        ctx.strokeStyle = 'rgba(15, 23, 42, 0.12)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x - 2, y - 2, w + 4, h + 4);
 
         // Ghost bar (orange, lags behind real HP)
-        ctx.fillStyle = 'rgba(251, 146, 60, 0.55)';
+        ctx.fillStyle = 'rgba(251, 146, 60, 0.45)';
         ctx.fillRect(x, y, w * ghostPct, h);
 
         // Actual HP bar with gradient
@@ -725,9 +762,9 @@ class Game {
 
         // Border
         ctx.save();
-        ctx.shadowColor = pct > 0.5 ? '#22c55e' : pct > 0.25 ? '#f59e0b' : '#ef4444';
+        ctx.shadowColor = pct > 0.5 ? 'rgba(34, 197, 94, 0.35)' : pct > 0.25 ? 'rgba(245, 158, 11, 0.35)' : 'rgba(239, 68, 68, 0.35)';
         ctx.shadowBlur = 6;
-        ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+        ctx.strokeStyle = 'rgba(15, 23, 42, 0.18)';
         ctx.lineWidth = 1;
         ctx.strokeRect(x, y, w, h);
         ctx.restore();
@@ -740,7 +777,7 @@ class Game {
 
         // Round label
         ctx.font = `bold 14px Pix32, sans-serif`;
-        ctx.fillStyle = '#fef08a';
+        ctx.fillStyle = '#15803d';
         ctx.fillText(`ROUND ${this._round}`, cx, 58);
 
         // Win pips
@@ -753,14 +790,14 @@ class Game {
         for (let i = 0; i < total; i++) {
             ctx.beginPath();
             ctx.arc(cx - 20 - i * pipGap, rowY, pipR, 0, Math.PI * 2);
-            ctx.fillStyle = i < this._playerWins ? '#22c55e' : 'rgba(255,255,255,0.2)';
+            ctx.fillStyle = i < this._playerWins ? '#22c55e' : 'rgba(15, 23, 42, 0.14)';
             ctx.fill();
         }
         // Enemy pips (right of center)
         for (let i = 0; i < total; i++) {
             ctx.beginPath();
             ctx.arc(cx + 20 + i * pipGap, rowY, pipR, 0, Math.PI * 2);
-            ctx.fillStyle = i < this._enemyWins ? '#ef4444' : 'rgba(255,255,255,0.2)';
+            ctx.fillStyle = i < this._enemyWins ? '#ef4444' : 'rgba(15, 23, 42, 0.14)';
             ctx.fill();
         }
         ctx.restore();
@@ -795,7 +832,7 @@ class Game {
 
         ctx.save();
         ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
-        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.78)';
         ctx.fillRect(0, 0, W, H);
 
         const roundDone = t > 0.65;
@@ -803,9 +840,9 @@ class Game {
 
         ctx.font = `bold 72px Pix32, sans-serif`;
         ctx.textAlign = 'center';
-        ctx.shadowColor = roundDone ? '#fef08a' : '#f4f4f5';
-        ctx.shadowBlur = 20;
-        ctx.fillStyle = roundDone ? '#fef08a' : '#f4f4f5';
+        ctx.shadowColor = roundDone ? 'rgba(254, 240, 138, 0.9)' : 'rgba(15, 23, 42, 0.15)';
+        ctx.shadowBlur = roundDone ? 18 : 8;
+        ctx.fillStyle = roundDone ? '#ca8a04' : '#18181b';
         ctx.fillText(text, W / 2, H / 2 + 20);
         ctx.restore();
     }
@@ -815,7 +852,7 @@ class Game {
         const H = CONFIG.canvasHeight;
         const matchOver = this._playerWins >= CONFIG.roundsToWin || this._enemyWins >= CONFIG.roundsToWin;
 
-        ctx.fillStyle = 'rgba(0,0,0,0.65)';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
         ctx.fillRect(0, 0, W, H);
 
         ctx.save();
@@ -845,25 +882,25 @@ class Game {
             (!matchOver && this._winner === 'player');
 
         ctx.font = `bold 42px Pix32, sans-serif`;
-        ctx.shadowColor = playerWon ? '#fef08a' : '#f87171';
-        ctx.shadowBlur = 25;
-        ctx.fillStyle = playerWon ? '#fef08a' : '#f87171';
+        ctx.shadowColor = playerWon ? 'rgba(202, 138, 4, 0.45)' : 'rgba(239, 68, 68, 0.35)';
+        ctx.shadowBlur = 18;
+        ctx.fillStyle = playerWon ? '#ca8a04' : '#dc2626';
         ctx.fillText(resultText, W / 2, H / 2 - 28);
 
         ctx.font = `20px Pix32, sans-serif`;
         ctx.shadowBlur = 0;
-        ctx.fillStyle = '#f4f4f5';
+        ctx.fillStyle = '#3f3f46';
         ctx.fillText(subText, W / 2, H / 2 + 8);
 
         // Score
         ctx.font = `24px Pix32, sans-serif`;
         ctx.shadowBlur = 0;
-        ctx.fillStyle = '#fef08a';
+        ctx.fillStyle = '#15803d';
         ctx.fillText(`${this._playerWins} — ${this._enemyWins}`, W / 2, H / 2 + 38);
 
         // Rematch hint
         ctx.font = `16px Pix32, sans-serif`;
-        ctx.fillStyle = 'rgba(244, 244, 245, 0.7)';
+        ctx.fillStyle = 'rgba(63, 63, 70, 0.75)';
         ctx.fillText(
             matchOver ? 'Run it back, son — press REMATCH' : 'Next round or quit, son',
             W / 2,
@@ -878,9 +915,9 @@ class Game {
         ctx.save();
         ctx.textAlign = 'center';
         ctx.font = `bold 28px Pix32, sans-serif`;
-        ctx.shadowColor = '#fbbf24';
-        ctx.shadowBlur = 15;
-        ctx.fillStyle = '#fef08a';
+        ctx.shadowColor = 'rgba(202, 138, 4, 0.35)';
+        ctx.shadowBlur = 10;
+        ctx.fillStyle = '#b45309';
         ctx.fillText(`${this._comboCount}-HIT COMBO, SON!`, W / 2, CONFIG.canvasHeight - 30);
         ctx.restore();
     }

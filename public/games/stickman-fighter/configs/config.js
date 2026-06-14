@@ -23,8 +23,11 @@ export const CONFIG = Object.freeze({
     shakeDecay:      0.85,   // multiplier applied to shake magnitude each frame
     shakeMagnitude:  6,      // px shake on heavy hit
     floatTextSpeed:  1.2,    // px/frame upward drift for floating damage numbers
-    floatTextLife:   45,     // frames a floating text lives
+    floatTextLife:   45,     // frames a floating hit candle lives
     ghostBarSpeed:   2,      // px/frame the ghost health bar drains
+
+    // Trading candles
+    hitCandleSize: 42,       // floating candle on hit (replaces damage numbers)
 
     // Rounds
     roundsToWin:  2,         // first to this many round wins takes the match

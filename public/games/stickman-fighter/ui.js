@@ -10,6 +10,8 @@
  *   game.setDifficulty()
  *   game.onVirtualButtonDown() / onVirtualButtonUp()
  */
+import VirtualJoystick from './utils/virtualJoystick.js';
+
 export default class UIManager {
     constructor(game) {
         this._game = game;
@@ -51,9 +53,8 @@ export default class UIManager {
         this._quitToMenuButton = document.getElementById('quitToMenuButton');
 
         //  Mobile touch buttons 
-        this._btnLeft = document.getElementById('btnLeft');
-        this._btnRight = document.getElementById('btnRight');
-        this._btnJump = document.getElementById('btnJump');
+        this._moveJoystick = document.getElementById('moveJoystick');
+        this._joystickKnob = this._moveJoystick?.querySelector('.joystick__knob');
         this._btnAttack = document.getElementById('btnAttack');
         this._btnHeavy = document.getElementById('btnHeavy');
         this._btnSweep = document.getElementById('btnSweep');
@@ -72,6 +73,7 @@ export default class UIManager {
 
         this._loadSettings();
         this._bindEvents();
+        this._initJoystick();
         this._updateMobileControlsVisibility();
 
         window.addEventListener('resize', () => this._updateMobileControlsVisibility());
@@ -253,21 +255,39 @@ export default class UIManager {
         });
 
         //  Mobile touch buttons 
-        this._bindTouchButton(this._btnLeft, 'left');
-        this._bindTouchButton(this._btnRight, 'right');
-        this._bindTouchButton(this._btnJump, 'jump');
         this._bindTouchButton(this._btnAttack, 'attack');
         this._bindTouchButton(this._btnHeavy, 'heavy');
         this._bindTouchButton(this._btnSweep, 'sweep');
         this._bindTouchButton(this._btnBlock, 'block');
     }
 
+    _initJoystick() {
+        const base = this._moveJoystick?.querySelector('.joystick__base');
+        if (!this._moveJoystick || !this._joystickKnob || !base) return;
+
+        this._joystick = new VirtualJoystick(
+            base,
+            this._joystickKnob,
+            (action, pressed) => {
+                if (pressed) this._game.onVirtualButtonDown(action);
+                else this._game.onVirtualButtonUp(action);
+            },
+        );
+    }
+
     _bindTouchButton(elem, action) {
         if (!elem) return;
-        const down = () => this._game.onVirtualButtonDown(action);
-        const up = () => this._game.onVirtualButtonUp(action);
+        const down = () => {
+            elem.classList.add('touch-button--pressed');
+            this._game.onVirtualButtonDown(action);
+        };
+        const up = () => {
+            elem.classList.remove('touch-button--pressed');
+            this._game.onVirtualButtonUp(action);
+        };
         elem.addEventListener('touchstart', e => { e.preventDefault(); down(); }, { passive: false });
         elem.addEventListener('touchend', e => { e.preventDefault(); up(); }, { passive: false });
+        elem.addEventListener('touchcancel', e => { e.preventDefault(); up(); }, { passive: false });
         elem.addEventListener('mousedown', e => { e.preventDefault(); down(); });
         elem.addEventListener('mouseup', e => { e.preventDefault(); up(); });
         elem.addEventListener('mouseleave', e => { e.preventDefault(); up(); });
@@ -358,5 +378,10 @@ export default class UIManager {
             && !this._isVisible(this._gameOverOverlay);
 
         canShow ? this._show(this._mobileControls) : this._hide(this._mobileControls);
+        if (canShow) {
+            this._joystick?.refresh();
+        } else {
+            this._joystick?.reset();
+        }
     }
 }

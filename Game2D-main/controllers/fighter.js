@@ -2,7 +2,6 @@ import { CONFIG } from '../configs/config.js';
 import { AnimationController } from './animation.js';
 import Hitbox from './hitbox.js';
 import { ANIMATION_CONFIG } from '../configs/animationConfig.js';
-
 /**
  * Fighter — a playable or AI-controlled character.
  *
