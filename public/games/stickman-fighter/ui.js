@@ -12,7 +12,8 @@
  */
 import VirtualJoystick from './utils/virtualJoystick.js';
 import MultiplayerManager from './net/multiplayerManager.js';
-import { connectPhantom, shortAddress, isMobile, waitForPhantomProvider, getPhantomBrowseLink } from './net/phantomWallet.js';
+import { connectPhantom, shortAddress, isMobile, waitForPhantomProvider } from './net/phantomWallet.js';
+import { buildConnectDeeplink, readConnectResponseFromUrl, clearConnectResponseFromUrl } from './net/phantomDeeplink.js';
 import { getPlayerByAddress, registerPlayer, getLeaderboard, incrementRoundWins } from './net/playerStore.js';
 
 export default class UIManager {
@@ -125,6 +126,7 @@ export default class UIManager {
         this._bindEvents();
         this._initJoystick();
         this._updateMobileControlsVisibility();
+        this._checkPhantomRedirect();   // handle a returning Phantom connect deeplink
 
         window.addEventListener('resize', () => this._updateMobileControlsVisibility());
     }
@@ -199,13 +201,16 @@ export default class UIManager {
             this._hide(this._openPhantomLink);
             if (this._connectWalletButton) this._connectWalletButton.textContent = 'Connect Phantom';
         } else if (isMobile()) {
-            // No injected provider on a normal mobile browser. Phantom deeplinks
-            // must be a REAL user tap on a link (a JS redirect gets ignored and
-            // shows the install page), so present an actual anchor.
-            this._walletStatus.textContent = 'Tap below to open this page inside the Phantom app.';
+            // No injected provider on a normal mobile browser. Use the connect
+            // deeplink so the user STAYS in this browser (Chrome/Safari) — Phantom
+            // opens only to approve, then redirects back here. Deeplinks must be a
+            // REAL user tap on a link (a JS redirect gets ignored), so use an anchor.
+            this._walletStatus.textContent = 'Tap to approve in Phantom, then you\u2019ll come right back here.';
             this._hide(this._connectWalletButton);
             if (this._openPhantomLink) {
-                this._openPhantomLink.href = getPhantomBrowseLink();
+                this._openPhantomLink.textContent = 'Connect Phantom';
+                this._openPhantomLink.setAttribute('target', '_top');
+                this._openPhantomLink.href = buildConnectDeeplink();
                 this._show(this._openPhantomLink);
             }
         } else {
@@ -229,22 +234,58 @@ export default class UIManager {
         this._setOnlineButtonsEnabled(false);
         try {
             const address = await connectPhantom();
-            const profile = await getPlayerByAddress(address);
-            if (profile) {
-                this._wallet = profile;
-                this._applyWalletConnected();
-            } else {
-                // New wallet — ask the player to pick a unique name.
-                this._pendingAddress = address;
-                this._hideAllScreens();
-                this._hide(this._registerError);
-                this._hide(this._registerStatus);
-                if (this._registerNameInput) this._registerNameInput.value = '';
-                this._show(this._nameRegisterScreen);
-                this._registerNameInput?.focus();
-            }
+            await this._handleConnectedAddress(address);
         } catch (err) {
             this._walletStatus.textContent = (err && err.message) || 'Could not connect wallet.';
+        }
+    }
+
+    /** Shared path once we have a wallet address (injected provider or deeplink). */
+    async _handleConnectedAddress(address) {
+        const profile = await getPlayerByAddress(address);
+        if (profile) {
+            this._wallet = profile;
+            this._applyWalletConnected();
+        } else {
+            // New wallet — ask the player to pick a unique name.
+            this._pendingAddress = address;
+            this._hideAllScreens();
+            this._hide(this._registerError);
+            this._hide(this._registerStatus);
+            if (this._registerNameInput) this._registerNameInput.value = '';
+            this._show(this._nameRegisterScreen);
+            this._registerNameInput?.focus();
+        }
+    }
+
+    /**
+     * On load, handle a Phantom connect-deeplink redirect (mobile). Phantom
+     * returns to this page in the SAME browser with an encrypted payload in the
+     * URL; we decrypt it to get the wallet address and continue the flow.
+     */
+    async _checkPhantomRedirect() {
+        const res = readConnectResponseFromUrl();
+        if (!res) return;
+        clearConnectResponseFromUrl();
+
+        this._splashBgm?.pause();
+        this._hideAllScreens();
+        this._show(this._multiplayerScreen);
+        this._show(this._connectWalletButton);
+        this._hide(this._openPhantomLink);
+        this._wallet = null;
+        this._pendingAddress = null;
+
+        if (res.error) {
+            if (this._walletStatus) this._walletStatus.textContent = res.error;
+            this._setOnlineButtonsEnabled(false);
+            return;
+        }
+        if (this._walletStatus) this._walletStatus.textContent = 'Wallet connected. Loading profile…';
+        try {
+            await this._handleConnectedAddress(res.address);
+        } catch (err) {
+            if (this._walletStatus) this._walletStatus.textContent = (err && err.message) || 'Could not load profile.';
         }
     }
 
