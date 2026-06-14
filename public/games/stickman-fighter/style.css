@@ -188,7 +188,9 @@ body {
 #multiplayerScreen h2,
 #createRoomScreen h2,
 #joinRoomScreen h2,
-#disconnectOverlay h2 {
+#disconnectOverlay h2,
+#nameRegisterScreen h2,
+#leaderboardScreen h2 {
     font-family: "Pix32", sans-serif;
     font-size: 2rem;
     letter-spacing: 0.06em;
@@ -203,11 +205,14 @@ body {
 #multiplayerScreen p,
 #createRoomScreen p,
 #joinRoomScreen p,
-#disconnectOverlay p {
+#disconnectOverlay p,
+#nameRegisterScreen p,
+#leaderboardScreen p {
     font-family: "Alte Haas Grotesk", sans-serif;
     font-size: 0.95rem;
     line-height: 1.6;
-    color: var(--son-text-soft);
+    color: #e4e4e7;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
     margin: 0 0 12px 0;
     max-width: 460px;
 }
@@ -289,14 +294,15 @@ body {
 .wallet-status {
     font-family: "Pix32", sans-serif;
     font-size: 0.95rem;
-    color: var(--son-text-muted);
+    color: #e4e4e7;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
     margin-bottom: 12px;
     text-align: center;
     max-width: 420px;
 }
 
 .wallet-status--connected {
-    color: var(--son-text);
+    color: #ffffff;
 }
 
 .wallet-button {
@@ -997,17 +1003,47 @@ button:active {
         font-size: 0.54rem;
     }
 
-    /*  Cleaner main-menu buttons on mobile: uniform width, centered text  */
+    /*  Cleaner main-menu buttons on mobile: uniform width, centered, compact  */
+    #menuScreen.screen--splash {
+        padding: 0.75rem 1.25rem;
+        justify-content: center;
+    }
+
     #menuScreen.screen--splash .btn-group {
-        gap: 9px;
-        width: min(248px, 56vw);
+        gap: 7px;
+        width: min(210px, 52vw);
     }
 
     #menuScreen.screen--splash .btn-group button {
         width: 100%;
         text-align: center;
-        font-size: 0.95rem;
-        padding: 9px 16px;
-        letter-spacing: 0.06em;
+        font-size: 0.82rem;
+        padding: 7px 14px;
+        letter-spacing: 0.05em;
+        border-width: 2px;
+        box-shadow: 3px 3px 0 var(--son-shadow);
+    }
+
+    /*  Sub-screens: start below the page's top-left "← All Games" button and
+        allow scrolling so headings/content are never hidden under it.  */
+    #multiplayerScreen,
+    #createRoomScreen,
+    #joinRoomScreen,
+    #leaderboardScreen,
+    #nameRegisterScreen,
+    #settingsScreen,
+    #instructionsScreen {
+        justify-content: flex-start;
+        padding-top: 58px;
+        overflow-y: auto;
+    }
+
+    #multiplayerScreen h2,
+    #createRoomScreen h2,
+    #joinRoomScreen h2,
+    #leaderboardScreen h2,
+    #nameRegisterScreen h2 {
+        font-size: 1.4rem;
+        margin-bottom: 0.8rem;
     }
 }

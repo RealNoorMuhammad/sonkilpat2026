@@ -1026,11 +1026,24 @@ class Game {
 
     //  HUD 
 
+    /**
+     * Extra top padding for the HUD on touch devices so the health bars and
+     * name plates clear the site chrome ("← All Games" + pause button) that the
+     * page overlays in the top corners on mobile.
+     */
+    _hudTopOffset() {
+        if (typeof window === 'undefined') return 0;
+        const coarse = window.matchMedia?.('(pointer: coarse)').matches;
+        const touch = 'ontouchstart' in window || (navigator?.maxTouchPoints ?? 0) > 0;
+        return (coarse || touch) ? 52 : 0;
+    }
+
     _drawHUD(ctx) {
         const BAR_W = 220;
         const BAR_H = 18;
         const PAD = 20;
-        const BAR_Y = PAD;
+        const TOP = this._hudTopOffset();
+        const BAR_Y = PAD + TOP;
 
         // Player bar (left)
         this._drawHealthBar(ctx, PAD, BAR_Y, BAR_W, BAR_H, this._player.health, this._playerGhostHP, this._player.maxHealth);
@@ -1061,13 +1074,13 @@ class Game {
         ctx.restore();
 
         // Round + score indicator (top center)
-        this._drawRoundInfo(ctx);
+        this._drawRoundInfo(ctx, TOP);
 
         // Live latency (online only)
-        if (this._gameMode === 'online') this._drawLatency(ctx);
+        if (this._gameMode === 'online') this._drawLatency(ctx, TOP);
     }
 
-    _drawLatency(ctx) {
+    _drawLatency(ctx, top = 0) {
         const ms = this._mp?.latencyMs;
         const text = (ms == null) ? 'PING --' : `PING ${ms} ms`;
         let color = '#16a34a';                 // good  (<100ms)
@@ -1079,7 +1092,7 @@ class Game {
         ctx.font = `bold 12px Pix32, sans-serif`;
         ctx.textAlign = 'center';
         ctx.fillStyle = color;
-        ctx.fillText(text, CONFIG.canvasWidth / 2, 76);
+        ctx.fillText(text, CONFIG.canvasWidth / 2, 76 + top);
         ctx.restore();
     }
 
@@ -1119,7 +1132,7 @@ class Game {
         ctx.restore();
     }
 
-    _drawRoundInfo(ctx) {
+    _drawRoundInfo(ctx, top = 0) {
         const cx = CONFIG.canvasWidth / 2;
         ctx.save();
         ctx.textAlign = 'center';
@@ -1127,13 +1140,13 @@ class Game {
         // Round label
         ctx.font = `bold 14px Pix32, sans-serif`;
         ctx.fillStyle = '#15803d';
-        ctx.fillText(`ROUND ${this._round}`, cx, 58);
+        ctx.fillText(`ROUND ${this._round}`, cx, 58 + top);
 
         // Win pips
         const pipR = 5;
         const pipGap = 14;
         const total = CONFIG.roundsToWin;
-        const rowY = 34;
+        const rowY = 34 + top;
 
         // Player pips (left of center)
         for (let i = 0; i < total; i++) {
