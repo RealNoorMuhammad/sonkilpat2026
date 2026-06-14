@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Stickman Craft — mine and place blocks in a Minecraft-themed 2D sandbox. Play as a stickman, son." />
+    <title>Stickman Craft — SON Games</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+
+        <button id="pauseButton" class="pause-button hidden" aria-label="Pause">❚❚</button>
+
+        <p id="hudHint" class="hud-hint hidden">
+            WASD move · Space jump · Left click mine · Right click place · 1–5 hotbar
+        </p>
+
+        <div id="hotbar" class="hotbar hidden" aria-label="Block hotbar"></div>
+
+        <div id="touchControls" class="touch-controls hidden" aria-label="Touch controls">
+            <button id="touchLeft" class="touch-btn touch-btn--left" aria-label="Move left">◀</button>
+            <button id="touchJump" class="touch-btn touch-btn--jump" aria-label="Jump">▲</button>
+            <button id="touchRight" class="touch-btn touch-btn--right" aria-label="Move right">▶</button>
+            <button id="touchMine" class="touch-btn touch-btn--mine" aria-label="Mine">⛏</button>
+        </div>
+
+        <div id="menuScreen" class="screen screen--menu">
+            <div class="menu-card">
+                <p class="menu-eyebrow">$SON · SOLANA</p>
+                <h1 class="menu-title">STICKMAN CRAFT</h1>
+                <p class="menu-tagline">Mine ya blocks, son.</p>
+                <button id="startButton" class="menu-btn menu-btn--primary">Dig In, Son</button>
+            </div>
+        </div>
+
+        <div id="pauseScreen" class="screen screen--pause hidden">
+            <div class="menu-card">
+                <h2>Paused</h2>
+                <button id="resumeButton" class="menu-btn">Resume</button>
+                <button id="menuButton" class="menu-btn menu-btn--ghost">Main Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+
+</html>

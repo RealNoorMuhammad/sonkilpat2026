@@ -10,6 +10,12 @@ const GAMES = [
     name: "Are Ya Fighting Son?",
     path: "/son-games/stickman-fighter",
   },
+  // Temporarily hidden — re-enable when ready
+  // {
+  //   id: "stickman-craft",
+  //   name: "Stickman Craft",
+  //   path: "/son-games/stickman-craft",
+  // },
 ];
 
 function SonGamesLoading() {

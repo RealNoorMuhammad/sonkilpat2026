@@ -32,4 +32,9 @@ export const CONFIG = Object.freeze({
     // Rounds
     roundsToWin:  2,         // first to this many round wins takes the match
     roundIntroMs: 1500,      // ms before "FIGHT!" fades and combat begins
+
+    // Online PvP
+    pvpMaxHealth:      100,  // symmetric HP for both human players
+    snapshotIntervalMs: 100, // how often the host broadcasts a state snapshot
+    roomCodeLength:    6,    // length of generated room codes
 });

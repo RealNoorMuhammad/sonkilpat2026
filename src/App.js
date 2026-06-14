@@ -9,6 +9,7 @@ import ArtistHome from "./Artist/Home";
 import MainHome from "./Components/Home";
 import SonGames from "./Components/SonGames";
 import StickmanFighterPage from "./games/stickman-fighter/StickmanFighterPage";
+import StickmanCraftPage from "./games/stickman-craft/StickmanCraftPage";
 import SonUpload from './Artist/SonUpload';
 import AboutSon from './Artist/AboutSon';
 import Editor from './Artist/Editor';
@@ -60,6 +61,7 @@ function App() {
           <Route path="/" element={<MainHome />} />
           <Route path="/son-games" element={<SonGames />} />
           <Route path="/son-games/stickman-fighter" element={<StickmanFighterPage />} />
+          <Route path="/son-games/stickman-craft" element={<StickmanCraftPage />} />
           <Route path="/sonpfpmaker" element={<ArtistHome />} />
           <Route path="/pfp-maker" element={<SonUpload />} />
           <Route path="/ai-pfp-maker" element={<AiPfpMaker />} />

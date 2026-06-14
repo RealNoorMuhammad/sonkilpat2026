@@ -6,6 +6,8 @@ import Fighter from './controllers/fighter.js';
 import { CONFIG } from './configs/config.js';
 import { ATTACKS } from './configs/attack.js';
 import AIController from './controllers/ai.js';
+import RemoteInputHandler from './controllers/remoteInput.js';
+import { keysFromInput } from './net/multiplayerManager.js';
 import UIManager from './ui.js';
 import { drawTradingCandle } from './utils/tradingCandle.js';
 
@@ -155,6 +157,22 @@ class Game {
         this._comboTimer = 0;
         this._comboOwner = null;  // 'player' | 'enemy'
 
+        //  Online multiplayer state 
+        this._gameMode = 'solo';      // 'solo' | 'online'
+        this._mp = null;              // MultiplayerManager (online only)
+        this._localSlot = null;       // 1 = left (_player), 2 = right (_enemy)
+        this._isHost = false;
+        this._localName = '';         // this client's display name (online)
+        this._opponentName = '';      // opponent's display name (online)
+        this._onLocalRoundWin = null; // callback fired when the local player wins a round
+        this._remoteInput = new RemoteInputHandler();
+        this._playerInputSrc = this._input;   // input feeding the left fighter
+        this._enemyInputSrc = null;           // input feeding the right fighter
+        this._frame = 0;
+        this._lastSentKeysJson = '';
+        this._lastSnapshotAt = 0;
+        this._mpUnsub = [];
+
         this._gameLoop = this._gameLoop.bind(this);
 
         this._preloadAssets();
@@ -217,6 +235,8 @@ class Game {
         const playerAnims = this._buildAnimationsConfig('player');
         const enemyAnims = this._buildAnimationsConfig('enemy');
 
+        const online = this._gameMode === 'online';
+
         const shared = {
             width: 250,
             height: 280,
@@ -233,7 +253,8 @@ class Game {
             x: 100,
             y: CONFIG.groundY - 280,
             animationsConfig: playerAnims,
-            maxHealth: 150,
+            // Symmetric HP for PvP; asymmetric vs AI for the solo power fantasy.
+            maxHealth: online ? CONFIG.pvpMaxHealth : 150,
         });
 
         this._enemy = new Fighter({
@@ -243,16 +264,32 @@ class Game {
             x: CONFIG.canvasWidth - 100 - 250,
             y: CONFIG.groundY - 280,
             animationsConfig: enemyAnims,
-            maxHealth: 50,
-            attackCooldownBonus: 18,
+            maxHealth: online ? CONFIG.pvpMaxHealth : 50,
+            attackCooldownBonus: online ? 0 : 18,
         });
 
         this._enemy.facingRight = false;
 
-        this._enemyAI = new AIController(this._enemy, this._player, {
-            difficulty: this._ui.getDifficulty(),
-        });
-        this._enemyAI.reset(); // seed _prevOpponentHealth to full HP before round starts
+        if (online) {
+            // No AI in PvP. Wire each fighter to its input source by slot:
+            // slot 1 controls the left fighter (_player), slot 2 the right (_enemy).
+            this._enemyAI = null;
+            this._remoteInput.reset();
+            if (this._localSlot === 1) {
+                this._playerInputSrc = this._input;        // local keyboard
+                this._enemyInputSrc = this._remoteInput;   // opponent
+            } else {
+                this._playerInputSrc = this._remoteInput;  // opponent
+                this._enemyInputSrc = this._input;         // local keyboard
+            }
+        } else {
+            this._playerInputSrc = this._input;
+            this._enemyInputSrc = null;
+            this._enemyAI = new AIController(this._enemy, this._player, {
+                difficulty: this._ui.getDifficulty(),
+            });
+            this._enemyAI.reset(); // seed _prevOpponentHealth to full HP before round starts
+        }
 
         // Ghost HP bars
         this._playerGhostHP = this._player.health;
@@ -270,10 +307,73 @@ class Game {
 
     startGame() {
         if (this._running) return;
+        this._gameMode = 'solo';
+        this._mp = null;
         this._playerWins = 0;
         this._enemyWins = 0;
         this._round = 1;
         this._startRound();
+    }
+
+    isOnline() { return this._gameMode === 'online'; }
+
+    /**
+     * Start a 2-player online match.
+     * @param {{ slot: 1|2, isHost: boolean, mp: import('./net/multiplayerManager.js').default, onLocalRoundWin?: () => void }} cfg
+     */
+    startOnlineGame({ slot, isHost, mp, onLocalRoundWin = null }) {
+        if (this._running) this.stopGame();
+        this._gameMode = 'online';
+        this._mp = mp;
+        this._localSlot = slot;
+        this._isHost = isHost;
+        this._localName = mp?.playerName || (slot === 1 ? 'P1' : 'P2');
+        this._opponentName = mp?.opponentName || 'Opponent';
+        this._onLocalRoundWin = onLocalRoundWin;
+        this._frame = 0;
+        this._lastSentKeysJson = '';
+        this._lastSnapshotAt = 0;
+
+        this._bindNetworkHandlers();
+
+        this._playerWins = 0;
+        this._enemyWins = 0;
+        this._round = 1;
+        this._startRound();
+    }
+
+    _bindNetworkHandlers() {
+        // Clear any previous subscriptions (e.g. from a prior match).
+        for (const off of this._mpUnsub) off?.();
+        this._mpUnsub = [];
+        if (!this._mp) return;
+
+        this._mpUnsub.push(this._mp.on('remote_input', payload => {
+            this._remoteInput.applyKeys(payload?.keys ?? {});
+        }));
+
+        this._mpUnsub.push(this._mp.on('opponent_name', ({ name }) => {
+            if (name) this._opponentName = name;
+        }));
+
+        if (this._isHost) {
+            this._mpUnsub.push(this._mp.on('rematch_request', () => {
+                if (this._gameOver) this.rematch();
+            }));
+        } else {
+            this._mpUnsub.push(this._mp.on('hit_event', p => this._applyRemoteHit(p)));
+            this._mpUnsub.push(this._mp.on('state_snapshot', p => this._applySnapshot(p)));
+            this._mpUnsub.push(this._mp.on('round_end', p => this._applyRoundEnd(p)));
+            this._mpUnsub.push(this._mp.on('rematch', p => this._applyRematch(p)));
+        }
+    }
+
+    _fighterForSlot(slot) {
+        return slot === 1 ? this._player : this._enemy;
+    }
+
+    _slotForFighter(fighter) {
+        return fighter === this._player ? 1 : 2;
     }
 
     _startRound() {
@@ -282,6 +382,10 @@ class Game {
         this._paused = false;
         this._introActive = true;
         this._introTimer = CONFIG.roundIntroMs;
+
+        // Reset network relay throttles so held inputs re-sync this round.
+        this._lastSentKeysJson = '';
+        this._lastSnapshotAt = 0;
 
         // Reset per-round visual state
         this._comboCount = 0;
@@ -367,6 +471,7 @@ class Game {
 
         this._draw();
         this._input.update();
+        if (this._gameMode === 'online') this._remoteInput.update();
 
         this._rafId = requestAnimationFrame(this._gameLoop);
     }
@@ -380,6 +485,11 @@ class Game {
         }
 
         if (this._gameOver) return;
+
+        if (this._gameMode === 'online') {
+            this._updateOnline(dt, timestamp);
+            return;
+        }
 
         // Update fighters
         this._player.update(this._input);
@@ -407,12 +517,172 @@ class Game {
         this._checkRoundEnd();
     }
 
+    //  Online update path 
+
+    _updateOnline(dt, timestamp) {
+        this._frame++;
+
+        // Drive both fighters from their (local or remote) input sources.
+        this._player.update(this._playerInputSrc);
+        this._enemy.update(this._enemyInputSrc);
+
+        // Collect pending hitboxes from both fighters.
+        for (const fighter of [this._player, this._enemy]) {
+            if (fighter.pendingHitbox) {
+                this._hitboxes.push(fighter.pendingHitbox);
+                fighter.pendingHitbox = null;
+            }
+        }
+
+        if (this._isHost) {
+            // Host is authoritative: resolve hits and broadcast results.
+            this._updateHitboxes();
+        } else {
+            // Guest never resolves PvP collisions; it just lets hitboxes expire.
+            this._expireHitboxes();
+        }
+
+        // Visuals run on both clients.
+        this._updateFloatingTexts();
+        this._updateScreenShake();
+        this._updateGhostHP(dt);
+        this._updateCombo(dt);
+
+        // Relay local input (edge-triggered to keep traffic low).
+        this._sendLocalInput();
+
+        if (this._isHost) {
+            this._maybeSendSnapshot(timestamp);
+            this._checkRoundEnd();
+        }
+    }
+
+    _sendLocalInput() {
+        if (!this._mp) return;
+        const keys = keysFromInput(this._input);
+        const json = JSON.stringify(keys);
+        if (json === this._lastSentKeysJson) return;
+        this._lastSentKeysJson = json;
+        this._mp.sendInput(this._frame, keys);
+    }
+
+    _maybeSendSnapshot(timestamp) {
+        if (!this._mp) return;
+        if (timestamp - this._lastSnapshotAt < CONFIG.snapshotIntervalMs) return;
+        this._lastSnapshotAt = timestamp;
+        this._mp.sendStateSnapshot({
+            frame: this._frame,
+            fighters: [
+                this._fighterSnapshot(1, this._player),
+                this._fighterSnapshot(2, this._enemy),
+            ],
+        });
+    }
+
+    _fighterSnapshot(slot, f) {
+        return {
+            slot,
+            x: f.x, y: f.y, vx: f.vx, vy: f.vy,
+            facingRight: f.facingRight,
+            health: f.health,
+            state: f.state,
+            stunTimer: f.stunTimer,
+        };
+    }
+
+    _expireHitboxes() {
+        for (let i = this._hitboxes.length - 1; i >= 0; i--) {
+            const hb = this._hitboxes[i];
+            hb.update();
+            if (hb.isExpired()) this._hitboxes.splice(i, 1);
+        }
+    }
+
+    //  Guest-side network application 
+
+    _applyRemoteHit(p) {
+        if (!p) return;
+        const target = this._fighterForSlot(p.targetSlot);
+        target.health = p.health;
+        target.vx = p.vx;
+        target.vy = p.vy;
+        target.stunTimer = p.stunTimer;
+        target.blockHitTimer = p.blockHitTimer;
+        target.flashTimer = p.flashTimer;
+        target.state = p.state;
+
+        // Visual + audio feedback (mirrors host's _updateHitboxes).
+        const color = target === this._player ? 'red' : 'green';
+        this._floatingTexts.push(new FloatingHitCandle(p.hurtX, p.hurtY, color));
+        this._triggerShake(p.big ? CONFIG.shakeMagnitude * 1.5 : CONFIG.shakeMagnitude);
+
+        const who = p.ownerSlot === 1 ? 'player' : 'enemy';
+        if (this._comboOwner === who) this._comboCount++;
+        else { this._comboCount = 1; this._comboOwner = who; }
+        this._comboTimer = 90;
+
+        if (p.state === 'ko') this._audioManager?.playSFX('ko');
+        else if (p.blockHitTimer > 0) this._audioManager?.playSFX('block');
+        else this._audioManager?.playSFX('hit');
+    }
+
+    _applySnapshot(p) {
+        if (!p?.fighters) return;
+        for (const fs of p.fighters) {
+            const f = this._fighterForSlot(fs.slot);
+            if (fs.slot === this._localSlot) {
+                // Local fighter: trust only authoritative health (keep responsive position).
+                f.health = fs.health;
+            } else {
+                // Remote fighter: snap to authoritative transform.
+                f.x = fs.x; f.y = fs.y;
+                f.vx = fs.vx; f.vy = fs.vy;
+                f.facingRight = fs.facingRight;
+                f.health = fs.health;
+            }
+        }
+    }
+
+    _applyRoundEnd(p) {
+        if (!p) return;
+        this._gameOver = true;
+        this._winner = p.winner;
+        this._playerWins = p.p1Wins;
+        this._enemyWins = p.p2Wins;
+        this._recordLocalRoundResult();
+        this._audioManager.stopMusic();
+        this._ui.showGameOverOverlay();
+    }
+
+    /** If the local player won this round, notify the account layer (online only). */
+    _recordLocalRoundResult() {
+        if (this._gameMode !== 'online') return;
+        const localWon = (this._localSlot === 1)
+            ? this._winner === 'player'
+            : this._winner === 'enemy';
+        if (localWon) this._onLocalRoundWin?.();
+    }
+
+    _applyRematch(p) {
+        if (!p) return;
+        this._playerWins = p.p1Wins;
+        this._enemyWins = p.p2Wins;
+        this._round = p.round;
+        this._gameOver = false;
+        this._gameOverTriggered = false;
+        this._winner = null;
+        this._ui.hideGameOverOverlay();
+        this._startRound();
+    }
+
     //  Hitbox resolution 
 
     _updateHitboxes() {
         for (let i = this._hitboxes.length - 1; i >= 0; i--) {
             const hb = this._hitboxes[i];
             hb.update();
+
+            const online = this._gameMode === 'online';
 
             for (const target of [this._player, this._enemy]) {
                 if (!hb.checkCollision(target)) continue;
@@ -421,10 +691,13 @@ class Game {
                 const prevHP = target.health;
 
                 let damage = hb.damage;
-                if (hb.owner === this._player && target === this._enemy) {
-                    damage *= 1.75;
-                } else if (hb.owner === this._enemy && target === this._player) {
-                    damage *= 0.4;
+                if (!online) {
+                    // Asymmetric solo balance (player is the power fantasy).
+                    if (hb.owner === this._player && target === this._enemy) {
+                        damage *= 1.75;
+                    } else if (hb.owner === this._enemy && target === this._player) {
+                        damage *= 0.4;
+                    }
                 }
 
                 target.takeHit(damage, hb.knockbackX * dir, hb.knockbackY);
@@ -452,6 +725,24 @@ class Game {
                         this._comboOwner = who;
                     }
                     this._comboTimer = 90; // reset window
+
+                    // Host broadcasts the authoritative result to the guest.
+                    if (online && this._isHost && this._mp) {
+                        this._mp.sendHitEvent({
+                            targetSlot: this._slotForFighter(target),
+                            ownerSlot: this._slotForFighter(hb.owner),
+                            health: target.health,
+                            state: target.state,
+                            stunTimer: target.stunTimer,
+                            blockHitTimer: target.blockHitTimer,
+                            flashTimer: target.flashTimer,
+                            vx: target.vx,
+                            vy: target.vy,
+                            big: isBigHit,
+                            hurtX: hitX,
+                            hurtY: hitY,
+                        });
+                    }
                 }
             }
 
@@ -515,13 +806,29 @@ class Game {
                 if (this._winner === 'player') this._playerWins++;
                 else this._enemyWins++;
 
+                this._recordLocalRoundResult();
+
                 this._audioManager.stopMusic();
                 this._ui.showGameOverOverlay();
+
+                if (this._gameMode === 'online' && this._isHost && this._mp) {
+                    const matchOver = this._playerWins >= CONFIG.roundsToWin || this._enemyWins >= CONFIG.roundsToWin;
+                    this._mp.sendRoundEnd({
+                        winner: this._winner,
+                        p1Wins: this._playerWins,
+                        p2Wins: this._enemyWins,
+                        matchOver,
+                    });
+                }
             }, 1500);
         }
     }
 
     rematch() {
+        // In online mode only the host drives the rematch; the guest restarts
+        // when it receives the broadcast (see _applyRematch).
+        if (this._gameMode === 'online' && !this._isHost) return;
+
         this._gameOver = false;
         this._gameOverTriggered = false;
         this._winner = null;
@@ -535,6 +842,16 @@ class Game {
         } else {
             this._round++;
         }
+
+        if (this._gameMode === 'online' && this._isHost && this._mp) {
+            this._ui.hideGameOverOverlay();
+            this._mp.sendRematch({
+                p1Wins: this._playerWins,
+                p2Wins: this._enemyWins,
+                round: this._round,
+            });
+        }
+
         this._startRound();
     }
 
@@ -721,17 +1038,49 @@ class Game {
         this._drawHealthBar(ctx, CONFIG.canvasWidth - BAR_W - PAD, BAR_Y, BAR_W, BAR_H, this._enemy.health, this._enemyGhostHP, this._enemy.maxHealth);
 
         // Name plates
+        let leftLabel = 'SON';
+        let rightLabel = 'RIVAL';
+        if (this._gameMode === 'online') {
+            // Left = slot 1, right = slot 2; the local player's name carries "(you)".
+            const localTag = name => `${name} (you)`;
+            if (this._localSlot === 1) {
+                leftLabel = localTag(this._localName);
+                rightLabel = this._opponentName || 'P2';
+            } else {
+                leftLabel = this._opponentName || 'P1';
+                rightLabel = localTag(this._localName);
+            }
+        }
         ctx.save();
         ctx.font = `bold 13px Pix32, sans-serif`;
         ctx.fillStyle = '#18181b';
         ctx.textAlign = 'left';
-        ctx.fillText('SON', PAD, BAR_Y + BAR_H + 14);
+        ctx.fillText(leftLabel, PAD, BAR_Y + BAR_H + 14);
         ctx.textAlign = 'right';
-        ctx.fillText('RIVAL', CONFIG.canvasWidth - PAD, BAR_Y + BAR_H + 14);
+        ctx.fillText(rightLabel, CONFIG.canvasWidth - PAD, BAR_Y + BAR_H + 14);
         ctx.restore();
 
         // Round + score indicator (top center)
         this._drawRoundInfo(ctx);
+
+        // Live latency (online only)
+        if (this._gameMode === 'online') this._drawLatency(ctx);
+    }
+
+    _drawLatency(ctx) {
+        const ms = this._mp?.latencyMs;
+        const text = (ms == null) ? 'PING --' : `PING ${ms} ms`;
+        let color = '#16a34a';                 // good  (<100ms)
+        if (ms == null) color = '#94a3b8';     // measuring
+        else if (ms >= 250) color = '#ef4444'; // poor
+        else if (ms >= 100) color = '#f59e0b'; // ok
+
+        ctx.save();
+        ctx.font = `bold 12px Pix32, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillStyle = color;
+        ctx.fillText(text, CONFIG.canvasWidth / 2, 76);
+        ctx.restore();
     }
 
     _drawHealthBar(ctx, x, y, w, h, hp, ghostHp, maxHp) {
@@ -877,9 +1226,23 @@ class Game {
             subText = 'Nah son. Not that round.';
         }
 
-        const playerWon =
+        let playerWon =
             (matchOver && this._playerWins >= CONFIG.roundsToWin) ||
             (!matchOver && this._winner === 'player');
+
+        if (this._gameMode === 'online') {
+            // "player" here means the left fighter (slot 1). Flip the framing so
+            // the message is relative to whichever side the local player controls.
+            const leftWon = playerWon;
+            playerWon = (this._localSlot === 1) ? leftWon : !leftWon;
+            if (playerWon) {
+                resultText = 'ARE YA WINNING, SON?!';
+                subText = matchOver ? 'You took the match, son!' : 'That round is yours, son!';
+            } else {
+                resultText = 'ARE YA WINNING, SON?';
+                subText = matchOver ? 'Not this time, son.' : 'Shake it off — next round.';
+            }
+        }
 
         ctx.font = `bold 42px Pix32, sans-serif`;
         ctx.shadowColor = playerWon ? 'rgba(202, 138, 4, 0.45)' : 'rgba(239, 68, 68, 0.35)';

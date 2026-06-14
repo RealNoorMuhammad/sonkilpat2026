@@ -184,7 +184,11 @@ body {
 }
 
 #settingsScreen h2,
-#instructionsScreen h2 {
+#instructionsScreen h2,
+#multiplayerScreen h2,
+#createRoomScreen h2,
+#joinRoomScreen h2,
+#disconnectOverlay h2 {
     font-family: "Pix32", sans-serif;
     font-size: 2rem;
     letter-spacing: 0.06em;
@@ -192,6 +196,200 @@ body {
     margin: 0 0 1.5rem 0;
     color: var(--son-accent);
     text-shadow: 3px 3px 0 var(--son-shadow);
+}
+
+/*  Multiplayer / room screens  */
+
+#multiplayerScreen p,
+#createRoomScreen p,
+#joinRoomScreen p,
+#disconnectOverlay p {
+    font-family: "Alte Haas Grotesk", sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--son-text-soft);
+    margin: 0 0 12px 0;
+    max-width: 460px;
+}
+
+.room-code {
+    font-family: "Pix32", sans-serif;
+    font-size: 2.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--son-accent);
+    background: var(--son-bg-elevated);
+    border: 3px solid var(--son-border);
+    border-radius: 12px;
+    box-shadow: 4px 4px 0 var(--son-shadow);
+    padding: 10px 8px 10px 24px;
+    margin: 0 0 14px 0;
+    user-select: all;
+    -webkit-user-select: all;
+}
+
+.room-copy-button {
+    margin-bottom: 14px;
+    flex: 0;
+}
+
+.room-code-input {
+    font-family: "Pix32", sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    text-align: center;
+    width: 320px;
+    max-width: 80vw;
+    padding: 12px 8px 12px 22px;
+    color: var(--son-text);
+    background: var(--son-bg-elevated);
+    border: 3px solid var(--son-border);
+    border-radius: 12px;
+    box-shadow: 4px 4px 0 var(--son-shadow);
+    outline: none;
+    margin-bottom: 14px;
+}
+
+.room-code-input::placeholder {
+    color: var(--son-text-muted);
+    opacity: 0.5;
+}
+
+.field-label {
+    font-family: "Pix32", sans-serif;
+    font-size: 0.95rem;
+    color: var(--son-text-muted);
+    margin-bottom: 6px;
+    align-self: center;
+}
+
+.name-input {
+    font-family: "Pix32", sans-serif;
+    font-size: 1.4rem;
+    text-align: center;
+    width: 280px;
+    max-width: 80vw;
+    padding: 10px 14px;
+    color: var(--son-text);
+    background: var(--son-bg-elevated);
+    border: 3px solid var(--son-border);
+    border-radius: 12px;
+    box-shadow: 4px 4px 0 var(--son-shadow);
+    outline: none;
+    margin-bottom: 18px;
+}
+
+.name-input::placeholder {
+    color: var(--son-text-muted);
+    opacity: 0.5;
+}
+
+/*  Phantom wallet  */
+.wallet-status {
+    font-family: "Pix32", sans-serif;
+    font-size: 0.95rem;
+    color: var(--son-text-muted);
+    margin-bottom: 12px;
+    text-align: center;
+    max-width: 420px;
+}
+
+.wallet-status--connected {
+    color: var(--son-text);
+}
+
+.wallet-button {
+    background: #ab9ff2;
+    color: #1f1747;
+    border: 3px solid #1f1747;
+    box-shadow: 4px 4px 0 var(--son-shadow);
+    margin-bottom: 16px;
+}
+
+.wallet-button:hover {
+    background: #c2b6ff;
+}
+
+/*  Leaderboard  */
+.leaderboard-list {
+    list-style: none;
+    margin: 0 0 18px;
+    padding: 0;
+    width: 420px;
+    max-width: 86vw;
+    max-height: 46vh;
+    overflow-y: auto;
+}
+
+.leaderboard-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: "Pix32", sans-serif;
+    font-size: 1rem;
+    padding: 8px 12px;
+    border: 2px solid var(--son-border);
+    border-radius: 10px;
+    background: var(--son-bg-elevated);
+    margin-bottom: 8px;
+}
+
+.leaderboard-row--me {
+    border-color: #ab9ff2;
+    box-shadow: 0 0 0 2px rgba(171, 159, 242, 0.4);
+}
+
+.leaderboard-rank {
+    width: 28px;
+    font-weight: bold;
+    color: var(--son-text-muted);
+    text-align: right;
+}
+
+.leaderboard-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--son-text);
+}
+
+.leaderboard-wins {
+    font-weight: bold;
+    color: #15803d;
+}
+
+.leaderboard-empty {
+    list-style: none;
+    text-align: center;
+    color: var(--son-text-muted);
+    font-family: "Pix32", sans-serif;
+    padding: 16px;
+}
+
+.room-status {
+    font-family: "Pix32", sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--son-text-soft);
+    margin: 0 0 14px 0;
+}
+
+.room-status--error {
+    color: #dc2626;
+}
+
+.join-form {
+    margin: 0;
+}
+
+.settings-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
 }
 
 /*  Buttons  */

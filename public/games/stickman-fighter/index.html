@@ -28,9 +28,82 @@
         <div id="menuScreen" class="screen screen--splash">
             <nav class="btn-group" aria-label="Main menu">
                 <button id="startButton">Let's Go, Son</button>
+                <button id="multiplayerButton">Play vs Friend</button>
+                <button id="leaderboardButton">Leaderboard</button>
                 <button id="settingsButton">Settings</button>
                 <button id="instructionsButton">About</button>
             </nav>
+        </div>
+
+        <!--  Multiplayer Menu  -->
+        <div id="multiplayerScreen" class="screen hidden">
+            <h2>Play vs Friend</h2>
+            <p>Connect your Phantom wallet to play. Your name and round wins are saved to the leaderboard.</p>
+            <div id="walletStatus" class="wallet-status">Wallet not connected.</div>
+            <button id="connectWalletButton" class="wallet-button">Connect Phantom</button>
+            <nav class="btn-group" aria-label="Multiplayer menu">
+                <button id="createRoomButton" disabled>Create Room</button>
+                <button id="joinRoomButton" disabled>Join Room</button>
+                <button id="multiplayerBackButton">Back</button>
+            </nav>
+        </div>
+
+        <!--  Choose Name (first time per wallet)  -->
+        <div id="nameRegisterScreen" class="screen hidden">
+            <h2>Choose Your Name</h2>
+            <p>This name is tied to your wallet and shown on the leaderboard. Names must be unique.</p>
+            <input type="text" id="registerNameInput" class="name-input" maxlength="14"
+                autocomplete="off" spellcheck="false" placeholder="Your fighter name" aria-label="Your name" />
+            <p class="room-status room-status--error hidden" id="registerError"></p>
+            <p class="room-status hidden" id="registerStatus"></p>
+            <nav class="btn-group" aria-label="Choose name actions">
+                <button id="registerConfirmButton">Save &amp; Continue</button>
+                <button id="registerBackButton">Back</button>
+            </nav>
+        </div>
+
+        <!--  Leaderboard  -->
+        <div id="leaderboardScreen" class="screen hidden">
+            <h2>Leaderboard</h2>
+            <p>Top fighters by total round wins.</p>
+            <ol id="leaderboardList" class="leaderboard-list">
+                <li class="leaderboard-empty">Loading…</li>
+            </ol>
+            <button id="leaderboardBackButton">Back</button>
+        </div>
+
+        <!--  Create Room  -->
+        <div id="createRoomScreen" class="screen hidden">
+            <h2>Room Created</h2>
+            <p>Share this code with your opponent:</p>
+            <div class="room-code" id="roomCodeDisplay">------</div>
+            <button id="copyCodeButton" class="room-copy-button">Copy Code</button>
+            <p class="room-status" id="createRoomStatus">Waiting for opponent to join…</p>
+            <button id="createRoomBackButton">Cancel</button>
+        </div>
+
+        <!--  Join Room  -->
+        <div id="joinRoomScreen" class="screen hidden">
+            <h2>Join Room</h2>
+            <p>Enter the 6-character code from your opponent:</p>
+            <form id="joinRoomForm" class="join-form" onsubmit="return false;">
+                <input type="text" id="roomCodeInput" class="room-code-input" maxlength="6"
+                    autocomplete="off" autocapitalize="characters" spellcheck="false"
+                    placeholder="ABC123" aria-label="Room code" />
+            </form>
+            <p class="room-status room-status--error hidden" id="joinRoomError"></p>
+            <p class="room-status hidden" id="joinRoomStatus">Connecting…</p>
+            <nav class="btn-group" aria-label="Join room actions">
+                <button id="confirmJoinButton">Join</button>
+                <button id="joinRoomBackButton">Back</button>
+            </nav>
+        </div>
+
+        <!--  Opponent Disconnected  -->
+        <div id="disconnectOverlay" class="screen hidden">
+            <h2>Opponent Left</h2>
+            <p id="disconnectMessage">Your opponent disconnected.</p>
+            <button id="disconnectBackButton">Back to Menu</button>
         </div>
 
         <!--  Settings  -->
@@ -59,12 +132,14 @@
                     <option value="off">Always Off</option>
                 </select>
 
-                <label for="difficultySelect">Difficulty</label>
-                <select id="difficultySelect">
-                    <option value="easy" selected>Easy</option>
-                    <option value="normal">Normal</option>
-                    <option value="hard">Hard</option>
-                </select>
+                <div id="difficultySetting" class="settings-field">
+                    <label for="difficultySelect">Difficulty</label>
+                    <select id="difficultySelect">
+                        <option value="easy" selected>Easy</option>
+                        <option value="normal">Normal</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
             </form>
             <button id="settingsBackButton">Back</button>
         </div>
