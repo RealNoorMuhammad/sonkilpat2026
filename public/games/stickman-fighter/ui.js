@@ -12,7 +12,7 @@
  */
 import VirtualJoystick from './utils/virtualJoystick.js';
 import MultiplayerManager from './net/multiplayerManager.js';
-import { connectPhantom, shortAddress, isMobile, waitForPhantomProvider } from './net/phantomWallet.js';
+import { connectPhantom, shortAddress, isMobile, waitForPhantomProvider, getPhantomBrowseLink } from './net/phantomWallet.js';
 import { getPlayerByAddress, registerPlayer, getLeaderboard, incrementRoundWins } from './net/playerStore.js';
 
 export default class UIManager {
@@ -47,6 +47,7 @@ export default class UIManager {
         //  Wallet + account controls 
         this._walletStatus = document.getElementById('walletStatus');
         this._connectWalletButton = document.getElementById('connectWalletButton');
+        this._openPhantomLink = document.getElementById('openPhantomLink');
         this._registerNameInput = document.getElementById('registerNameInput');
         this._registerError = document.getElementById('registerError');
         this._registerStatus = document.getElementById('registerStatus');
@@ -179,6 +180,8 @@ export default class UIManager {
             this._walletStatus.classList.remove('wallet-status--connected');
         }
         if (this._connectWalletButton) this._connectWalletButton.textContent = 'Connect Phantom';
+        this._show(this._connectWalletButton);
+        this._hide(this._openPhantomLink);
         this._setOnlineButtonsEnabled(false);
         this._refreshWalletAvailability();
     }
@@ -188,17 +191,29 @@ export default class UIManager {
         const provider = await waitForPhantomProvider(1500);
         // Bail if the user connected or navigated away while we waited.
         if (this._wallet || !this._walletStatus) return;
+
         if (provider) {
+            // Phantom is injected (desktop extension or Phantom's in-app browser).
             this._walletStatus.textContent = 'Wallet not connected.';
+            this._show(this._connectWalletButton);
+            this._hide(this._openPhantomLink);
             if (this._connectWalletButton) this._connectWalletButton.textContent = 'Connect Phantom';
         } else if (isMobile()) {
-            this._walletStatus.textContent = 'Open this page inside the Phantom app to connect.';
-            if (this._connectWalletButton) this._connectWalletButton.textContent = 'Open in Phantom';
+            // No injected provider on a normal mobile browser. Phantom deeplinks
+            // must be a REAL user tap on a link (a JS redirect gets ignored and
+            // shows the install page), so present an actual anchor.
+            this._walletStatus.textContent = 'Tap below to open this page inside the Phantom app.';
+            this._hide(this._connectWalletButton);
+            if (this._openPhantomLink) {
+                this._openPhantomLink.href = getPhantomBrowseLink();
+                this._show(this._openPhantomLink);
+            }
         } else {
             this._walletStatus.innerHTML =
                 'Phantom extension not found. '
                 + '<a href="https://phantom.app/download" target="_blank" rel="noopener">Get Phantom</a>, then reload.';
-            if (this._connectWalletButton) this._connectWalletButton.textContent = 'Connect Phantom';
+            this._show(this._connectWalletButton);
+            this._hide(this._openPhantomLink);
         }
     }
 

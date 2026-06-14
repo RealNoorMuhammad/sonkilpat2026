@@ -311,6 +311,24 @@ body {
     background: #c2b6ff;
 }
 
+/* The "Open in Phantom" anchor must look like a button (base styles target <button>). */
+a.wallet-link {
+    display: inline-block;
+    font-family: "Pix32", sans-serif;
+    font-size: 1.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    text-align: center;
+    padding: 12px 24px;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+a.wallet-link:hover {
+    background: #c2b6ff;
+}
+
 /*  Leaderboard  */
 .leaderboard-list {
     list-style: none;
@@ -977,5 +995,19 @@ button:active {
     .touch-button--primary {
         min-height: 44px;
         font-size: 0.54rem;
+    }
+
+    /*  Cleaner main-menu buttons on mobile: uniform width, centered text  */
+    #menuScreen.screen--splash .btn-group {
+        gap: 9px;
+        width: min(248px, 56vw);
+    }
+
+    #menuScreen.screen--splash .btn-group button {
+        width: 100%;
+        text-align: center;
+        font-size: 0.95rem;
+        padding: 9px 16px;
+        letter-spacing: 0.06em;
     }
 }
