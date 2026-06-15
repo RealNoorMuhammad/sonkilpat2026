@@ -1,0 +1,8 @@
+/* Wallet modal on stickman game page — keep above iframe chrome */
+.stickman-game-page .wallet-adapter-modal-wrapper {
+  z-index: 10000;
+}
+
+.stickman-game-page .wallet-adapter-modal {
+  font-family: system-ui, -apple-system, sans-serif;
+}

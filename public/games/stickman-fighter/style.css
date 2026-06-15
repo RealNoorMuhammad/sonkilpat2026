@@ -162,6 +162,11 @@ body {
     z-index: 1;
 }
 
+/* Desktop: show full labels only (short labels are for mobile). */
+.menu-label--short {
+    display: none;
+}
+
 /*  Typography  */
 
 .screen h1 {
