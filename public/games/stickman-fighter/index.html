@@ -26,13 +26,21 @@
 
         <!--  Main Menu  -->
         <div id="menuScreen" class="screen screen--splash">
-            <nav class="btn-group" aria-label="Main menu">
-                <button id="startButton">Let's Go, Son</button>
-                <button id="multiplayerButton">Play vs Friend</button>
-                <button id="leaderboardButton">Leaderboard</button>
-                <button id="settingsButton">Settings</button>
-                <button id="instructionsButton">About</button>
-            </nav>
+            <div class="menu-actions">
+                <nav class="btn-group" aria-label="Main menu">
+                    <button id="startButton" class="menu-btn--primary">
+                        <span class="menu-label menu-label--full">Let's Go, Son</span>
+                        <span class="menu-label menu-label--short">Let's Go</span>
+                    </button>
+                    <button id="multiplayerButton">
+                        <span class="menu-label menu-label--full">Play vs Friend</span>
+                        <span class="menu-label menu-label--short">Play vs Friend</span>
+                    </button>
+                    <button id="leaderboardButton">Leaderboard</button>
+                </nav>
+                <button id="settingsButton" class="menu-btn--settings-corner menu-btn--accent">Settings</button>
+                <button id="instructionsButton" class="menu-btn--corner">About</button>
+            </div>
         </div>
 
         <!--  Multiplayer Menu  -->
@@ -109,8 +117,10 @@
 
         <!--  Settings  -->
         <div id="settingsScreen" class="screen hidden">
-            <h2>Settings</h2>
-            <form id="settingsForm" class="settings-form" onsubmit="return false;">
+            <div class="settings-panel">
+                <h2>Settings</h2>
+                <div class="settings-scroll-area">
+                <form id="settingsForm" class="settings-form" onsubmit="return false;">
 
                 <label for="masterVolumeRange">Master Volume</label>
                 <input type="range" id="masterVolumeRange" min="0" max="1" step="0.01">
@@ -121,6 +131,7 @@
                 <label for="sfxVolumeRange">SFX Volume</label>
                 <input type="range" id="sfxVolumeRange" min="0" max="1" step="0.01">
 
+                <div class="settings-form__advanced">
                 <label class="checkbox-label" for="muteToggle">
                     <input type="checkbox" id="muteToggle">
                     Mute All Audio
@@ -141,7 +152,10 @@
                         <option value="hard">Hard</option>
                     </select>
                 </div>
+                </div>
             </form>
+                </div>
+            </div>
             <button id="settingsBackButton">Back</button>
         </div>
 
