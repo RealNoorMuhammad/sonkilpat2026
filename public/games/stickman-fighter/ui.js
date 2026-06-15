@@ -94,6 +94,8 @@ export default class UIManager {
 
         //  Instructions 
         this._instructionsBackButton = document.getElementById('instructionsBackButton');
+        this._aboutTabs = document.querySelectorAll('#instructionsScreen .about-tab');
+        this._aboutPanels = document.querySelectorAll('#instructionsScreen .about-panel');
 
         //  Pause overlay 
         this._resumeButton = document.getElementById('resumeButton');
@@ -233,6 +235,30 @@ export default class UIManager {
     _setOnlineButtonsEnabled(enabled) {
         if (this._createRoomButton) this._createRoomButton.disabled = !enabled;
         if (this._joinRoomButton) this._joinRoomButton.disabled = !enabled;
+    }
+
+    _showAboutTab(tabId) {
+        const panelSuffix = tabId.charAt(0).toUpperCase() + tabId.slice(1);
+        const panelId = `aboutPanel${panelSuffix}`;
+
+        this._aboutTabs?.forEach((tab) => {
+            const active = tab.dataset.aboutTab === tabId;
+            tab.classList.toggle('about-tab--active', active);
+            tab.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+
+        this._aboutPanels?.forEach((panel) => {
+            const active = panel.id === panelId;
+            panel.classList.toggle('about-panel--active', active);
+            panel.hidden = !active;
+        });
+
+        const panelsWrap = document.querySelector('#instructionsScreen .about-panels');
+        if (panelsWrap) panelsWrap.scrollTop = 0;
+    }
+
+    _resetAboutTabs() {
+        this._showAboutTab('gameplay');
     }
 
     async _onConnectWallet() {
@@ -568,8 +594,16 @@ export default class UIManager {
         this._instructionsButton?.addEventListener('click', () => {
             if (!this._game.isRunning()) {
                 this._hideAllScreens();
+                this._resetAboutTabs();
                 this._show(this._instructionsScreen);
             }
+        });
+
+        this._aboutTabs?.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.dataset.aboutTab;
+                if (tabId) this._showAboutTab(tabId);
+            });
         });
 
         //  Settings 

@@ -161,62 +161,151 @@
 
         <!--  Instructions / About  -->
         <div id="instructionsScreen" class="screen hidden">
-            <h2>About</h2>
-            <p>
-                Are ya fighting, son? This is a fast-paced 1v1 brawler. Beat your rival
-                across multiple rounds — first to <strong>2 round wins</strong> and you&apos;re
-                winning, son. The AI adapts: it defends, punishes whiffs, and combos you.
-            </p>
+            <div class="about-shell">
+                <h2>About</h2>
 
-            <h2>Controls</h2>
-            <table class="controls-table">
-                <tr>
-                    <th>Action</th>
-                    <th>Key</th>
-                </tr>
-                <tr>
-                    <td>Move Left</td>
-                    <td>← / A</td>
-                </tr>
-                <tr>
-                    <td>Move Right</td>
-                    <td>→ / D</td>
-                </tr>
-                <tr>
-                    <td>Jump</td>
-                    <td>↑ / W</td>
-                </tr>
-                <tr>
-                    <td>Light Punch</td>
-                    <td>J</td>
-                </tr>
-                <tr>
-                    <td>Heavy Punch</td>
-                    <td>U</td>
-                </tr>
-                <tr>
-                    <td>Sweep Kick</td>
-                    <td>I</td>
-                </tr>
-                <tr>
-                    <td>Block</td>
-                    <td>K (hold)</td>
-                </tr>
-                <tr>
-                    <td>Pause</td>
-                    <td>Esc</td>
-                </tr>
-            </table>
+                <nav class="about-tabs" role="tablist" aria-label="About sections">
+                    <button type="button" class="about-tab about-tab--active" role="tab"
+                        id="aboutTabGameplay" aria-selected="true" aria-controls="aboutPanelGameplay"
+                        data-about-tab="gameplay">Gameplay</button>
+                    <button type="button" class="about-tab" role="tab"
+                        id="aboutTabControls" aria-selected="false" aria-controls="aboutPanelControls"
+                        data-about-tab="controls">Controls</button>
+                    <button type="button" class="about-tab" role="tab"
+                        id="aboutTabWallet" aria-selected="false" aria-controls="aboutPanelWallet"
+                        data-about-tab="wallet">Wallet</button>
+                    <button type="button" class="about-tab" role="tab"
+                        id="aboutTabMultiplayer" aria-selected="false" aria-controls="aboutPanelMultiplayer"
+                        data-about-tab="multiplayer">Vs Friend</button>
+                </nav>
 
-            <h2>Tips</h2>
-            <p>• Win a round? <strong>Are ya winning, son?</strong> — yeah, you are.</p>
-            <p>• Lose a round? Shake it off and run it back.</p>
-            <p>• Block reduces incoming damage by 85%.</p>
-            <p>• Heavy Punch hits hardest — save it for when the rival whiffs.</p>
-            <p>• Sweep Kick hits low, good for mix-ups.</p>
-            <p>• Hard mode AI punishes your recovery frames.</p>
+                <div class="about-panels">
+                    <section id="aboutPanelGameplay" class="about-panel about-panel--active" role="tabpanel"
+                        aria-labelledby="aboutTabGameplay">
+                        <h3>Are Ya Fighting, Son?</h3>
+                        <p>
+                            A fast-paced 1v1 stickman brawler. Fight your rival across multiple rounds —
+                            first to <strong>2 round wins</strong> takes the match. Are ya winning, son?
+                        </p>
+                        <p>
+                            <strong>Solo mode:</strong> Battle smart AI that blocks, punishes whiffs, and
+                            strings combos. Pick your difficulty in Settings — Easy, Normal, or Hard.
+                        </p>
+                        <p>
+                            <strong>Round flow:</strong> Win a round, run it back. Lose a round, shake it off.
+                            Each clean KO adds to your round-win count on the leaderboard when your wallet is connected.
+                        </p>
+                        <h3>Tips</h3>
+                        <ul class="about-list">
+                            <li>Block (hold) reduces incoming damage by <strong>85%</strong>.</li>
+                            <li>Heavy Punch hits hardest — save it for when the rival whiffs.</li>
+                            <li>Sweep Kick hits low; great for mix-ups and catching jumpers.</li>
+                            <li>Hard mode AI punishes slow recovery and repeated patterns.</li>
+                            <li>On mobile, use the on-screen joystick and action buttons (Settings → Mobile Controls).</li>
+                        </ul>
+                    </section>
 
-            <button id="instructionsBackButton">Back</button>
+                    <section id="aboutPanelControls" class="about-panel" role="tabpanel"
+                        aria-labelledby="aboutTabControls" hidden>
+                        <h3>Keyboard</h3>
+                        <table class="controls-table">
+                            <tr>
+                                <th>Action</th>
+                                <th>Key</th>
+                            </tr>
+                            <tr>
+                                <td>Move Left</td>
+                                <td>← / A</td>
+                            </tr>
+                            <tr>
+                                <td>Move Right</td>
+                                <td>→ / D</td>
+                            </tr>
+                            <tr>
+                                <td>Jump</td>
+                                <td>↑ / W</td>
+                            </tr>
+                            <tr>
+                                <td>Light Punch</td>
+                                <td>J</td>
+                            </tr>
+                            <tr>
+                                <td>Heavy Punch</td>
+                                <td>U</td>
+                            </tr>
+                            <tr>
+                                <td>Sweep Kick</td>
+                                <td>I</td>
+                            </tr>
+                            <tr>
+                                <td>Block</td>
+                                <td>K (hold)</td>
+                            </tr>
+                            <tr>
+                                <td>Pause</td>
+                                <td>Esc</td>
+                            </tr>
+                        </table>
+                        <h3>Mobile touch</h3>
+                        <ul class="about-list">
+                            <li><strong>Joystick</strong> (bottom-left) — move and jump.</li>
+                            <li><strong>Light Punch</strong> — quick jab.</li>
+                            <li><strong>Heavy Punch</strong> — big damage, slower.</li>
+                            <li><strong>Sweep Kick</strong> — low attack.</li>
+                            <li><strong>Block</strong> — hold to guard.</li>
+                        </ul>
+                        <p>Toggle touch controls in Settings → Mobile Controls (Auto-detect, Always On, or Always Off).</p>
+                    </section>
+
+                    <section id="aboutPanelWallet" class="about-panel" role="tabpanel"
+                        aria-labelledby="aboutTabWallet" hidden>
+                        <h3>Connect Phantom</h3>
+                        <p>
+                            Link your <strong>Phantom wallet</strong> to save your fighter name and round wins
+                            on the global leaderboard. Your wallet address is your account — no extra login.
+                        </p>
+                        <ol class="about-steps">
+                            <li>From the main menu, open <strong>Play vs Friend</strong> (wallet is required for online play and leaderboard).</li>
+                            <li>Tap <strong>Connect Phantom</strong>.</li>
+                            <li><strong>Desktop:</strong> approve the connection in the Phantom browser extension.</li>
+                            <li><strong>Mobile:</strong> Phantom opens to approve; you return to the same browser when done.</li>
+                            <li>First time only: pick a unique fighter name (max 14 characters) tied to your wallet.</li>
+                        </ol>
+                        <p>
+                            After connecting, your name and total round wins appear on the
+                            <strong>Leaderboard</strong>. Wins from solo and vs-friend matches count when logged in.
+                        </p>
+                    </section>
+
+                    <section id="aboutPanelMultiplayer" class="about-panel" role="tabpanel"
+                        aria-labelledby="aboutTabMultiplayer" hidden>
+                        <h3>Play vs Friend</h3>
+                        <p>
+                            Challenge a friend in real-time 1v1. Both players need a connected Phantom wallet
+                            and a registered fighter name.
+                        </p>
+                        <h3>Create a room</h3>
+                        <ol class="about-steps">
+                            <li>Connect Phantom and confirm your name.</li>
+                            <li>Tap <strong>Create Room</strong>.</li>
+                            <li>Share the <strong>6-character room code</strong> with your opponent.</li>
+                            <li>Wait on the room screen — the match starts when they join.</li>
+                        </ol>
+                        <h3>Join a room</h3>
+                        <ol class="about-steps">
+                            <li>Connect Phantom and confirm your name.</li>
+                            <li>Tap <strong>Join Room</strong>.</li>
+                            <li>Enter your friend&apos;s 6-character code and tap <strong>Join</strong>.</li>
+                        </ol>
+                        <p>
+                            Same rules as solo: first to <strong>2 round wins</strong> wins the match.
+                            If your opponent disconnects, you&apos;ll return to the menu.
+                        </p>
+                    </section>
+                </div>
+
+                <button id="instructionsBackButton">Back</button>
+            </div>
         </div>
 
         <!--  Pause Overlay  -->
