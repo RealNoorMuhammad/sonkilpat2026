@@ -1,6 +1,6 @@
 /**
- * walletBridge — ask the React parent page (Solana Wallet Adapter) to connect.
- * Used on mobile when the game runs inside the stickman-fighter iframe.
+ * walletBridge — ask the React parent page to connect Phantom on mobile.
+ * Used when the game runs inside the stickman-fighter iframe.
  */
 
 export function isEmbeddedInApp() {
@@ -11,7 +11,15 @@ export function isEmbeddedInApp() {
     }
 }
 
+/** Opens Phantom via the parent page (mobile deeplink flow). */
+export function openPhantomViaParent() {
+    if (!isEmbeddedInApp()) return false;
+    window.parent.postMessage({ type: 'stickman:connect-phantom' }, '*');
+    return true;
+}
+
 /**
+ * Desktop: ask parent to open the Solana wallet picker.
  * @returns {Promise<string>} connected wallet address (base58)
  */
 export function requestWalletViaParent() {

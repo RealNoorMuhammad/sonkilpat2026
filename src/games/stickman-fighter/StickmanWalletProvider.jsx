@@ -4,6 +4,10 @@ import { WalletModalProvider, useWalletModal } from "@solana/wallet-adapter-reac
 import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom";
 import { SolflareWalletAdapter } from "@solana/wallet-adapter-solflare";
 import { clusterApiUrl } from "@solana/web3.js";
+import {
+  isMobileDevice,
+  openPhantomConnect,
+} from "./phantomMobileConnect";
 
 import "@solana/wallet-adapter-react-ui/styles.css";
 import "./StickmanWalletProvider.css";
@@ -13,21 +17,35 @@ function WalletBridge({ iframeRef }) {
   const { publicKey, connected, connecting } = useWallet();
   const pendingRef = useRef(null);
   const wasVisibleRef = useRef(false);
+  const mobile = isMobileDevice();
 
   useEffect(() => {
     const onMessage = (event) => {
       if (event.origin !== window.location.origin) return;
       const iframeWindow = iframeRef.current?.contentWindow;
       if (!iframeWindow || event.source !== iframeWindow) return;
+
+      if (event.data?.type === "stickman:connect-phantom") {
+        pendingRef.current = iframeWindow;
+        openPhantomConnect();
+        return;
+      }
+
       if (event.data?.type !== "stickman:connect-wallet") return;
 
       pendingRef.current = iframeWindow;
+
+      if (mobile) {
+        openPhantomConnect();
+        return;
+      }
+
       setVisible(true);
     };
 
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
-  }, [iframeRef, setVisible]);
+  }, [iframeRef, mobile, setVisible]);
 
   useEffect(() => {
     if (connected && publicKey && pendingRef.current) {
@@ -43,6 +61,7 @@ function WalletBridge({ iframeRef }) {
   }, [connected, publicKey]);
 
   useEffect(() => {
+    if (mobile) return;
     if (visible) {
       wasVisibleRef.current = true;
       return;
@@ -60,7 +79,7 @@ function WalletBridge({ iframeRef }) {
     );
     pendingRef.current = null;
     wasVisibleRef.current = false;
-  }, [visible, connected, connecting]);
+  }, [mobile, visible, connected, connecting]);
 
   return null;
 }

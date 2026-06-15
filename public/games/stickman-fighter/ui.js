@@ -14,7 +14,7 @@ import VirtualJoystick from './utils/virtualJoystick.js';
 import MultiplayerManager from './net/multiplayerManager.js';
 import { connectPhantom, shortAddress, isMobile, waitForPhantomProvider } from './net/phantomWallet.js';
 import { buildConnectDeeplink, readConnectResponseFromUrl, clearConnectResponseFromUrl } from './net/phantomDeeplink.js';
-import { isEmbeddedInApp, requestWalletViaParent } from './net/walletBridge.js';
+import { isEmbeddedInApp, openPhantomViaParent, requestWalletViaParent } from './net/walletBridge.js';
 import { getPlayerByAddress, registerPlayer, getLeaderboard, incrementRoundWins } from './net/playerStore.js';
 
 export default class UIManager {
@@ -202,11 +202,12 @@ export default class UIManager {
             this._hide(this._openPhantomLink);
             if (this._connectWalletButton) this._connectWalletButton.textContent = 'Connect Phantom';
         } else if (isMobile() && isEmbeddedInApp()) {
-            // Mobile inside the React app — Solana Wallet Adapter (Phantom first).
-            this._walletStatus.textContent = 'Choose Phantom or another Solana wallet.';
+            // Mobile inside the React app — opens Phantom app directly.
+            this._walletStatus.textContent =
+                'Tap Connect Phantom, approve in the app, then you\u2019ll come right back here.';
             this._show(this._connectWalletButton);
             this._hide(this._openPhantomLink);
-            if (this._connectWalletButton) this._connectWalletButton.textContent = 'Connect Wallet';
+            if (this._connectWalletButton) this._connectWalletButton.textContent = 'Connect Phantom';
         } else if (isMobile()) {
             // No injected provider on a normal mobile browser. Use the connect
             // deeplink so the user STAYS in this browser (Chrome/Safari) — Phantom
@@ -242,6 +243,12 @@ export default class UIManager {
         try {
             let address;
             if (isMobile() && isEmbeddedInApp()) {
+                if (openPhantomViaParent()) {
+                    this._walletStatus.textContent = 'Opening Phantom… approve in the app to continue.';
+                    return;
+                }
+                address = await connectPhantom();
+            } else if (!isMobile() && isEmbeddedInApp()) {
                 address = await requestWalletViaParent();
             } else {
                 address = await connectPhantom();
