@@ -162,9 +162,23 @@ body {
     z-index: 1;
 }
 
-/* Desktop: show full labels only (short labels are for mobile). */
-.menu-label--short {
+/* Default menu labels: full text on desktop / large screens */
+#menuScreen.screen--splash .menu-label--full {
+    display: inline;
+}
+
+#menuScreen.screen--splash .menu-label--short {
     display: none;
+}
+
+@media screen and (min-width: 900px) {
+    #menuScreen.screen--splash .menu-label--full {
+        display: inline !important;
+    }
+
+    #menuScreen.screen--splash .menu-label--short {
+        display: none !important;
+    }
 }
 
 /*  Typography  */
@@ -726,17 +740,83 @@ button:active {
     gap: 0;
 }
 
-#instructionsScreen .about-shell {
-    width: min(560px, 94vw);
-    max-height: min(72vh, 640px);
+#instructionsScreen .about-panel {
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
+    align-items: flex-start;
+    width: min(560px, 92vw);
+}
+
+#instructionsScreen .about-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 0.85rem;
+    width: 100%;
+}
+
+#instructionsScreen .about-tab {
+    font-family: "Pix32", sans-serif;
+    font-size: clamp(0.62rem, 1.1vw, 0.78rem);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 7px 12px;
+    color: #e4e4e7;
+    background: rgba(24, 24, 27, 0.55);
+    border: 2px solid rgba(254, 240, 138, 0.35);
+    border-radius: 8px;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.65);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.1s;
+    flex: 0 0 auto;
+}
+
+#instructionsScreen .about-tab:hover {
+    background: rgba(254, 240, 138, 0.15);
+    border-color: var(--son-accent);
+    color: var(--son-accent);
+}
+
+#instructionsScreen .about-tab--active {
+    background: var(--son-accent);
+    color: #18181b;
+    border-color: var(--son-border);
+    box-shadow: 3px 3px 0 var(--son-shadow);
+}
+
+#instructionsScreen .about-tab-content {
+    width: 100%;
+    max-height: min(52vh, 420px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.4) rgba(255, 255, 255, 0.08);
+    padding-right: 4px;
+    -webkit-overflow-scrolling: touch;
+}
+
+#instructionsScreen .about-tab-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+#instructionsScreen .about-tab-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+}
+
+#instructionsScreen .about-tab-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 3px;
+}
+
+#instructionsScreen .about-tab-panel {
+    width: 100%;
 }
 
 #instructionsScreen h2 {
     font-size: clamp(1.35rem, 2.8vw, 1.75rem);
-    margin: 0 0 0.35rem;
+    margin: 0 0 0.85rem;
     color: var(--son-accent);
     text-shadow: 2px 2px 0 var(--son-shadow);
 }
@@ -744,90 +824,15 @@ button:active {
 #instructionsScreen h3 {
     font-family: "Pix32", sans-serif;
     font-size: clamp(0.95rem, 1.8vw, 1.15rem);
-    margin: 0.85rem 0 0.45rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 0.55rem;
     color: var(--son-accent);
     text-shadow: 1px 1px 0 var(--son-shadow);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
 }
 
-#instructionsScreen h3:first-child {
+#instructionsScreen .about-tab-panel:not(:first-child) h3 {
     margin-top: 0;
-}
-
-.about-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 0.25rem;
-}
-
-.about-tab {
-    font-family: "Pix32", sans-serif;
-    font-size: clamp(0.62rem, 1.1vw, 0.78rem);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    padding: 7px 14px;
-    border: 2px solid var(--son-border);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
-    color: #e4e4e7;
-    cursor: pointer;
-    box-shadow: 2px 2px 0 var(--son-shadow);
-    transition:
-        background 0.15s ease,
-        color 0.15s ease,
-        transform 0.15s ease;
-}
-
-.about-tab:hover,
-.about-tab:focus-visible {
-    background: rgba(254, 240, 138, 0.25);
-    color: #fafafa;
-    outline: none;
-}
-
-.about-tab--active {
-    background: var(--son-accent);
-    color: #000000;
-}
-
-.about-tab--active:hover,
-.about-tab--active:focus-visible {
-    background: var(--son-accent-soft);
-    color: #000000;
-}
-
-.about-panels {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding-right: 4px;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(254, 240, 138, 0.85) rgba(255, 255, 255, 0.1);
-}
-
-.about-panels::-webkit-scrollbar {
-    width: 6px;
-}
-
-.about-panels::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
-}
-
-.about-panels::-webkit-scrollbar-thumb {
-    background: rgba(254, 240, 138, 0.85);
-    border-radius: 3px;
-}
-
-.about-panel {
-    display: none;
-}
-
-.about-panel--active {
-    display: block;
 }
 
 #instructionsScreen p {
@@ -843,23 +848,6 @@ button:active {
 #instructionsScreen strong {
     color: var(--son-accent);
     font-weight: 700;
-}
-
-#instructionsScreen .about-list,
-#instructionsScreen .about-steps {
-    font-family: "Alte Haas Grotesk", sans-serif;
-    font-size: clamp(0.88rem, 1.5vw, 0.98rem);
-    line-height: 1.55;
-    color: #e4e4e7;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
-    margin: 0 0 10px;
-    padding-left: 1.15rem;
-    max-width: min(520px, 92vw);
-}
-
-#instructionsScreen .about-list li,
-#instructionsScreen .about-steps li {
-    margin-bottom: 6px;
 }
 
 #instructionsScreen .controls-table {
@@ -1296,45 +1284,43 @@ button:active {
         -webkit-overflow-scrolling: touch;
     }
 
-    #instructionsScreen .about-shell {
-        width: min(300px, 78vw);
-        max-height: min(58vh, 420px);
-        gap: 0.45rem;
+    #instructionsScreen .about-panel {
+        width: min(340px, 92vw);
+    }
+
+    #instructionsScreen .about-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 2px;
+        margin-bottom: 0.55rem;
+    }
+
+    #instructionsScreen .about-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    #instructionsScreen .about-tab {
+        font-size: 0.58rem;
+        padding: 5px 9px;
+        border-width: 2px;
+        white-space: nowrap;
+    }
+
+    #instructionsScreen .about-tab-content {
+        max-height: min(48vh, 320px);
     }
 
     #instructionsScreen h2 {
         font-size: 1.05rem;
-        margin-bottom: 0.25rem;
+        margin: 0 0 0.55rem;
     }
 
     #instructionsScreen h3 {
-        font-size: 0.72rem;
-        margin: 0.55rem 0 0.35rem;
-    }
-
-    .about-tabs {
-        gap: 4px;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        padding-bottom: 2px;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-    }
-
-    .about-tabs::-webkit-scrollbar {
-        display: none;
-    }
-
-    .about-tab {
-        flex: 0 0 auto;
-        font-size: 0.56rem;
-        padding: 5px 10px;
-        border-width: 2px;
-        box-shadow: 2px 2px 0 var(--son-shadow);
-    }
-
-    .about-panels {
-        max-height: min(42vh, 280px);
+        font-size: 0.78rem;
+        margin: 0 0 0.35rem;
     }
 
     #instructionsScreen p {
@@ -1342,20 +1328,6 @@ button:active {
         line-height: 1.5;
         margin-bottom: 5px;
         max-width: min(300px, 74vw);
-    }
-
-    #instructionsScreen .about-list,
-    #instructionsScreen .about-steps {
-        font-size: 0.68rem;
-        line-height: 1.45;
-        margin-bottom: 6px;
-        padding-left: 1rem;
-        max-width: min(300px, 74vw);
-    }
-
-    #instructionsScreen .about-list li,
-    #instructionsScreen .about-steps li {
-        margin-bottom: 4px;
     }
 
     #instructionsScreen .controls-table {

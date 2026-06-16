@@ -15,7 +15,8 @@ const WAVE_LAYERS = [
 
 function ThemeToggle() {
   const btnRef = useRef(null);
-  const { isDark, isTransitioning, setIsTransitioning, setTheme } = useTheme();
+  const { theme, isDark, isTransitioning, setIsTransitioning, setTheme } =
+    useTheme();
 
   const runWaveTransition = useCallback(
     (nextTheme, origin) => {

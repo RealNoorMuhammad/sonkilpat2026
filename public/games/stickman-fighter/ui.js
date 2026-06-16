@@ -14,7 +14,6 @@ import VirtualJoystick from './utils/virtualJoystick.js';
 import MultiplayerManager from './net/multiplayerManager.js';
 import { connectPhantom, shortAddress, isMobile, waitForPhantomProvider } from './net/phantomWallet.js';
 import { buildConnectDeeplink, readConnectResponseFromUrl, clearConnectResponseFromUrl } from './net/phantomDeeplink.js';
-import { isEmbeddedInApp, openPhantomViaParent, requestWalletViaParent } from './net/walletBridge.js';
 import { getPlayerByAddress, registerPlayer, getLeaderboard, incrementRoundWins } from './net/playerStore.js';
 
 export default class UIManager {
@@ -92,10 +91,11 @@ export default class UIManager {
         this._touchToggle = document.getElementById('touchToggle');
         this._difficultySelect = document.getElementById('difficultySelect');
 
-        //  Instructions 
+        //  Instructions / About tabs 
         this._instructionsBackButton = document.getElementById('instructionsBackButton');
         this._aboutTabs = document.querySelectorAll('#instructionsScreen .about-tab');
-        this._aboutPanels = document.querySelectorAll('#instructionsScreen .about-panel');
+        this._aboutPanels = document.querySelectorAll('#instructionsScreen .about-tab-panel');
+        this._activeAboutTab = 'overview';
 
         //  Pause overlay 
         this._resumeButton = document.getElementById('resumeButton');
@@ -203,13 +203,6 @@ export default class UIManager {
             this._show(this._connectWalletButton);
             this._hide(this._openPhantomLink);
             if (this._connectWalletButton) this._connectWalletButton.textContent = 'Connect Phantom';
-        } else if (isMobile() && isEmbeddedInApp()) {
-            // Mobile inside the React app — opens Phantom app directly.
-            this._walletStatus.textContent =
-                'Tap Connect Phantom, approve in the app, then you\u2019ll come right back here.';
-            this._show(this._connectWalletButton);
-            this._hide(this._openPhantomLink);
-            if (this._connectWalletButton) this._connectWalletButton.textContent = 'Connect Phantom';
         } else if (isMobile()) {
             // No injected provider on a normal mobile browser. Use the connect
             // deeplink so the user STAYS in this browser (Chrome/Safari) — Phantom
@@ -237,48 +230,13 @@ export default class UIManager {
         if (this._joinRoomButton) this._joinRoomButton.disabled = !enabled;
     }
 
-    _showAboutTab(tabId) {
-        const panelSuffix = tabId.charAt(0).toUpperCase() + tabId.slice(1);
-        const panelId = `aboutPanel${panelSuffix}`;
-
-        this._aboutTabs?.forEach((tab) => {
-            const active = tab.dataset.aboutTab === tabId;
-            tab.classList.toggle('about-tab--active', active);
-            tab.setAttribute('aria-selected', active ? 'true' : 'false');
-        });
-
-        this._aboutPanels?.forEach((panel) => {
-            const active = panel.id === panelId;
-            panel.classList.toggle('about-panel--active', active);
-            panel.hidden = !active;
-        });
-
-        const panelsWrap = document.querySelector('#instructionsScreen .about-panels');
-        if (panelsWrap) panelsWrap.scrollTop = 0;
-    }
-
-    _resetAboutTabs() {
-        this._showAboutTab('gameplay');
-    }
-
     async _onConnectWallet() {
         if (!this._walletStatus) return;
         this._walletStatus.textContent = 'Connecting wallet…';
         this._walletStatus.classList.remove('wallet-status--connected');
         this._setOnlineButtonsEnabled(false);
         try {
-            let address;
-            if (isMobile() && isEmbeddedInApp()) {
-                if (openPhantomViaParent()) {
-                    this._walletStatus.textContent = 'Opening Phantom… approve in the app to continue.';
-                    return;
-                }
-                address = await connectPhantom();
-            } else if (!isMobile() && isEmbeddedInApp()) {
-                address = await requestWalletViaParent();
-            } else {
-                address = await connectPhantom();
-            }
+            const address = await connectPhantom();
             await this._handleConnectedAddress(address);
         } catch (err) {
             this._walletStatus.textContent = (err && err.message) || 'Could not connect wallet.';
@@ -421,6 +379,37 @@ export default class UIManager {
         return String(str).replace(/[&<>"']/g, c => (
             { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
         ));
+    }
+
+    //  About screen tabs 
+
+    _bindAboutTabs() {
+        this._aboutTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                this._switchAboutTab(tab.dataset.tab);
+            });
+        });
+    }
+
+    _resetAboutTab() {
+        this._switchAboutTab('overview');
+    }
+
+    _switchAboutTab(tabId) {
+        if (!tabId) return;
+        this._activeAboutTab = tabId;
+
+        this._aboutTabs.forEach(tab => {
+            const isActive = tab.dataset.tab === tabId;
+            tab.classList.toggle('about-tab--active', isActive);
+            tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        this._aboutPanels.forEach(panel => {
+            const isActive = panel.dataset.tab === tabId;
+            panel.classList.toggle('hidden', !isActive);
+            panel.hidden = !isActive;
+        });
     }
 
     _setupMpHandlers() {
@@ -594,17 +583,12 @@ export default class UIManager {
         this._instructionsButton?.addEventListener('click', () => {
             if (!this._game.isRunning()) {
                 this._hideAllScreens();
-                this._resetAboutTabs();
+                this._resetAboutTab();
                 this._show(this._instructionsScreen);
             }
         });
 
-        this._aboutTabs?.forEach((tab) => {
-            tab.addEventListener('click', () => {
-                const tabId = tab.dataset.aboutTab;
-                if (tabId) this._showAboutTab(tabId);
-            });
-        });
+        this._bindAboutTabs();
 
         //  Settings 
         this._settingsBackButton?.addEventListener('click', () => this._onSettingsBack());
