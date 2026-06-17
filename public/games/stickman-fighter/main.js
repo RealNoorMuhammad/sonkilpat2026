@@ -38,7 +38,7 @@ ctx.fillStyle = '#ffffff';
 ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.canvasHeight);
 ctx.fillStyle = '#18181b';
 ctx.textAlign = 'center';
-ctx.font = '18px Pix32, sans-serif';
+ctx.font = '18px Pixeab, sans-serif';
 ctx.fillText('Loading…', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2);
 
 // 
@@ -1065,7 +1065,7 @@ class Game {
             }
         }
         ctx.save();
-        ctx.font = `bold 13px Pix32, sans-serif`;
+        ctx.font = `bold 13px Pixeab, sans-serif`;
         ctx.fillStyle = '#18181b';
         ctx.textAlign = 'left';
         ctx.fillText(leftLabel, PAD, BAR_Y + BAR_H + 14);
@@ -1089,7 +1089,7 @@ class Game {
         else if (ms >= 100) color = '#f59e0b'; // ok
 
         ctx.save();
-        ctx.font = `bold 12px Pix32, sans-serif`;
+        ctx.font = `bold 12px Pixeab, sans-serif`;
         ctx.textAlign = 'center';
         ctx.fillStyle = color;
         ctx.fillText(text, CONFIG.canvasWidth / 2, 76 + top);
@@ -1138,7 +1138,7 @@ class Game {
         ctx.textAlign = 'center';
 
         // Round label
-        ctx.font = `bold 14px Pix32, sans-serif`;
+        ctx.font = `bold 14px Pixeab, sans-serif`;
         ctx.fillStyle = '#15803d';
         ctx.fillText(`ROUND ${this._round}`, cx, 58 + top);
 
@@ -1200,7 +1200,7 @@ class Game {
         const roundDone = t > 0.65;
         const text = roundDone ? 'GET IN THERE, SON!' : `ROUND ${this._round}`;
 
-        ctx.font = `bold 72px Pix32, sans-serif`;
+        ctx.font = `bold 72px Pixeab, sans-serif`;
         ctx.textAlign = 'center';
         ctx.shadowColor = roundDone ? 'rgba(254, 240, 138, 0.9)' : 'rgba(15, 23, 42, 0.15)';
         ctx.shadowBlur = roundDone ? 18 : 8;
@@ -1257,25 +1257,25 @@ class Game {
             }
         }
 
-        ctx.font = `bold 42px Pix32, sans-serif`;
+        ctx.font = `bold 42px Pixeab, sans-serif`;
         ctx.shadowColor = playerWon ? 'rgba(202, 138, 4, 0.45)' : 'rgba(239, 68, 68, 0.35)';
         ctx.shadowBlur = 18;
         ctx.fillStyle = playerWon ? '#ca8a04' : '#dc2626';
         ctx.fillText(resultText, W / 2, H / 2 - 28);
 
-        ctx.font = `20px Pix32, sans-serif`;
+        ctx.font = `20px Pixeab, sans-serif`;
         ctx.shadowBlur = 0;
         ctx.fillStyle = '#3f3f46';
         ctx.fillText(subText, W / 2, H / 2 + 8);
 
         // Score
-        ctx.font = `24px Pix32, sans-serif`;
+        ctx.font = `24px Pixeab, sans-serif`;
         ctx.shadowBlur = 0;
         ctx.fillStyle = '#15803d';
         ctx.fillText(`${this._playerWins} — ${this._enemyWins}`, W / 2, H / 2 + 38);
 
         // Rematch hint
-        ctx.font = `16px Pix32, sans-serif`;
+        ctx.font = `16px Pixeab, sans-serif`;
         ctx.fillStyle = 'rgba(63, 63, 70, 0.75)';
         ctx.fillText(
             matchOver ? 'Run it back, son — press REMATCH' : 'Next round or quit, son',
@@ -1290,7 +1290,7 @@ class Game {
         const W = CONFIG.canvasWidth;
         ctx.save();
         ctx.textAlign = 'center';
-        ctx.font = `bold 28px Pix32, sans-serif`;
+        ctx.font = `bold 28px Pixeab, sans-serif`;
         ctx.shadowColor = 'rgba(202, 138, 4, 0.35)';
         ctx.shadowBlur = 10;
         ctx.fillStyle = '#b45309';

@@ -11,11 +11,12 @@
 }
 
 @font-face {
-    font-family: "Pix32";
-    src: url("../../Pix32.ttf") format("truetype");
+    font-family: "Pixeab";
+    src: url("../../PIXEAB__.TTF") format("truetype");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
+    size-adjust: 78%;
 }
 
 :root {
@@ -162,6 +163,13 @@ body {
     z-index: 1;
 }
 
+#menuScreen.screen--splash .btn-group button,
+#menuScreen.screen--splash #settingsButton,
+#menuScreen.screen--splash #instructionsButton {
+    font-size: clamp(0.88rem, 1.5vw, 1.05rem);
+    padding: 9px 18px;
+}
+
 /* Default menu labels: full text on desktop / large screens */
 #menuScreen.screen--splash .menu-label--full {
     display: inline;
@@ -189,7 +197,7 @@ body {
     left: 60px;
     margin: 0;
     max-width: min(520px, 55vw);
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: clamp(2rem, 5vw, 3.2rem);
     line-height: 1.05;
     letter-spacing: 0.04em;
@@ -203,7 +211,7 @@ body {
     top: 40px;
     left: 60px;
     margin: 0;
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: 3rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -219,7 +227,7 @@ body {
 #disconnectOverlay h2,
 #nameRegisterScreen h2,
 #leaderboardScreen h2 {
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: 2rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -246,7 +254,7 @@ body {
 }
 
 .room-code {
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: 2.6rem;
     letter-spacing: 0.4em;
     text-transform: uppercase;
@@ -267,7 +275,7 @@ body {
 }
 
 .room-code-input {
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: 2rem;
     letter-spacing: 0.35em;
     text-transform: uppercase;
@@ -290,7 +298,7 @@ body {
 }
 
 .field-label {
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: 0.95rem;
     color: var(--son-text-muted);
     margin-bottom: 6px;
@@ -298,7 +306,7 @@ body {
 }
 
 .name-input {
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: 1.4rem;
     text-align: center;
     width: 280px;
@@ -320,7 +328,7 @@ body {
 
 /*  Phantom wallet  */
 .wallet-status {
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: 0.95rem;
     color: #e4e4e7;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
@@ -348,7 +356,7 @@ body {
 /* The "Open in Phantom" anchor must look like a button (base styles target <button>). */
 a.wallet-link {
     display: inline-block;
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: 1.35rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -401,7 +409,7 @@ a.wallet-link:hover {
     display: flex;
     align-items: center;
     gap: 12px;
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: 1rem;
     min-height: 2.25rem;
     box-sizing: border-box;
@@ -441,12 +449,12 @@ a.wallet-link:hover {
     list-style: none;
     text-align: center;
     color: var(--son-text-muted);
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     padding: 16px;
 }
 
 .room-status {
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: 0.85rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -478,8 +486,8 @@ a.wallet-link:hover {
 }
 
 button {
-    font-family: "Pix32", sans-serif;
-    font-size: 1.35rem;
+    font-family: "Pixeab", sans-serif;
+    font-size: 1.08rem;
     font-weight: 400;
     text-align: left;
     text-transform: uppercase;
@@ -528,7 +536,7 @@ button:active {
     padding: 6px 16px;
     background: #fef08a;
     color: #000000;
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: 0.72rem;
     font-weight: 400;
     letter-spacing: 0.14em;
@@ -553,7 +561,7 @@ button:active {
     padding: 0;
     display: grid;
     place-items: center;
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: 14px;
     text-align: center;
     background: #ffffff;
@@ -658,7 +666,7 @@ button:active {
 
 #settingsScreen .settings-form label {
     margin-top: 0.65rem;
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: clamp(0.78rem, 1.3vw, 0.88rem);
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -756,7 +764,7 @@ button:active {
 }
 
 #instructionsScreen .about-tab {
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: clamp(0.62rem, 1.1vw, 0.78rem);
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -822,7 +830,7 @@ button:active {
 }
 
 #instructionsScreen h3 {
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: clamp(0.95rem, 1.8vw, 1.15rem);
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -871,7 +879,7 @@ button:active {
 }
 
 #instructionsScreen .controls-table th {
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     color: var(--son-accent);
     letter-spacing: 0.08em;
     font-size: clamp(0.72rem, 1.2vw, 0.82rem);
@@ -1147,7 +1155,7 @@ button:active {
     text-align: center;
     padding: 24px;
     z-index: 9999;
-    font-family: "Pix32", sans-serif;
+    font-family: "Pixeab", sans-serif;
     font-size: 1.2rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -1437,8 +1445,8 @@ button:active {
         flex: none;
         width: auto;
         text-align: center;
-        font-size: 0.68rem;
-        padding: 7px 14px;
+        font-size: 0.56rem;
+        padding: 6px 12px;
         letter-spacing: 0.05em;
         border-width: 2px;
         box-shadow: 3px 3px 0 var(--son-shadow);
@@ -1459,8 +1467,8 @@ button:active {
         right: clamp(10px, 2vw, 16px);
         z-index: 3;
         width: auto;
-        font-size: 0.68rem;
-        padding: 7px 14px;
+        font-size: 0.56rem;
+        padding: 6px 12px;
         letter-spacing: 0.05em;
     }
 
@@ -1470,8 +1478,8 @@ button:active {
         right: 0.85rem;
         z-index: 3;
         width: auto;
-        font-size: 0.68rem;
-        padding: 7px 14px;
+        font-size: 0.56rem;
+        padding: 6px 12px;
         letter-spacing: 0.05em;
     }
 

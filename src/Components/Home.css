@@ -7,11 +7,12 @@
 }
 
 @font-face {
-  font-family: "Pix32";
-  src: url("../../public/Pix32.ttf") format("truetype");
+  font-family: "FiveFontsAtFreddys";
+  src: url("../Fonts/FiveFontsatFreddy's-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+  size-adjust: 74%;
 }
 
 .main-home,
@@ -26,14 +27,14 @@
   paint-order: initial;
 }
 
-/* Nav links + buy button — Pix32 */
+/* Nav links + buy button — FiveFontsAtFreddys */
 .main-home .main-nav__link,
 .main-home .main-nav__mobile-card,
 .main-home .main-nav__mobile-card-text,
 .main-home .main-nav__buy,
 .main-home .main-nav__menu-btn-label,
 .main-home .main-nav__close-btn-label {
-  font-family: "Pix32", sans-serif !important;
+  font-family: "FiveFontsAtFreddys", sans-serif !important;
   font-synthesis: none;
 }
 
@@ -47,14 +48,14 @@
 .main-home .hero__eyebrow,
 .main-home .hero__ca-label,
 .main-home .hero__ca-value {
-  font-family: "Pix32", sans-serif !important;
+  font-family: "FiveFontsAtFreddys", sans-serif !important;
   font-synthesis: none;
 }
 
 .main-home .price-ticker__label,
 .main-home .price-ticker__value,
 .main-home .price-ticker__change {
-  font-family: "Pix32", sans-serif !important;
+  font-family: "FiveFontsAtFreddys", sans-serif !important;
   font-synthesis: none;
 }
 
@@ -68,7 +69,7 @@
 .main-home .live-buys__badge,
 .main-home .live-buys__refresh,
 .main-home .live-buys__foot {
-  font-family: "Pix32", sans-serif !important;
+  font-family: "FiveFontsAtFreddys", sans-serif !important;
   font-synthesis: none;
 }
 
@@ -85,7 +86,7 @@
 .main-home .tokenomics__eyebrow,
 .main-home .tokenomics__label,
 .main-home .tokenomics__value {
-  font-family: "Pix32", sans-serif !important;
+  font-family: "FiveFontsAtFreddys", sans-serif !important;
   font-synthesis: none;
 }
 
@@ -103,7 +104,7 @@
 .main-home .meme-community__action-label,
 .main-home .meme-community__action-hint,
 .main-home .meme-community__cta {
-  font-family: "Pix32", sans-serif !important;
+  font-family: "FiveFontsAtFreddys", sans-serif !important;
   font-synthesis: none;
 }
 
@@ -129,7 +130,7 @@
 .main-home .how-to-buy__dex-btn,
 .main-home .how-to-buy__scroll-hint,
 .main-home .how-to-buy__toast {
-  font-family: "Pix32", sans-serif !important;
+  font-family: "FiveFontsAtFreddys", sans-serif !important;
   font-synthesis: none;
 }
 
@@ -146,8 +147,196 @@
 .main-home .home-footer__buy,
 .main-home .home-footer__legal,
 .main-home .home-footer__copy {
-  font-family: "Pix32", sans-serif !important;
+  font-family: "FiveFontsAtFreddys", sans-serif !important;
   font-synthesis: none;
+}
+
+/* FiveFontsAtFreddys — tighter sizes */
+.main-home .main-nav__link {
+  font-size: clamp(0.65rem, 1.15vw, 0.78rem) !important;
+}
+
+.main-home .main-nav__buy {
+  font-size: 0.65rem !important;
+}
+
+.main-home .main-nav__buy--mobile {
+  font-size: 0.82rem !important;
+}
+
+.main-home .main-nav__menu-btn-label,
+.main-home .main-nav__close-btn-label {
+  font-size: 0.62rem !important;
+}
+
+.main-home .main-nav__mobile-card-text {
+  font-size: clamp(0.82rem, 3.7vw, 1.02rem) !important;
+}
+
+.main-home .main-nav__mobile-card-num,
+.main-home .main-nav__mobile-tag {
+  font-size: 0.58rem !important;
+}
+
+.main-home .hero__eyebrow {
+  font-size: 0.58rem !important;
+}
+
+.main-home .hero__copy,
+.main-home .hero__copy p {
+  font-size: clamp(0.78rem, 1.48vw, 0.86rem) !important;
+}
+
+.main-home .hero__ca-label {
+  font-size: 0.53rem !important;
+}
+
+.main-home .hero__ca-value {
+  font-size: clamp(0.59rem, 1.31vw, 0.7rem) !important;
+}
+
+.main-home .price-ticker__label {
+  font-size: 0.58rem !important;
+}
+
+.main-home .price-ticker__value {
+  font-size: clamp(0.78rem, 1.64vw, 0.94rem) !important;
+}
+
+.main-home .live-buys__eyebrow,
+.main-home .live-buys__dex-link {
+  font-size: 0.58rem !important;
+}
+
+.main-home .live-buys__stat-label {
+  font-size: 0.52rem !important;
+}
+
+.main-home .live-buys__stat-value {
+  font-size: clamp(0.9rem, 2vw, 1.18rem) !important;
+}
+
+.main-home .live-buys__panel-head {
+  font-size: 0.58rem !important;
+}
+
+.main-home .live-buys__amount {
+  font-size: clamp(0.82rem, 1.8vw, 0.98rem) !important;
+}
+
+.main-home .live-buys__tokens,
+.main-home .live-buys__badge {
+  font-size: 0.68rem !important;
+}
+
+.main-home .live-buys__refresh {
+  font-size: 0.62rem !important;
+}
+
+.main-home .live-buys__foot {
+  font-size: 0.65rem !important;
+}
+
+.main-home .tokenomics__eyebrow {
+  font-size: 0.58rem !important;
+}
+
+.main-home .tokenomics__label {
+  font-size: 0.6rem !important;
+}
+
+.main-home .tokenomics__value {
+  font-size: clamp(0.9rem, 1.8vw, 1.18rem) !important;
+}
+
+.main-home .meme-community__eyebrow {
+  font-size: 0.58rem !important;
+}
+
+.main-home .meme-community__intro {
+  font-size: clamp(0.78rem, 1.48vw, 0.88rem) !important;
+}
+
+.main-home .meme-community__step-num {
+  font-size: 0.56rem !important;
+}
+
+.main-home .meme-community__step-desc {
+  font-size: clamp(0.86rem, 1.64vw, 1.02rem) !important;
+}
+
+.main-home .meme-community__step-link,
+.main-home .meme-community__highlight-text {
+  font-size: 0.76rem !important;
+}
+
+.main-home .meme-community__action-label {
+  font-size: clamp(0.74rem, 1.48vw, 0.82rem) !important;
+}
+
+.main-home .meme-community__action-hint {
+  font-size: 0.62rem !important;
+}
+
+.main-home .meme-community__cta {
+  font-size: 0.82rem !important;
+}
+
+.main-home .how-to-buy__eyebrow {
+  font-size: 0.58rem !important;
+}
+
+.main-home .how-to-buy__desc {
+  font-size: clamp(0.86rem, 1.3vw, 0.98rem) !important;
+}
+
+.main-home .how-to-buy__copy-label {
+  font-size: 0.54rem !important;
+}
+
+.main-home .how-to-buy__copy-value {
+  font-size: clamp(0.66rem, 1vw, 0.74rem) !important;
+}
+
+.main-home .how-to-buy__dex-btn {
+  font-size: clamp(0.68rem, 1vw, 0.76rem) !important;
+}
+
+.main-home .how-to-buy__scroll-hint {
+  font-size: 0.56rem !important;
+}
+
+.main-home .how-to-buy__toast {
+  font-size: 0.72rem !important;
+}
+
+.main-home .home-footer__eyebrow {
+  font-size: 0.58rem !important;
+}
+
+.main-home .home-footer__tagline {
+  font-size: clamp(0.74rem, 1.3vw, 0.82rem) !important;
+}
+
+.main-home .home-footer__ca-label {
+  font-size: 0.54rem !important;
+}
+
+.main-home .home-footer__ca-value {
+  font-size: clamp(0.59rem, 1.23vw, 0.7rem) !important;
+}
+
+.main-home .home-footer__nav-link {
+  font-size: clamp(0.7rem, 1.15vw, 0.78rem) !important;
+}
+
+.main-home .home-footer__buy {
+  font-size: 0.78rem !important;
+}
+
+.main-home .home-footer__legal,
+.main-home .home-footer__copy {
+  font-size: 0.56rem !important;
 }
 
 .main-home {

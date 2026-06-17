@@ -16,8 +16,8 @@
   padding: 12px 22px;
   background: var(--son-bg);
   color: var(--son-text) !important;
-  font-family: "Pix32", sans-serif;
-  font-size: 0.85rem;
+  font-family: "FiveFontsAtFreddys", sans-serif;
+  font-size: 0.7rem;
   font-weight: 400;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -87,8 +87,8 @@
 
 .son-games__section-title {
   margin: 0 0 20px;
-  font-family: "Pix32", sans-serif;
-  font-size: clamp(0.9rem, 2vw, 1rem);
+  font-family: "FiveFontsAtFreddys", sans-serif;
+  font-size: clamp(0.74rem, 1.65vw, 0.82rem);
   font-weight: 400;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -99,8 +99,8 @@
 .son-games__footer-note {
   margin: 8px 0 0;
   max-width: 420px;
-  font-family: "Pix32", sans-serif;
-  font-size: 0.8rem;
+  font-family: "FiveFontsAtFreddys", sans-serif;
+  font-size: 0.66rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--son-text-faint);
@@ -178,8 +178,8 @@
 .son-games__loading-core {
   position: relative;
   z-index: 1;
-  font-family: "Pix32", sans-serif;
-  font-size: 1.1rem;
+  font-family: "FiveFontsAtFreddys", sans-serif;
+  font-size: 0.9rem;
   color: #000000;
   animation: sonGamesPulse 1.4s ease-in-out infinite;
 }
@@ -204,8 +204,8 @@
 
 .son-games__loading-text {
   margin: 0 0 18px;
-  font-family: "Pix32", sans-serif;
-  font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+  font-family: "FiveFontsAtFreddys", sans-serif;
+  font-size: clamp(0.78rem, 2vw, 0.94rem);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #000000;
@@ -410,8 +410,8 @@
 }
 
 .son-games__card-name {
-  font-family: "Pix32", sans-serif;
-  font-size: clamp(1.1rem, 3vw, 1.4rem);
+  font-family: "FiveFontsAtFreddys", sans-serif;
+  font-size: clamp(0.9rem, 2.45vw, 1.14rem);
   line-height: 1.2;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -423,7 +423,7 @@
   flex: 1;
   min-width: 0;
   text-align: left;
-  font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+  font-size: clamp(0.78rem, 1.8vw, 0.98rem);
 }
 
 .son-games__card--row .son-games__card-cta {
