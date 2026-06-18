@@ -36,6 +36,13 @@
   opacity: 0.92;
 }
 
+.theme-toggle--embedded {
+  position: absolute;
+  inset: 0;
+  right: auto;
+  bottom: auto;
+}
+
 .theme-toggle__icon {
   position: absolute;
   inset: 0;

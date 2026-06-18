@@ -1,0 +1,38 @@
+.scroll-to-top {
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 3px solid var(--son-border);
+  border-radius: 50%;
+  background: var(--son-toggle-bg);
+  color: var(--son-toggle-fg);
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    4px 4px 0 var(--son-shadow),
+    0 0 0 0 var(--son-toggle-ring);
+  transition:
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.scroll-to-top:hover {
+  transform: translate(-2px, -2px) scale(1.04);
+  box-shadow:
+    6px 6px 0 var(--son-shadow),
+    0 0 0 4px var(--son-toggle-ring);
+}
+
+.scroll-to-top:active {
+  transform: translate(1px, 1px) scale(0.98);
+}
+
+.floating-controls .scroll-to-top {
+  position: absolute;
+  inset: 0;
+}

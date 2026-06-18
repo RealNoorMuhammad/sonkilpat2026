@@ -13,7 +13,7 @@ const WAVE_LAYERS = [
   { path: "M0,256L80,250.7C160,245,320,235,480,245.3C640,256,800,288,960,277.3C1120,267,1280,213,1360,186.7L1440,160L1440,320L0,320Z", opacity: 0.65, yFrom: 140, duration: 1.55, delay: 0.2 },
 ];
 
-function ThemeToggle() {
+function ThemeToggle({ embedded = false }) {
   const btnRef = useRef(null);
   const { theme, isDark, isTransitioning, setIsTransitioning, setTheme } =
     useTheme();
@@ -182,7 +182,7 @@ function ThemeToggle() {
     <button
       ref={btnRef}
       type="button"
-      className={`theme-toggle${isDark ? " theme-toggle--dark" : ""}${isTransitioning ? " theme-toggle--busy" : ""}`}
+      className={`theme-toggle${embedded ? " theme-toggle--embedded" : ""}${isDark ? " theme-toggle--dark" : ""}${isTransitioning ? " theme-toggle--busy" : ""}`}
       onClick={handleClick}
       disabled={isTransitioning}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}

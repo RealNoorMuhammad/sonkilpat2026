@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useTheme } from "../theme/ThemeContext";
-import ThemeToggle from "./ThemeToggle";
+import FloatingControls from "./FloatingControls";
 import MainNavbar from "./MainNavbar";
 import HeroSection from "./HeroSection";
 import ListedOnSection from "./ListedOnSection";
@@ -35,7 +35,7 @@ const Home = () => {
       <PriceTicker />
       <BeforeFooterSection />
       <HomeFooter />
-      <ThemeToggle />
+      <FloatingControls />
     </div>
   );
 };
