@@ -78,6 +78,21 @@
   font-weight: 800 !important;
 }
 
+.main-home .listed-on__title {
+  font-family: "Alte Haas Grotesk", sans-serif !important;
+  font-weight: 800 !important;
+}
+
+.main-home .listed-on__eyebrow,
+.main-home .listed-on__subtitle,
+.main-home .listed-on__name,
+.main-home .listed-on__desc,
+.main-home .listed-on__badge,
+.main-home .listed-on__marquee-item {
+  font-family: "FiveFontsAtFreddys", sans-serif !important;
+  font-synthesis: none;
+}
+
 .main-home .tokenomics__title {
   font-family: "Alte Haas Grotesk", sans-serif !important;
   font-weight: 800 !important;
@@ -235,6 +250,30 @@
 
 .main-home .live-buys__foot {
   font-size: 0.65rem !important;
+}
+
+.main-home .listed-on__eyebrow {
+  font-size: 0.58rem !important;
+}
+
+.main-home .listed-on__subtitle {
+  font-size: clamp(0.74rem, 1.4vw, 0.86rem) !important;
+}
+
+.main-home .listed-on__name {
+  font-size: clamp(0.82rem, 1.4vw, 0.96rem) !important;
+}
+
+.main-home .listed-on__desc {
+  font-size: clamp(0.66rem, 1.1vw, 0.74rem) !important;
+}
+
+.main-home .listed-on__badge {
+  font-size: 0.5rem !important;
+}
+
+.main-home .listed-on__marquee-item {
+  font-size: 0.68rem !important;
 }
 
 .main-home .tokenomics__eyebrow {

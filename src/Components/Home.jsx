@@ -3,6 +3,7 @@ import { useTheme } from "../theme/ThemeContext";
 import ThemeToggle from "./ThemeToggle";
 import MainNavbar from "./MainNavbar";
 import HeroSection from "./HeroSection";
+import ListedOnSection from "./ListedOnSection";
 import PriceTicker from "./PriceTicker";
 import LiveBuysFeed from "./LiveBuysFeed";
 import Tokenomics from "./Tokenomics";
@@ -30,6 +31,7 @@ const Home = () => {
       <MemeCommunitySection />
       <BannerSection />
       <HowToBuy />
+      <ListedOnSection />
       <PriceTicker />
       <BeforeFooterSection />
       <HomeFooter />

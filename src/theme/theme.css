@@ -157,6 +157,35 @@ body {
   color: var(--son-text-inverse);
 }
 
+.main-home .listed-on,
+.main-home[data-theme="dark"] .listed-on {
+  background: #050505;
+  border-color: #000;
+  color: #fff;
+}
+
+.main-home .listed-on__title {
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.72) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.main-home .listed-on__eyebrow,
+.main-home[data-theme="dark"] .listed-on__eyebrow {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.main-home .listed-on__name,
+.main-home[data-theme="dark"] .listed-on__name {
+  color: #fff;
+}
+
+.main-home .listed-on__desc,
+.main-home[data-theme="dark"] .listed-on__desc {
+  color: rgba(255, 255, 255, 0.62);
+}
+
 .main-home .tokenomics,
 .main-home .meme-community,
 .main-home .how-to-buy,
