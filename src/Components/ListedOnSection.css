@@ -114,6 +114,12 @@
   color: transparent;
 }
 
+.listed-on__list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.5vw, 24px);
+}
+
 .listed-on__showcase {
   position: relative;
   display: grid;

@@ -1,0 +1,788 @@
+.son-chart {
+  --chart-accent: #8dc63f;
+  --chart-accent-bright: #4ade80;
+  --chart-down: #f87171;
+  --chart-surface: rgba(255, 255, 255, 0.04);
+  --chart-border: rgba(255, 255, 255, 0.1);
+
+  position: relative;
+  width: 100%;
+  background: #050505;
+  color: #fff;
+  border-top: 3px solid #000;
+  border-bottom: 3px solid #000;
+  overflow: hidden;
+}
+
+.son-chart__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.son-chart__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 35%, #000 15%, transparent 100%);
+}
+
+.son-chart__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.5;
+}
+
+.son-chart__orb--a {
+  top: -8%;
+  left: 6%;
+  width: min(480px, 55vw);
+  height: min(480px, 55vw);
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.4) 0%, transparent 70%);
+  animation: son-chart-float-a 10s ease-in-out infinite;
+}
+
+.son-chart__orb--b {
+  right: 4%;
+  bottom: -20%;
+  width: min(560px, 62vw);
+  height: min(560px, 62vw);
+  background: radial-gradient(circle, rgba(141, 198, 63, 0.25) 0%, transparent 70%);
+  animation: son-chart-float-b 12s ease-in-out infinite;
+}
+
+@keyframes son-chart-float-a {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(20px, 16px);
+  }
+}
+
+@keyframes son-chart-float-b {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-18px, -12px);
+  }
+}
+
+.son-chart__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: clamp(48px, 7vw, 80px) clamp(20px, 4vw, 48px);
+  box-sizing: border-box;
+}
+
+.son-chart__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: clamp(28px, 4vw, 40px);
+  flex-wrap: wrap;
+}
+
+.son-chart__eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.son-chart__title {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  line-height: 0.95;
+  background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.7) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.son-chart__header-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.son-chart__sync {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.35);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+.son-chart__sync-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ade80;
+  animation: son-chart-sync-blink 1.2s ease-in-out infinite;
+}
+
+@keyframes son-chart-sync-blink {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.8);
+  }
+  50% {
+    opacity: 0.35;
+    box-shadow: none;
+  }
+}
+
+.son-chart__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--chart-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.son-chart__link:hover {
+  border-color: rgba(141, 198, 63, 0.5);
+  background: rgba(141, 198, 63, 0.12);
+  color: #d9f99d;
+}
+
+.son-chart__panel {
+  position: relative;
+  border-radius: 28px;
+  border: 1px solid var(--chart-border);
+  background: var(--chart-surface);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow:
+    0 28px 100px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  overflow: visible;
+  transition:
+    border-color 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+.son-chart__panel--up {
+  border-color: rgba(74, 222, 128, 0.28);
+  box-shadow:
+    0 28px 100px rgba(0, 0, 0, 0.5),
+    0 0 48px rgba(74, 222, 128, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.son-chart__panel--down {
+  border-color: rgba(248, 113, 113, 0.22);
+  box-shadow:
+    0 28px 100px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(248, 113, 113, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.son-chart__panel-border {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(141, 198, 63, 0.45),
+    rgba(255, 255, 255, 0.08) 42%,
+    rgba(254, 240, 138, 0.3)
+  );
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  opacity: 0.42;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.45s ease;
+}
+
+.son-chart__panel--up .son-chart__panel-border {
+  background: linear-gradient(
+    135deg,
+    rgba(74, 222, 128, 0.55),
+    rgba(141, 198, 63, 0.25) 45%,
+    rgba(190, 242, 100, 0.4)
+  );
+  opacity: 0.65;
+}
+
+.son-chart__panel--down .son-chart__panel-border {
+  background: linear-gradient(
+    135deg,
+    rgba(248, 113, 113, 0.4),
+    rgba(255, 255, 255, 0.06) 45%,
+    rgba(248, 113, 113, 0.25)
+  );
+  opacity: 0.5;
+}
+
+.son-chart__panel-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: clamp(22px, 3vw, 28px) clamp(22px, 3vw, 32px) 0;
+  flex-wrap: wrap;
+}
+
+.son-chart__price-block {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px 16px;
+}
+
+.son-chart__live-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  background: rgba(74, 222, 128, 0.1);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #86efac;
+}
+
+.son-chart__live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.9);
+  animation: son-chart-pulse 2s ease-in-out infinite;
+}
+
+@keyframes son-chart-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.85);
+  }
+}
+
+.son-chart__price {
+  font-size: clamp(1.75rem, 4vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  transition:
+    color 0.3s ease,
+    text-shadow 0.3s ease;
+}
+
+.son-chart__price--tick-up {
+  color: #86efac;
+  text-shadow: 0 0 24px rgba(74, 222, 128, 0.55);
+  animation: son-chart-price-flash-up 0.7s ease;
+}
+
+.son-chart__price--tick-down {
+  color: #fca5a5;
+  text-shadow: 0 0 24px rgba(248, 113, 113, 0.45);
+  animation: son-chart-price-flash-down 0.7s ease;
+}
+
+@keyframes son-chart-price-flash-up {
+  0% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes son-chart-price-flash-down {
+  0% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.son-chart__change {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.son-chart__change span {
+  font-size: 0.72rem;
+  font-weight: 600;
+  opacity: 0.65;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.son-chart__change--up {
+  color: var(--chart-accent-bright);
+}
+
+.son-chart__change--down {
+  color: var(--chart-down);
+}
+
+.son-chart__ranges {
+  display: inline-flex;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid var(--chart-border);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.son-chart__range {
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 10px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.son-chart__range:hover {
+  color: #fff;
+}
+
+.son-chart__range--active {
+  background: linear-gradient(135deg, #8dc63f, #4ade80);
+  color: #050505;
+  box-shadow: 0 4px 20px rgba(141, 198, 63, 0.35);
+}
+
+.son-chart__stats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1px;
+  margin: 20px clamp(22px, 3vw, 32px) 0;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--chart-border);
+  background: var(--chart-border);
+}
+
+.son-chart__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.son-chart__stat-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.son-chart__stat-value {
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  font-weight: 700;
+  color: #fff;
+}
+
+.son-chart__stat-value--up {
+  color: var(--chart-accent-bright);
+}
+
+.son-chart__stat-value--down {
+  color: var(--chart-down);
+}
+
+.son-chart__stat--highlight {
+  background: rgba(74, 222, 128, 0.1);
+  box-shadow: inset 0 0 28px rgba(74, 222, 128, 0.06);
+}
+
+.son-chart__stat--highlight .son-chart__stat-label {
+  color: rgba(134, 239, 172, 0.75);
+}
+
+.son-chart__stat--highlight .son-chart__stat-value--up {
+  text-shadow: 0 0 20px rgba(74, 222, 128, 0.35);
+}
+
+.son-chart__stat--highlight .son-chart__stat-value--down {
+  text-shadow: 0 0 20px rgba(248, 113, 113, 0.25);
+}
+
+.son-chart__canvas {
+  position: relative;
+  margin-top: 20px;
+  min-height: clamp(240px, 40vw, 360px);
+  padding: 0 clamp(12px, 2vw, 20px) 12px;
+  overflow: visible;
+}
+
+.son-chart__canvas--loading .son-chart__svg {
+  opacity: 0.35;
+}
+
+.son-chart__plot-frame {
+  position: relative;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -24px 48px rgba(141, 198, 63, 0.04);
+  overflow: visible;
+}
+
+.son-chart__plot-bg {
+  opacity: 0.95;
+}
+
+.son-chart__live-zone {
+  opacity: 0.85;
+}
+
+.son-chart__svg {
+  display: block;
+  width: 100%;
+  height: clamp(240px, 40vw, 360px);
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.son-chart__vol-bar {
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+.son-chart__area-glow {
+  opacity: 0.55;
+  transition: d 0.45s ease;
+}
+
+.son-chart__area {
+  opacity: 0.95;
+  transition: d 0.45s ease;
+}
+
+.son-chart__line-glow {
+  stroke-width: 6;
+  opacity: 0.45;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: d 0.45s ease;
+}
+
+.son-chart__line {
+  stroke-width: 2.75;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: d 0.45s ease;
+}
+
+.son-chart__line--up {
+  filter: drop-shadow(0 0 6px rgba(74, 222, 128, 0.45));
+}
+
+.son-chart__line--down {
+  filter: drop-shadow(0 0 6px rgba(248, 113, 113, 0.35));
+}
+
+.son-chart__win-popup-anchor {
+  position: absolute;
+  z-index: 4;
+  pointer-events: none;
+  transform: translate(-100%, calc(-100% - 18px));
+}
+
+.son-chart__win-popup {
+  position: relative;
+  display: inline-flex;
+}
+
+.son-chart__win-popup-burst {
+  position: absolute;
+  inset: -10px -14px;
+  border-radius: 999px;
+  border: 2px solid rgba(190, 242, 100, 0.75);
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.35) 0%, transparent 70%);
+}
+
+.son-chart__win-popup-body {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(190, 242, 100, 0.55);
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.22) 0%, rgba(5, 5, 5, 0.92) 45%, rgba(141, 198, 63, 0.18) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 24px rgba(74, 222, 128, 0.35);
+  white-space: nowrap;
+}
+
+.son-chart__win-popup-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4ade80, #8dc63f);
+  color: #050505;
+  font-size: 0.55rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.son-chart__win-popup-text {
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ecfccb;
+  text-shadow: 0 0 18px rgba(74, 222, 128, 0.45);
+  white-space: nowrap;
+}
+
+.son-chart__crosshair {
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+  vector-effect: non-scaling-stroke;
+}
+
+.son-chart__dot-ring {
+  fill: rgba(141, 198, 63, 0.2);
+  stroke: rgba(141, 198, 63, 0.55);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.son-chart__dot {
+  fill: #8dc63f;
+}
+
+.son-chart__dot--down {
+  fill: #f87171;
+}
+
+.son-chart__live-end {
+  pointer-events: none;
+}
+
+.son-chart__ripple {
+  fill: none;
+  stroke: rgba(74, 222, 128, 0.6);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.son-chart__grid-line {
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.son-chart__grid-line--v {
+  stroke: rgba(141, 198, 63, 0.08);
+  stroke-dasharray: 3 8;
+}
+
+.son-chart__grid-label {
+  fill: rgba(255, 255, 255, 0.28);
+  font-size: 10px;
+  font-weight: 600;
+  text-anchor: end;
+  paint-order: stroke fill;
+}
+
+.son-chart__tooltip {
+  position: absolute;
+  top: 8px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(141, 198, 63, 0.45);
+  background: rgba(5, 5, 5, 0.94);
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    0 0 20px rgba(141, 198, 63, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.son-chart__tooltip-price {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #d9f99d;
+}
+
+.son-chart__tooltip-time {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.son-chart__skeleton {
+  position: absolute;
+  inset: 12px 20px 24px;
+  border-radius: 16px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: son-chart-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes son-chart-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.son-chart__error {
+  margin: 40px 0;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.95rem;
+}
+
+.son-chart__error--pending {
+  color: rgba(134, 239, 172, 0.75);
+  animation: son-chart-shimmer 1.4s ease-in-out infinite;
+}
+
+.son-chart__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 14px clamp(22px, 3vw, 32px) 22px;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.son-chart__contract {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--chart-border);
+  background: rgba(0, 0, 0, 0.35);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+@media (max-width: 900px) {
+  .son-chart__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .son-chart__stat:last-child {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .son-chart__panel-top {
+    flex-direction: column;
+  }
+
+  .son-chart__ranges {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .son-chart__range {
+    flex: 1;
+    padding: 10px 8px;
+    text-align: center;
+  }
+
+  .son-chart__stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .son-chart__stat:last-child {
+    grid-column: span 2;
+  }
+
+  .son-chart__foot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

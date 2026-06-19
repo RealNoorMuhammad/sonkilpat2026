@@ -93,6 +93,30 @@
   font-synthesis: none;
 }
 
+.main-home .son-chart__eyebrow,
+.main-home .son-chart__sync,
+.main-home .son-chart__link,
+.main-home .son-chart__live-tag,
+.main-home .son-chart__change,
+.main-home .son-chart__range,
+.main-home .son-chart__stat-label,
+.main-home .son-chart__stat-value,
+.main-home .son-chart__tooltip-price,
+.main-home .son-chart__tooltip-time,
+.main-home .son-chart__win-popup-text,
+.main-home .son-chart__foot,
+.main-home .son-chart__contract,
+.main-home .son-chart__error {
+  font-family: "FiveFontsAtFreddys", sans-serif !important;
+  font-synthesis: none;
+}
+
+.main-home .son-chart__title,
+.main-home .son-chart__price {
+  font-family: "Alte Haas Grotesk", sans-serif !important;
+  font-weight: 800 !important;
+}
+
 .main-home .tokenomics__title {
   font-family: "Alte Haas Grotesk", sans-serif !important;
   font-weight: 800 !important;
@@ -274,6 +298,43 @@
 
 .main-home .listed-on__marquee-item {
   font-size: 0.68rem !important;
+}
+
+.main-home .son-chart__eyebrow,
+.main-home .son-chart__sync,
+.main-home .son-chart__link,
+.main-home .son-chart__live-tag {
+  font-size: 0.58rem !important;
+}
+
+.main-home .son-chart__change {
+  font-size: 0.82rem !important;
+}
+
+.main-home .son-chart__range {
+  font-size: 0.62rem !important;
+}
+
+.main-home .son-chart__stat-label {
+  font-size: 0.52rem !important;
+}
+
+.main-home .son-chart__stat-value {
+  font-size: clamp(0.82rem, 1.4vw, 0.96rem) !important;
+}
+
+.main-home .son-chart__tooltip-price {
+  font-size: 0.82rem !important;
+}
+
+.main-home .son-chart__tooltip-time,
+.main-home .son-chart__foot,
+.main-home .son-chart__contract {
+  font-size: 0.62rem !important;
+}
+
+.main-home .son-chart__win-popup-text {
+  font-size: 0.72rem !important;
 }
 
 .main-home .tokenomics__eyebrow {

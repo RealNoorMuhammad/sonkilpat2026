@@ -1,24 +1,20 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import {
+  BUYS_POLL_MS,
+  DEX_URL,
+  formatCompact,
+  formatPrice,
+} from "../token/sonToken";
+import { useSonPrice } from "../token/SonPriceContext";
 import "./LiveBuysFeed.css";
 
-const TOKEN = "ACpzkGJV3DDU8HXy8yjab7RL9qNmDGym2GwLkzNppump";
-const DEX_URL = `https://dexscreener.com/solana/${TOKEN}`;
-const DEX_PAIRS_API = `https://api.dexscreener.com/token-pairs/v1/solana/${TOKEN}`;
-const POLL_MS = 5_000;
 const MAX_BUYS = 14;
 const WHALE_USD = 500;
 
 function tradesApiUrl(pairAddress) {
   const pool = encodeURIComponent(pairAddress);
   return `/api/gecko/networks/solana/pools/${pool}/trades`;
-}
-
-function pickBestPair(pairs) {
-  if (!pairs?.length) return null;
-  return [...pairs].sort(
-    (a, b) => (b.liquidity?.usd || 0) - (a.liquidity?.usd || 0)
-  )[0];
 }
 
 function truncateWallet(addr) {
@@ -66,7 +62,7 @@ function mapBuyTrade(trade) {
 }
 
 function LiveBuysFeed() {
-  const [pair, setPair] = useState(null);
+  const { pair, pairAddress, priceUsd, symbol } = useSonPrice();
   const [buys, setBuys] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -74,18 +70,7 @@ function LiveBuysFeed() {
   const seenRef = useRef(new Set());
   const hadBuysRef = useRef(false);
 
-  const fetchPair = useCallback(async () => {
-    const res = await fetch(DEX_PAIRS_API);
-    if (!res.ok) throw new Error("DexScreener pair lookup failed");
-    const pairs = await res.json();
-    const best = pickBestPair(pairs);
-    if (!best?.pairAddress) throw new Error("No trading pair found");
-    setPair(best);
-    return best;
-  }, []);
-
-  const fetchBuys = useCallback(async (pairData) => {
-    const addr = pairData?.pairAddress ?? pair?.pairAddress;
+  const fetchBuys = useCallback(async (addr) => {
     if (!addr) return;
 
     const res = await fetch(tradesApiUrl(addr));
@@ -114,18 +99,16 @@ function LiveBuysFeed() {
     hadBuysRef.current = incoming.length > 0;
     setBuys(incoming);
     setError(null);
-  }, [pair?.pairAddress]);
+  }, []);
 
   useEffect(() => {
+    if (!pairAddress) return;
+
     let cancelled = false;
-    let pairCache = null;
 
     const tick = async () => {
       try {
-        if (!pairCache) {
-          pairCache = await fetchPair();
-        }
-        await fetchBuys(pairCache);
+        await fetchBuys(pairAddress);
       } catch (e) {
         if (!cancelled && !hadBuysRef.current) {
           setError(e.message || "Could not load live buys");
@@ -137,17 +120,15 @@ function LiveBuysFeed() {
 
     setLoading(true);
     tick();
-    const intervalId = setInterval(tick, POLL_MS);
+    const intervalId = setInterval(tick, BUYS_POLL_MS);
 
     return () => {
       cancelled = true;
       clearInterval(intervalId);
     };
-  }, [fetchPair, fetchBuys]);
+  }, [pairAddress, fetchBuys]);
 
   const stats = pair?.txns;
-  const priceUsd = pair?.priceUsd;
-  const symbol = pair?.baseToken?.symbol || "SON";
 
   return (
     <section
@@ -181,9 +162,7 @@ function LiveBuysFeed() {
           <div className="live-buys__stat">
             <span className="live-buys__stat-label">Price</span>
             <span className="live-buys__stat-value">
-              {priceUsd
-                ? `$${parseFloat(priceUsd) < 0.01 ? parseFloat(priceUsd).toFixed(6) : parseFloat(priceUsd).toFixed(4)}`
-                : "—"}
+              {priceUsd ? formatPrice(priceUsd) : "—"}
             </span>
           </div>
           <div className="live-buys__stat live-buys__stat--highlight">
@@ -201,9 +180,7 @@ function LiveBuysFeed() {
           <div className="live-buys__stat">
             <span className="live-buys__stat-label">Vol · 24h</span>
             <span className="live-buys__stat-value">
-              {pair?.volume?.h24
-                ? formatUsd(pair.volume.h24)
-                : "—"}
+              {pair?.volume?.h24 ? formatCompact(pair.volume.h24) : "—"}
             </span>
           </div>
         </div>
@@ -212,7 +189,7 @@ function LiveBuysFeed() {
           <div className="live-buys__panel-head">
             <span>Incoming buys</span>
             <span className="live-buys__refresh">
-              {loading ? "Syncing…" : `Updates every ${POLL_MS / 1000}s`}
+              {loading ? "Syncing…" : `Updates every ${BUYS_POLL_MS / 1000}s`}
             </span>
           </div>
 
