@@ -8,7 +8,11 @@ const NAV_LINKS = [
   { text: "PFP Generator", to: "/sonpfpmaker" },
   { text: "Upload Meme", to: "/upload-meme" },
   { text: "MEME Generator", to: "/meme-generator" },
-  { text: "SON Games", to: "/son-games" },
+  {
+    text: "SON Games",
+    href: "https://play.areyawinningson.io/",
+    external: true,
+  },
 ];
 
 const BUY_URL =
@@ -69,11 +73,23 @@ function MainNavbar() {
         </Link>
 
         <nav className="main-nav__desktop" aria-label="Main navigation">
-          {NAV_LINKS.map((item) => (
-            <Link key={item.to} to={item.to} className="main-nav__link">
-              {item.text}
-            </Link>
-          ))}
+          {NAV_LINKS.map((item) =>
+            item.external ? (
+              <a
+                key={item.href}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="main-nav__link"
+              >
+                {item.text}
+              </a>
+            ) : (
+              <Link key={item.to} to={item.to} className="main-nav__link">
+                {item.text}
+              </Link>
+            )
+          )}
         </nav>
 
         <div className="main-nav__actions main-nav__actions--desktop">
@@ -150,20 +166,51 @@ function MainNavbar() {
                 animate="visible"
               >
                 {NAV_LINKS.map((item, i) => (
-                  <motion.div key={item.to} variants={itemVariants}>
-                    <Link
-                      to={item.to}
-                      className="main-nav__mobile-card"
-                      onClick={closeMenu}
-                    >
-                      <span className="main-nav__mobile-card-num">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span className="main-nav__mobile-card-text">{item.text}</span>
-                      <span className="main-nav__mobile-card-arrow" aria-hidden="true">
-                        →
-                      </span>
-                    </Link>
+                  <motion.div
+                    key={item.to || item.href}
+                    variants={itemVariants}
+                  >
+                    {item.external ? (
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="main-nav__mobile-card"
+                        onClick={closeMenu}
+                      >
+                        <span className="main-nav__mobile-card-num">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="main-nav__mobile-card-text">
+                          {item.text}
+                        </span>
+                        <span
+                          className="main-nav__mobile-card-arrow"
+                          aria-hidden="true"
+                        >
+                          →
+                        </span>
+                      </a>
+                    ) : (
+                      <Link
+                        to={item.to}
+                        className="main-nav__mobile-card"
+                        onClick={closeMenu}
+                      >
+                        <span className="main-nav__mobile-card-num">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="main-nav__mobile-card-text">
+                          {item.text}
+                        </span>
+                        <span
+                          className="main-nav__mobile-card-arrow"
+                          aria-hidden="true"
+                        >
+                          →
+                        </span>
+                      </Link>
+                    )}
                   </motion.div>
                 ))}
               </motion.nav>

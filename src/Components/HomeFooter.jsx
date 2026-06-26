@@ -47,7 +47,11 @@ const NAV_LINKS = [
   { text: "PFP Generator", to: "/sonpfpmaker" },
   { text: "Upload Meme", to: "/upload-meme" },
   { text: "MEME Generator", to: "/meme-generator" },
-  { text: "SON Games", to: "/son-games" },
+  {
+    text: "SON Games",
+    href: "https://play.areyawinningson.io/",
+    external: true,
+  },
 ];
 
 function HomeFooter() {
@@ -103,11 +107,23 @@ function HomeFooter() {
         </div>
 
         <nav className="home-footer__nav" aria-label="Footer navigation">
-          {NAV_LINKS.map((item) => (
-            <Link key={item.to} to={item.to} className="home-footer__nav-link">
-              {item.text}
-            </Link>
-          ))}
+          {NAV_LINKS.map((item) =>
+            item.external ? (
+              <a
+                key={item.href}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="home-footer__nav-link"
+              >
+                {item.text}
+              </a>
+            ) : (
+              <Link key={item.to} to={item.to} className="home-footer__nav-link">
+                {item.text}
+              </Link>
+            )
+          )}
         </nav>
 
         <div className="home-footer__actions">
